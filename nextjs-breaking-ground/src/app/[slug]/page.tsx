@@ -66,12 +66,14 @@ export default async function PostPage({
           ? (value?.asset?.url || urlFor(value as SanityImageSource)?.width(1200).url())
           : null
         if (!src) return null
-        const sizeClass = {
+        const sizeMap = {
           small: 'max-w-[25%]',
           medium: 'max-w-[50%]',
           large: 'max-w-[75%]',
           full: 'max-w-full',
-        }[value?.size || 'full']
+        } as const
+        const sizeKey = (value?.size ?? 'full') as keyof typeof sizeMap
+        const sizeClass = sizeMap[sizeKey]
 
         const align = (value?.alignment || value?.align) as 'left' | 'right' | 'center' | undefined
         const alignClass =
@@ -105,12 +107,14 @@ export default async function PostPage({
             ? 'float-right ml-8 mb-6'
             : 'mx-auto my-8 block'
 
-        const sizeClass = {
+        const sizeMap = {
           small: 'max-w-[25%]',
           medium: 'max-w-[50%]',
           large: 'max-w-[75%]',
           full: 'max-w-full',
-        }[value?.size || 'full']
+        } as const
+        const sizeKey = (value?.size ?? 'full') as keyof typeof sizeMap
+        const sizeClass = sizeMap[sizeKey]
         return (
           <figure className={`rounded-md ${alignClass} ${sizeClass}`}>
             <img src={imgSrc} alt={value?.alt || ''} className="rounded-md w-full h-auto" />
