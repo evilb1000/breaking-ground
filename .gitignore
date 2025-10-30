@@ -1,0 +1,22 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+# Build outputs
+.next/
+out/
+dist/
+.eslintcache
+# Sanity build
+studio-breaking-ground/dist/
+# Local environment
+.env
+.env.local
+.env.*.local
+# OS/Editor
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
