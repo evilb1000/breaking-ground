@@ -3,6 +3,7 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
 import AnimatedBarClient from "@/components/AnimatedBarClient";
+import ChartFromRefClient from "@/components/ChartFromRefClient";
 import Link from "next/link";
 
 const ENTRY_QUERY = `*[_type in ["article","animatedData"] && slug.current == $slug][0]{
@@ -77,6 +78,25 @@ export default async function PostPage({
   // PortableText custom renderers for inline/floating images
   const components = {
     types: {
+      inlineChart: ({value}: {value: any}) => {
+        const refId = value?._ref || value?._id
+        if (!refId) return null
+        return <ChartFromRefClient id={refId} />
+      },
+      chartFigure: ({value}: {value: any}) => {
+        const refId = value?.chart?._ref || value?.chart?._id
+        const align = (value?.alignment || 'center') as 'left'|'right'|'center'
+        const size = (value?.size || 'full') as 'small'|'medium'|'large'|'full'
+        if (!refId) return null
+        return (
+          <figure>
+            <ChartFromRefClient id={refId} align={align} size={size} />
+            {value?.caption ? (
+              <figcaption className="text-center text-sm text-gray-500 mt-2">{value.caption}</figcaption>
+            ) : null}
+          </figure>
+        )
+      },
       inlineImage: ({value}: {value: any}) => {
         // Ensure we have an image asset ref before building a URL
         const hasAsset = value?.asset?._ref || value?.asset?.url
@@ -193,6 +213,7 @@ export default async function PostPage({
   let csvRows: Array<Record<string, string>> | null = null
   let csvXField = ''
   let csvYField = ''
+  const bodyHasCharts = Array.isArray(article.body) && article.body.some((b: any) => b?._type === 'inlineChart' || b?._type === 'chartFigure')
   if (article._type === 'animatedData') {
     const url: string | undefined = article?.dataFile?.asset?.url
     if (url) {
@@ -244,7 +265,7 @@ export default async function PostPage({
         </div>
       )}
 
-      {article._type === 'animatedData' && (
+      {article._type === 'animatedData' && !bodyHasCharts && (
         <section className="mt-6">
           {csvRows && csvRows.length > 0 && article.chartType === 'bar' ? (
             <AnimatedBarClient

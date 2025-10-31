@@ -113,5 +113,42 @@ export const blockContent = defineType({
         }
       }
     })
+    ,
+    // Inline chart (reference)
+    defineArrayMember({
+      name: 'inlineChart',
+      title: 'Inline Chart',
+      type: 'reference',
+      to: [{type: 'animatedData'}],
+    }),
+    // Chart figure with alignment/size/caption
+    defineArrayMember({
+      name: 'chartFigure',
+      title: 'Chart Figure',
+      type: 'object',
+      fields: [
+        defineField({ name: 'chart', title: 'Chart', type: 'reference', to: [{type: 'animatedData'}], validation: (r) => r.required() }),
+        defineField({ name: 'caption', title: 'Caption', type: 'string' }),
+        defineField({
+          name: 'alignment', title: 'Alignment', type: 'string', options: { layout: 'radio', list: [
+            {title: 'Left', value: 'left'},
+            {title: 'Right', value: 'right'},
+            {title: 'Center', value: 'center'},
+          ]}, initialValue: 'center'
+        }),
+        defineField({
+          name: 'size', title: 'Size', type: 'string', options: { layout: 'radio', list: [
+            {title: 'Small (25%)', value: 'small'},
+            {title: 'Medium (50%)', value: 'medium'},
+            {title: 'Large (75%)', value: 'large'},
+            {title: 'Full (100%)', value: 'full'},
+          ]}, initialValue: 'full'
+        })
+      ],
+      preview: {
+        select: {title: 'caption'},
+        prepare: ({title}: {title?: string}) => ({title: title || 'Chart Figure'})
+      }
+    })
   ]
 })
