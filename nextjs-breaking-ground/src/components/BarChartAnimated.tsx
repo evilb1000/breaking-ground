@@ -48,12 +48,24 @@ export default function BarChartAnimated({
   yField,
   colors,
   duration = 800,
+  chartTitle,
+  xLabel,
+  yLabel,
+  showAxis = true,
+  showTicks = true,
+  tickCount = 5,
 }: {
   data: Row[]
   xField: string
   yField: string
   colors?: string[]
   duration?: number
+  chartTitle?: string
+  xLabel?: string
+  yLabel?: string
+  showAxis?: boolean
+  showTicks?: boolean
+  tickCount?: number
 }) {
   const width = 800
   const height = 420
@@ -82,8 +94,50 @@ export default function BarChartAnimated({
   }, [progress, t])
 
   return (
-    <svg ref={ref} width={width} height={height} className="mx-auto block">
-      <g transform={`translate(${padding.left},${padding.top})`}>
+    <svg ref={ref} width={width} height={height + 40} className="mx-auto block">
+      {/* Title */}
+      {chartTitle ? (
+        <text x={width / 2} y={20} textAnchor="middle" fontSize={18} fontWeight={700}>{chartTitle}</text>
+      ) : null}
+      <g transform={`translate(${padding.left},${padding.top + (chartTitle ? 10 : 0)})`}>
+        {/* Axes */}
+        {showAxis && (
+          <>
+            {/* Y axis */}
+            <line x1={0} y1={0} x2={0} y2={innerH} stroke="#ccc" />
+            {/* X axis */}
+            <line x1={0} y1={innerH} x2={innerW} y2={innerH} stroke="#ccc" />
+          </>
+        )}
+        {showTicks && (
+          <>
+            {/* Y ticks */}
+            {Array.from({length: tickCount}).map((_, i) => {
+              const t = i / (tickCount - 1)
+              const v = Math.round(maxV * t)
+              const y = innerH - innerH * t
+              return (
+                <g key={i}>
+                  <line x1={-4} x2={0} y1={y} y2={y} stroke="#999" />
+                  <text x={-8} y={y} textAnchor="end" dominantBaseline="middle" fontSize={12} fontWeight={700} fill="#333">{v}</text>
+                </g>
+              )
+            })}
+            {/* X ticks (sampled) */}
+            {data.map((d, i) => {
+              const x = i * barW + barW / 2
+              // sample every N labels if many bars
+              const step = Math.ceil(data.length / 8)
+              if (i % step !== 0) return null
+              return (
+                <g key={`x-${i}`}>
+                  <line x1={x} x2={x} y1={innerH} y2={innerH + 4} stroke="#999" />
+                  <text x={x} y={innerH + 14} textAnchor="middle" fontSize={12} fontWeight={700} fill="#333">{String(d[xField])}</text>
+                </g>
+              )
+            })}
+          </>
+        )}
         {data.map((d, i) => {
           const v = toNumber(d[yField])
           const targetH = (v / maxV) * innerH
@@ -98,6 +152,13 @@ export default function BarChartAnimated({
             </g>
           )
         })}
+        {/* Axis labels */}
+        {xLabel ? (
+          <text x={innerW / 2} y={innerH + 28} textAnchor="middle" fontSize={12} fill="#444">{xLabel}</text>
+        ) : null}
+        {yLabel ? (
+          <text transform={`rotate(-90)`} x={-innerH / 2} y={-40} textAnchor="middle" fontSize={12} fill="#444">{yLabel}</text>
+        ) : null}
       </g>
     </svg>
   )

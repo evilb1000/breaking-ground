@@ -48,6 +48,9 @@ export default defineType({
       of: [{type: 'string'}],
       description: 'Hex or CSS colors used in series order.',
     }),
+    defineField({ name: 'chartTitle', title: 'Chart Title', type: 'string' }),
+    defineField({ name: 'xLabel', title: 'X Axis Label', type: 'string' }),
+    defineField({ name: 'yLabel', title: 'Y Axis Label', type: 'string' }),
     defineField({
       name: 'animationDuration',
       title: 'Animation Duration (ms)',
@@ -68,6 +71,9 @@ export default defineType({
       initialValue: 'easeInOut',
     }),
     defineField({ name: 'showAxis', title: 'Show Axes', type: 'boolean', initialValue: true }),
+    defineField({ name: 'showTicks', title: 'Show Tick Labels', type: 'boolean', initialValue: true }),
+    defineField({ name: 'tickCount', title: 'Y Tick Count', type: 'number', initialValue: 5, validation: (r) => r.min(2).max(10) }),
+    defineField({ name: 'numberFormat', title: 'Y Number Format', type: 'string', description: 'Optional formatter hint, e.g., 0,0 or 0.0a' }),
     defineField({ name: 'showLegend', title: 'Show Legend', type: 'boolean', initialValue: true }),
   ],
 })

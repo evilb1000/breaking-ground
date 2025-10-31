@@ -26,6 +26,11 @@ const ENTRY_QUERY = `*[_type in ["article","animatedData"] && slug.current == $s
   animationDuration,
   animationEasing,
   showAxis,
+  showTicks,
+  tickCount,
+  chartTitle,
+  xLabel,
+  yLabel,
   showLegend,
   dataFile{asset->{url}}
 }`;
@@ -242,7 +247,19 @@ export default async function PostPage({
       {article._type === 'animatedData' && (
         <section className="mt-6">
           {csvRows && csvRows.length > 0 && article.chartType === 'bar' ? (
-            <AnimatedBarClient data={csvRows} xField={csvXField} yField={csvYField} colors={article.colors} duration={article.animationDuration ?? 800} />
+            <AnimatedBarClient
+              data={csvRows}
+              xField={csvXField}
+              yField={csvYField}
+              colors={article.colors}
+              duration={article.animationDuration ?? 1200}
+              chartTitle={article.chartTitle}
+              xLabel={article.xLabel}
+              yLabel={article.yLabel}
+              showAxis={article.showAxis ?? true}
+              showTicks={article.showTicks ?? true}
+              tickCount={article.tickCount ?? 5}
+            />
           ) : (
             <p className="text-gray-600">{csvRows ? 'Chart type not implemented yet.' : 'No CSV uploaded.'}</p>
           )}
