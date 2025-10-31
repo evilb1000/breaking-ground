@@ -4,7 +4,7 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 type Row = Record<string, string>
 
 // Track element and return a 0..1 progress value driven by scroll position
-function useScrollProgress<T extends HTMLElement>() {
+function useScrollProgress<T extends Element>() {
   const ref = useRef<T | null>(null)
   const [progress, setProgress] = useState(0)
   useEffect(() => {
