@@ -2,9 +2,11 @@ import { PortableText } from "next-sanity";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
+import AnimatedBarClient from "@/components/AnimatedBarClient";
 import Link from "next/link";
 
-const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0]{
+const ENTRY_QUERY = `*[_type in ["article","animatedData"] && slug.current == $slug][0]{
+  _type,
   title,
   dek,
   publishedAt,
@@ -14,7 +16,18 @@ const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   issue->{title},
   body,
   readingTime,
-  featured
+  featured,
+  // animatedData-only fields
+  chartType,
+  xField,
+  yFields,
+  groupField,
+  colors,
+  animationDuration,
+  animationEasing,
+  showAxis,
+  showLegend,
+  dataFile{asset->{url}}
 }`;
 
 const { projectId, dataset } = client.config();
@@ -31,7 +44,7 @@ export default async function PostPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const article = await client.fetch<any | null>(ARTICLE_QUERY, await params, options);
+  const article = await client.fetch<any | null>(ENTRY_QUERY, await params, options);
 
   if (!article) {
     return (
@@ -127,6 +140,65 @@ export default async function PostPage({
     },
   }
 
+  // Helpers for animatedData CSV rendering
+  function parseCsv(text: string) {
+    const lines = text.trim().split(/\r?\n/)
+    if (lines.length === 0) return {headers: [], rows: []}
+    const headers = lines[0].split(',').map((h) => h.trim())
+    const rows = lines.slice(1).map((l) => {
+      const cols = l.split(',')
+      const obj: Record<string, string> = {}
+      headers.forEach((h, i) => (obj[h] = (cols[i] ?? '').trim()))
+      return obj
+    })
+    return {headers, rows}
+  }
+  function number(n: string | undefined) {
+    const v = Number(n)
+    return Number.isFinite(v) ? v : 0
+  }
+  function BarChart({data, xField, yField, colors}: {data: any[]; xField: string; yField: string; colors?: string[]}) {
+    const width = 800
+    const height = 420
+    const padding = {top: 20, right: 20, bottom: 40, left: 50}
+    const innerW = width - padding.left - padding.right
+    const innerH = height - padding.top - padding.bottom
+    const values = data.map((d) => number(d[yField]))
+    const maxV = Math.max(1, ...values)
+    const barW = innerW / Math.max(1, data.length)
+    const barColor = colors?.[0] || '#111'
+    return (
+      <svg width={width} height={height} className="mx-auto block">
+        <g transform={`translate(${padding.left},${padding.top})`}>
+          {data.map((d, i) => {
+            const v = number(d[yField])
+            const h = (v / maxV) * innerH
+            const x = i * barW
+            const y = innerH - h
+            return <rect key={i} x={x + 4} y={y} width={Math.max(0, barW - 8)} height={h} fill={barColor} rx={4} />
+          })}
+        </g>
+      </svg>
+    )
+  }
+
+  // Client-side animated bar chart component wrapper
+
+  // If animatedData, fetch CSV server-side before rendering to avoid flicker
+  let csvRows: Array<Record<string, string>> | null = null
+  let csvXField = ''
+  let csvYField = ''
+  if (article._type === 'animatedData') {
+    const url: string | undefined = article?.dataFile?.asset?.url
+    if (url) {
+      const csv = await fetch(url, {cache: 'no-store'}).then((r) => r.text()).catch(() => '')
+      const {rows} = parseCsv(csv)
+      csvRows = rows
+      csvXField = article.xField as string
+      csvYField = (article.yFields?.[0] as string) || ''
+    }
+  }
+
   return (
     <main className="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-6 bg-white text-black">
       <Link href="/" className="hover:underline">
@@ -165,6 +237,16 @@ export default async function PostPage({
           )}
           {article?.author?.name && <span className="text-sm text-gray-700">By {article.author.name}</span>}
         </div>
+      )}
+
+      {article._type === 'animatedData' && (
+        <section className="mt-6">
+          {csvRows && csvRows.length > 0 && article.chartType === 'bar' ? (
+            <AnimatedBarClient data={csvRows} xField={csvXField} yField={csvYField} colors={article.colors} duration={article.animationDuration ?? 800} />
+          ) : (
+            <p className="text-gray-600">{csvRows ? 'Chart type not implemented yet.' : 'No CSV uploaded.'}</p>
+          )}
+        </section>
       )}
 
       <div className="prose prose-lg md:prose-xl leading-relaxed max-w-prose mx-auto prose-headings:mt-8 prose-headings:mb-4 prose-p:my-6 md:prose-p:my-7 prose-ul:my-5 prose-ol:my-5 prose-li:my-2 prose-img:my-8 prose-figure:my-10">

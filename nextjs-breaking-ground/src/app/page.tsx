@@ -6,7 +6,7 @@ import { client } from "@/sanity/client";
 export const revalidate = 0;
 const options = { next: { revalidate: 0 } };
 
-const FEATURED_QUERY = `*[_type == "article" && featured == true && defined(slug.current)]
+const FEATURED_QUERY = `*[_type in ["article","animatedData"] && featured == true && defined(slug.current)]
   | order(_updatedAt desc)[0]{
     _id,
     title,
@@ -18,7 +18,7 @@ const FEATURED_QUERY = `*[_type == "article" && featured == true && defined(slug
     author->{name, image}
   }`;
 
-const FALLBACK_LATEST_QUERY = `*[_type == "article" && defined(slug.current)]
+const FALLBACK_LATEST_QUERY = `*[_type in ["article","animatedData"] && defined(slug.current)]
   | order(publishedAt desc)[0]{
     _id,
     title,
@@ -30,7 +30,7 @@ const FALLBACK_LATEST_QUERY = `*[_type == "article" && defined(slug.current)]
     author->{name, image}
   }`;
 
-const MORE_STORIES_QUERY = `*[_type == "article" && defined(slug.current)]
+const MORE_STORIES_QUERY = `*[_type in ["article","animatedData"] && defined(slug.current)]
   | order(publishedAt desc)[0...7]{
     _id,
     title,
