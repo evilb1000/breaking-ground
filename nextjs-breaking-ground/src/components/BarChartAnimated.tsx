@@ -154,10 +154,10 @@ export default function BarChartAnimated({
         })}
         {/* Axis labels */}
         {xLabel ? (
-          <text x={innerW / 2} y={innerH + 28} textAnchor="middle" fontSize={12} fill="#444">{xLabel}</text>
+          <text x={innerW / 2} y={innerH + 28} textAnchor="middle" fontSize={12} fontWeight={700} fill="#444">{xLabel}</text>
         ) : null}
         {yLabel ? (
-          <text transform={`rotate(-90)`} x={-innerH / 2} y={-40} textAnchor="middle" fontSize={12} fill="#444">{yLabel}</text>
+          <text transform={`rotate(-90)`} x={-innerH / 2} y={-40} textAnchor="middle" fontSize={12} fontWeight={700} fill="#444">{yLabel}</text>
         ) : null}
       </g>
     </svg>

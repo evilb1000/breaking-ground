@@ -49,8 +49,18 @@ export default defineType({
       description: 'Hex or CSS colors used in series order.',
     }),
     defineField({ name: 'chartTitle', title: 'Chart Title', type: 'string' }),
-    defineField({ name: 'xLabel', title: 'X Axis Label', type: 'string' }),
-    defineField({ name: 'yLabel', title: 'Y Axis Label', type: 'string' }),
+    defineField({ 
+      name: 'xLabel', 
+      title: 'X Axis Title', 
+      type: 'string',
+      description: 'Horizontal axis title/label'
+    }),
+    defineField({ 
+      name: 'yLabel', 
+      title: 'Y Axis Title', 
+      type: 'string',
+      description: 'Vertical axis title/label'
+    }),
     defineField({
       name: 'animationDuration',
       title: 'Animation Duration (ms)',
