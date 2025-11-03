@@ -52,7 +52,6 @@ export default function MapEmbedClient({
       map.addControl(new mapboxgl.FullscreenControl(), 'top-right')
       // Ensure interactions are enabled
       map.dragRotate.enable()
-      map.touchZoomRotate.enableRotation()
       map.keyboard.enable()
 
       map.on('load', () => {
@@ -161,3 +160,5 @@ export default function MapEmbedClient({
 }
 
 
+
+// build-bump 1762188374
