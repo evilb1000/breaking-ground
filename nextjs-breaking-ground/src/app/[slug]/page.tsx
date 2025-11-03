@@ -4,6 +4,7 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
 import AnimatedBarClient from "@/components/AnimatedBarClient";
 import ChartFromRefClient from "@/components/ChartFromRefClient";
+import MapEmbedClient from "@/components/MapEmbedClient";
 import Link from "next/link";
 
 const ENTRY_QUERY = `*[_type in ["article","animatedData"] && slug.current == $slug][0]{
@@ -15,7 +16,12 @@ const ENTRY_QUERY = `*[_type in ["article","animatedData"] && slug.current == $s
   author->{name, image},
   category,
   issue->{title},
-  body,
+  body[]{
+    ...,
+    // ensure map/file URLs are present for mapEmbed blocks
+    mapFile{asset->{url}},
+    dataFile{asset->{url}}
+  },
   readingTime,
   featured,
   // animatedData-only fields
@@ -160,6 +166,18 @@ export default async function PostPage({
               <figcaption className="text-center text-sm text-gray-500 mt-2">{value.caption}</figcaption>
             ) : null}
           </figure>
+        )
+      },
+      mapEmbed: ({value}: {value: any}) => {
+        const dataUrl = value?.dataFile?.asset?.url
+        if (!dataUrl) return null
+        return (
+          <div className="my-6">
+            <MapEmbedClient dataUrl={dataUrl} valueProperty={value?.valueProperty} heightScale={value?.heightScale ?? 1} />
+            {value?.caption ? (
+              <p className="text-center text-sm text-gray-500 mt-2">{value.caption}</p>
+            ) : null}
+          </div>
         )
       },
     },

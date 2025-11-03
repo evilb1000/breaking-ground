@@ -149,6 +149,12 @@ export const blockContent = defineType({
         select: {title: 'caption'},
         prepare: ({title}: {title?: string}) => ({title: title || 'Chart Figure'})
       }
+    }),
+    // Map Embed
+    defineArrayMember({
+      name: 'mapEmbed',
+      title: 'Map Embed',
+      type: 'mapEmbed',
     })
   ]
 })
