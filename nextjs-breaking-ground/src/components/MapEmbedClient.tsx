@@ -2,17 +2,34 @@
 import React, {useEffect, useRef} from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-// Using native Mapbox layers for reliability; deck.gl overlay removed
+import {MapboxOverlay} from '@deck.gl/mapbox'
+import {ColumnLayer} from '@deck.gl/layers'
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || ''
 
-export default function MapEmbedClient({dataUrl, valueProperty, heightScale = 1}: {dataUrl: string; valueProperty?: string; heightScale?: number}) {
+export default function MapEmbedClient({
+  dataUrl,
+  valueProperty,
+  heightScale = 1,
+  valueProperties,
+  columnRadius = 80,
+  columnSpacing = 90,
+  colors,
+}: {
+  dataUrl: string
+  valueProperty?: string
+  heightScale?: number
+  valueProperties?: string[]
+  columnRadius?: number // in meters
+  columnSpacing?: number // in meters between grouped columns
+  colors?: string[]
+}) {
   const container = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!dataUrl) return
     let map: mapboxgl.Map | null = null
-    let cleanup: (() => void) | null = null
+    let overlay: MapboxOverlay | null = null
 
     async function init() {
       const res = await fetch(dataUrl)
@@ -25,8 +42,18 @@ export default function MapEmbedClient({dataUrl, valueProperty, heightScale = 1}
         zoom: 10,
         pitch: 65,
         bearing: 30,
+        bearingSnap: 0, // allow smooth 360° rotation without snapping to north
+        pitchWithRotate: true,
         antialias: true,
       })
+
+      // Add basic UI controls for zoom/rotation/fullscreen
+      map.addControl(new mapboxgl.NavigationControl({visualizePitch: true}), 'top-right')
+      map.addControl(new mapboxgl.FullscreenControl(), 'top-right')
+      // Ensure interactions are enabled
+      map.dragRotate.enable()
+      map.touchZoomRotate.enableRotation(true)
+      map.keyboard.enable()
 
       map.on('load', () => {
         // Ensure obvious 3D perspective
@@ -59,63 +86,62 @@ export default function MapEmbedClient({dataUrl, valueProperty, heightScale = 1}
           }
         } catch {}
 
-        const hasPolygon = JSON.stringify(geojson).includes('Polygon')
-        const hasLine = JSON.stringify(geojson).includes('LineString')
-        const hasPoint = JSON.stringify(geojson).includes('Point')
+        // Build grouped columns at each feature centroid using deck.gl ColumnLayer
+        try {
+          const features = geojson.type === 'FeatureCollection' ? geojson.features : [geojson]
+          const toCentroid = (geom: any): [number, number] => {
+            if (geom.type === 'Point') return geom.coordinates as [number, number]
+            // naive centroid: average outer ring coordinates
+            const coords = geom.type.includes('Polygon') ? geom.coordinates[0] : geom.coordinates[0][0]
+            let sx = 0, sy = 0
+            coords.forEach((c: [number, number]) => { sx += c[0]; sy += c[1] })
+            const n = coords.length || 1
+            return [sx / n, sy / n]
+          }
 
-        if (hasPolygon && !map!.getLayer('fill-extrusion')) {
-          map!.addLayer({
-            id: 'fill-extrusion',
-            type: 'fill-extrusion',
-            source: 'data',
-            paint: {
-              'fill-extrusion-color': '#e24a3f',
-              // Use a numeric property for height: height | value | votes (fallback 0)
-              // Scale up for visual punch; adjust scale as needed
-              'fill-extrusion-height': [
-                '*',
-                ['coalesce', ['get', valueProperty || ''], ['get', 'height'], ['get', 'value'], ['get', 'votes'], 0],
-                heightScale
-              ],
-              'fill-extrusion-opacity': 0.8,
+          const series = (valueProperties && valueProperties.length > 0) ? valueProperties : [valueProperty].filter(Boolean) as string[]
+          const palette = (colors && colors.length ? colors : ['#e24a3f', '#0d47a1', '#43a047']).slice(0, Math.max(1, series.length))
+
+          const metersToLng = (m: number, atLng: number, atLat: number) => m / (111320 * Math.cos(atLat * Math.PI / 180))
+          const metersToLat = (m: number) => m / 110540
+
+          const layers = (series.length ? series : ['value']).map((key, idx) => new ColumnLayer({
+            id: `col-${idx}`,
+            data: features,
+            extruded: true,
+            radius: columnRadius, // meters
+            pickable: false,
+            getFillColor: (_: any) => {
+              const c = palette[idx % palette.length]
+              // hex to rgba
+              const m = c.match(/#([0-9a-f]{6})/i)
+              if (!m) return [226, 74, 63, 200]
+              const num = parseInt(m[1], 16)
+              return [(num >> 16) & 255, (num >> 8) & 255, num & 255, 200]
             },
-          })
-        }
-        if (hasLine && !map!.getLayer('lines')) {
-          map!.addLayer({
-            id: 'lines',
-            type: 'line',
-            source: 'data',
-            paint: {
-              'line-color': '#0d47a1',
-              'line-width': 2,
+            getElevation: (f: any) => {
+              const v = Number(f.properties?.[key]) || Number(f.properties?.value) || Number(f.properties?.votes) || 0
+              return v * heightScale
             },
-          })
-        }
-        if (hasPoint && !map!.getLayer('points')) {
-          map!.addLayer({
-            id: 'points',
-            type: 'circle',
-            source: 'data',
-            paint: {
-              // Circle radius scaled by the same property (capped)
-              'circle-radius': [
-                'min',
-                20,
-                ['+', 3, ['/', ['coalesce', ['get', valueProperty || ''], ['get', 'height'], ['get', 'value'], ['get', 'votes'], 0], 50]]
-              ],
-              'circle-color': '#0d47a1',
-              'circle-stroke-width': 1,
-              'circle-stroke-color': '#ffffff',
-            },
-          })
-        }
+            getPosition: (f: any) => {
+              const [lng, lat] = toCentroid(f.geometry)
+              // offset columns side-by-side east-west
+              const dxm = (idx - (series.length - 1) / 2) * columnSpacing
+              const dLng = metersToLng(dxm, lng, lat)
+              const dLat = 0
+              return [lng + dLng, lat + dLat]
+            }
+          }))
+
+          overlay = new MapboxOverlay({layers})
+          map!.addControl(overlay as any)
+        } catch {}
       })
     }
 
     init()
     return () => {
-      if (cleanup) cleanup()
+      if (overlay) (overlay as any).setProps({layers: []})
       map?.remove()
     }
   }, [dataUrl])

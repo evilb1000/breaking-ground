@@ -173,7 +173,15 @@ export default async function PostPage({
         if (!dataUrl) return null
         return (
           <div className="my-6">
-            <MapEmbedClient dataUrl={dataUrl} valueProperty={value?.valueProperty} heightScale={value?.heightScale ?? 1} />
+            <MapEmbedClient
+              dataUrl={dataUrl}
+              valueProperty={value?.valueProperty}
+              valueProperties={value?.valueProperties}
+              heightScale={value?.heightScale ?? 1}
+              columnRadius={value?.columnRadius ?? 80}
+              columnSpacing={value?.columnSpacing ?? 90}
+              colors={value?.colors}
+            />
             {value?.caption ? (
               <p className="text-center text-sm text-gray-500 mt-2">{value.caption}</p>
             ) : null}
