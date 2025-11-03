@@ -13,7 +13,6 @@ function useScrollProgress<T extends Element>() {
       if (!el) return
       const rect = el.getBoundingClientRect()
       const vh = window.innerHeight || 1
-      // Start when top enters 80% of viewport, finish when bottom reaches 20%
       const start = vh * 0.8
       const end = -rect.height * 0.2
       const p = (start - rect.top) / (start - end)
@@ -42,7 +41,7 @@ function toNumber(n: string | undefined) {
   return Number.isFinite(v) ? v : 0
 }
 
-export default function BarChartAnimated({
+export default function LineChartAnimated({
   data,
   xField,
   yField,
@@ -75,16 +74,18 @@ export default function BarChartAnimated({
 
   const values = useMemo(() => data.map((d) => toNumber(d[yField])), [data, yField])
   const maxV = Math.max(1, ...values)
-  const barW = innerW / Math.max(1, data.length)
+  const xScale = (i: number) => (i / Math.max(1, data.length - 1)) * innerW
+  const yScale = (v: number) => innerH - (v / maxV) * innerH
+
+  const lineColor = colors && colors.length > 0 ? colors[0] : '#111'
 
   const {ref, progress} = useScrollProgress<SVGSVGElement>()
   const [t, setT] = useState(0)
-  // Smoothly follow scroll progress (lerp)
   useEffect(() => {
     let raf = 0
     const animate = () => {
       const target = progress
-      const next = t + (target - t) * 0.15 // smoothing factor
+      const next = t + (target - t) * 0.15
       setT(next)
       if (Math.abs(target - next) > 0.001) raf = requestAnimationFrame(animate)
     }
@@ -92,25 +93,47 @@ export default function BarChartAnimated({
     return () => cancelAnimationFrame(raf)
   }, [progress, t])
 
+  // Build animated path
+  const eased = 1 - Math.pow(1 - t, 3)
+  const points = useMemo(() => {
+    return data.map((d, i) => {
+      const v = toNumber(d[yField])
+      return {
+        x: xScale(i),
+        y: yScale(v),
+        label: d[xField],
+        value: v,
+      }
+    })
+  }, [data, xField, yField, maxV])
+
+  // Generate path string for line
+  const pathData = useMemo(() => {
+    if (points.length === 0) return ''
+    const visibleCount = Math.ceil(points.length * eased)
+    if (visibleCount === 0) return ''
+    
+    let path = `M ${points[0].x} ${points[0].y}`
+    for (let i = 1; i < visibleCount; i++) {
+      path += ` L ${points[i].x} ${points[i].y}`
+    }
+    return path
+  }, [points, eased])
+
   return (
     <svg ref={ref} width={width} height={height + 40} className="mx-auto block">
-      {/* Title */}
       {chartTitle ? (
         <text x={width / 2} y={20} textAnchor="middle" fontSize={18} fontWeight={700}>{chartTitle}</text>
       ) : null}
       <g transform={`translate(${padding.left},${padding.top + (chartTitle ? 10 : 0)})`}>
-        {/* Axes */}
         {showAxis && (
           <>
-            {/* Y axis */}
             <line x1={0} y1={0} x2={0} y2={innerH} stroke="#ccc" />
-            {/* X axis */}
             <line x1={0} y1={innerH} x2={innerW} y2={innerH} stroke="#ccc" />
           </>
         )}
         {showTicks && (
           <>
-            {/* Y ticks */}
             {Array.from({length: tickCount}).map((_, i) => {
               const t = i / (tickCount - 1)
               const v = Math.round(maxV * t)
@@ -122,10 +145,8 @@ export default function BarChartAnimated({
                 </g>
               )
             })}
-            {/* X ticks (sampled) */}
             {data.map((d, i) => {
-              const x = i * barW + barW / 2
-              // sample every N labels if many bars
+              const x = xScale(i)
               const step = Math.ceil(data.length / 8)
               if (i % step !== 0) return null
               return (
@@ -137,24 +158,33 @@ export default function BarChartAnimated({
             })}
           </>
         )}
-        {data.map((d, i) => {
-          const v = toNumber(d[yField])
-          const targetH = (v / maxV) * innerH
-          // easeOutCubic on scroll progress
-          const eased = 1 - Math.pow(1 - t, 3)
-          const h = targetH * eased
-          const x = i * barW
-          const y = innerH - h
-          const barColor = colors && colors.length > 0 
-            ? colors[i % colors.length] 
-            : '#111'
+        {/* Animated line */}
+        {pathData && (
+          <path
+            d={pathData}
+            fill="none"
+            stroke={lineColor}
+            strokeWidth={3}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        )}
+        {/* Data points */}
+        {points.map((pt, i) => {
+          const visible = i < Math.ceil(points.length * eased)
+          if (!visible) return null
           return (
-            <g key={i}>
-              <rect x={x + 4} y={y} width={Math.max(0, barW - 8)} height={h} fill={barColor} rx={4} />
-            </g>
+            <circle
+              key={i}
+              cx={pt.x}
+              cy={pt.y}
+              r={4}
+              fill={lineColor}
+              stroke="#fff"
+              strokeWidth={2}
+            />
           )
         })}
-        {/* Axis labels */}
         {xLabel ? (
           <text x={innerW / 2} y={innerH + 28} textAnchor="middle" fontSize={12} fontWeight={700} fill="#444">{xLabel}</text>
         ) : null}
@@ -165,5 +195,4 @@ export default function BarChartAnimated({
     </svg>
   )
 }
-
 

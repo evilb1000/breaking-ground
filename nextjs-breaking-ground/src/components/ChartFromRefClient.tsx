@@ -2,6 +2,8 @@
 import React, {useEffect, useState} from 'react'
 import {createClient} from '@sanity/client'
 import AnimatedBarClient from '@/components/AnimatedBarClient'
+import AnimatedPieClient from '@/components/AnimatedPieClient'
+import AnimatedLineClient from '@/components/AnimatedLineClient'
 
 type Doc = any
 
@@ -30,7 +32,7 @@ export default function ChartFromRefClient({
       const d = await client.fetch<Doc>(`*[_id == $id][0]{
         chartType, xField, yFields, colors,
         animationDuration, chartTitle, xLabel, yLabel,
-        showAxis, showTicks, tickCount,
+        showAxis, showTicks, tickCount, showLegend,
         dataFile{asset->{url}}
       }`, {id})
       setDoc(d || null)
@@ -73,8 +75,32 @@ export default function ChartFromRefClient({
           showTicks={doc.showTicks ?? true}
           tickCount={doc.tickCount ?? 5}
         />
+      ) : doc.chartType === 'pie' ? (
+        <AnimatedPieClient
+          data={rows}
+          xField={doc.xField}
+          yField={yField}
+          colors={doc.colors}
+          duration={doc.animationDuration ?? 1200}
+          chartTitle={doc.chartTitle}
+          showLegend={doc.showLegend ?? true}
+        />
+      ) : doc.chartType === 'line' ? (
+        <AnimatedLineClient
+          data={rows}
+          xField={doc.xField}
+          yField={yField}
+          colors={doc.colors}
+          duration={doc.animationDuration ?? 1200}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          yLabel={doc.yLabel}
+          showAxis={doc.showAxis ?? true}
+          showTicks={doc.showTicks ?? true}
+          tickCount={doc.tickCount ?? 5}
+        />
       ) : (
-        <p className="text-gray-600 text-sm">Chart type “{doc.chartType}” not implemented.</p>
+        <p className="text-gray-600 text-sm">Chart type "{doc.chartType}" not implemented.</p>
       )}
     </div>
   )

@@ -119,7 +119,7 @@ export const blockContent = defineType({
       name: 'inlineChart',
       title: 'Inline Chart',
       type: 'reference',
-      to: [{type: 'animatedData'}],
+      to: [{type: 'chartData'}],
     }),
     // Chart figure with alignment/size/caption
     defineArrayMember({
@@ -127,7 +127,7 @@ export const blockContent = defineType({
       title: 'Chart Figure',
       type: 'object',
       fields: [
-        defineField({ name: 'chart', title: 'Chart', type: 'reference', to: [{type: 'animatedData'}], validation: (r) => r.required() }),
+        defineField({ name: 'chart', title: 'Chart', type: 'reference', to: [{type: 'chartData'}], validation: (r) => r.required() }),
         defineField({ name: 'caption', title: 'Caption', type: 'string' }),
         defineField({
           name: 'alignment', title: 'Alignment', type: 'string', options: { layout: 'radio', list: [
