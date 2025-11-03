@@ -32,7 +32,10 @@ export default function MapEmbedClient({
     let overlay: MapboxOverlay | null = null
 
     async function init() {
-      const res = await fetch(dataUrl)
+      const proxied = dataUrl.startsWith('https://cdn.sanity.io/')
+        ? `/api/geojson?u=${encodeURIComponent(dataUrl)}`
+        : dataUrl
+      const res = await fetch(proxied)
       const geojson = await res.json()
 
       map = new mapboxgl.Map({
