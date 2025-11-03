@@ -1,18 +1,10 @@
 "use client"
 import React, {useEffect, useState} from 'react'
-import {createClient} from '@sanity/client'
 import AnimatedBarClient from '@/components/AnimatedBarClient'
 import AnimatedPieClient from '@/components/AnimatedPieClient'
 import AnimatedLineClient from '@/components/AnimatedLineClient'
 
 type Doc = any
-
-const client = createClient({
-  projectId: 'y9xwdi89',
-  dataset: 'production',
-  apiVersion: '2024-01-01',
-  useCdn: true,
-})
 
 export default function ChartFromRefClient({
   id,
@@ -29,25 +21,29 @@ export default function ChartFromRefClient({
   useEffect(() => {
     if (!id) return
     const fetchDoc = async () => {
-      const d = await client.fetch<Doc>(`*[_id == $id][0]{
-        chartType, xField, yFields, colors,
-        animationDuration, chartTitle, xLabel, yLabel,
-        showAxis, showTicks, tickCount, showLegend,
-        dataFile{asset->{url}}
-      }`, {id})
-      setDoc(d || null)
-      const url: string | undefined = d?.dataFile?.asset?.url
-      if (url) {
-        const txt = await fetch(url).then((r) => r.text()).catch(() => '')
-        const lines = txt.trim().split(/\r?\n/)
-        const headers = lines[0]?.split(',')?.map((h) => h.trim()) || []
-        const parsed = lines.slice(1).map((l) => {
-          const cols = l.split(',')
-          const obj: Record<string, string> = {}
-          headers.forEach((h, i) => (obj[h] = (cols[i] ?? '').trim()))
-          return obj
-        })
-        setRows(parsed)
+      try {
+        const res = await fetch(`/api/chart/${id}`)
+        if (!res.ok) {
+          console.error('Failed to fetch chart:', res.statusText)
+          return
+        }
+        const d = await res.json() as Doc
+        setDoc(d || null)
+        const url: string | undefined = d?.dataFile?.asset?.url
+        if (url) {
+          const txt = await fetch(url).then((r) => r.text()).catch(() => '')
+          const lines = txt.trim().split(/\r?\n/)
+          const headers = lines[0]?.split(',')?.map((h) => h.trim()) || []
+          const parsed = lines.slice(1).map((l) => {
+            const cols = l.split(',')
+            const obj: Record<string, string> = {}
+            headers.forEach((h, i) => (obj[h] = (cols[i] ?? '').trim()))
+            return obj
+          })
+          setRows(parsed)
+        }
+      } catch (error) {
+        console.error('Error fetching chart:', error)
       }
     }
     fetchDoc()
