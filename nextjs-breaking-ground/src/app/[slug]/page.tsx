@@ -252,32 +252,37 @@ export default async function PostPage({
   }
 
   return (
-    <main className="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-6 bg-white text-black">
-      <Link href="/" className="hover:underline">
-        ← Back to posts
-      </Link>
-      <h1 className="text-4xl font-bold font-serif">{article.title}</h1>
-      <p className="text-gray-600">{new Date(article.publishedAt).toLocaleDateString()}</p>
+    <main className="min-h-screen w-full px-6 md:px-12 pt-0 pb-8 flex flex-col gap-6 bg-white text-black items-start text-left">
+      {heroImageUrl && (
+        <div style={{marginLeft: 'calc(50% - 50vw)', width: '100vw', position: 'relative'}}>
+          <Link href="/" className="absolute top-4 left-4 z-10 bg-white/90 px-3 py-1.5 rounded hover:bg-white text-sm hover:underline">
+            Home
+          </Link>
+          <img
+            src={heroImageUrl}
+            alt={article?.headerImage?.alt || article.title}
+            style={{width: '100%', height: '60vh', objectFit: 'cover'}}
+          />
+          {article?.headerImage?.caption && (
+            <p className="text-sm text-gray-500 mt-2 px-4 max-w-3xl mx-auto">{article.headerImage.caption}</p>
+          )}
+        </div>
+      )}
+      {!heroImageUrl && (
+        <Link href="/" className="hover:underline">
+          ← Back to posts
+        </Link>
+      )}
+      <div className="max-w-3xl ml-[10vw] mr-auto w-full">
+        <h1 className="text-8xl font-bold font-serif mt-6 text-left">{article.title}</h1>
       {article.dek ? (
-        <p className="italic text-gray-700 leading-relaxed mt-4 mb-8 font-serif">
+        <p className="italic text-gray-700 leading-relaxed mt-2 mb-2 font-serif text-left">
           {article.dek}
         </p>
       ) : null}
-      {heroImageUrl && (
-        <img
-          src={heroImageUrl}
-          alt={article?.headerImage?.alt || article.title}
-          className="aspect-video rounded-xl"
-          width="1100"
-          height="620"
-        />
-      )}
-      {article?.headerImage?.caption && (
-        <p className="text-sm text-gray-500 -mt-3 mb-2">{article.headerImage.caption}</p>
-      )}
 
       {(article?.author?.name || authorImageUrl) && (
-        <div className="flex items-center gap-3 mt-6">
+        <div className="flex items-center gap-3 mt-6 text-left">
           {authorImageUrl && (
             <img
               src={authorImageUrl}
@@ -290,6 +295,7 @@ export default async function PostPage({
           {article?.author?.name && <span className="text-sm text-gray-700">By {article.author.name}</span>}
         </div>
       )}
+      <p className="text-gray-600 text-left">{new Date(article.publishedAt).toLocaleDateString()}</p>
 
       {article._type === 'animatedData' && !bodyHasCharts && (
         <section className="mt-6">
@@ -313,10 +319,11 @@ export default async function PostPage({
         </section>
       )}
 
-      <div className="prose prose-lg md:prose-xl leading-relaxed max-w-prose mx-auto prose-headings:mt-8 prose-headings:mb-4 prose-p:my-6 md:prose-p:my-7 prose-ul:my-5 prose-ol:my-5 prose-li:my-2 prose-img:my-8 prose-figure:my-10">
+      <div className="prose prose-lg md:prose-xl leading-relaxed max-w-prose prose-headings:mt-8 prose-headings:mb-4 prose-p:my-6 md:prose-p:my-7 prose-ul:my-5 prose-ol:my-5 prose-li:my-2 prose-img:my-8 prose-figure:my-10 text-left">
         {Array.isArray(article.body) && (
           <PortableText value={article.body} components={components} />
         )}
+      </div>
       </div>
     </main>
   );
