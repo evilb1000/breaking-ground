@@ -27,20 +27,11 @@ export default function ChartFromRefClient({
           console.error('Failed to fetch chart:', res.statusText)
           return
         }
-        const d = await res.json() as Doc
+        const d = await res.json() as Doc & {csvData?: Array<Record<string, string>>}
         setDoc(d || null)
-        const url: string | undefined = d?.dataFile?.asset?.url
-        if (url) {
-          const txt = await fetch(url).then((r) => r.text()).catch(() => '')
-          const lines = txt.trim().split(/\r?\n/)
-          const headers = lines[0]?.split(',')?.map((h) => h.trim()) || []
-          const parsed = lines.slice(1).map((l) => {
-            const cols = l.split(',')
-            const obj: Record<string, string> = {}
-            headers.forEach((h, i) => (obj[h] = (cols[i] ?? '').trim()))
-            return obj
-          })
-          setRows(parsed)
+        // Use parsed CSV data from API (fetched server-side, no CORS issues)
+        if (d?.csvData) {
+          setRows(d.csvData)
         }
       } catch (error) {
         console.error('Error fetching chart:', error)
