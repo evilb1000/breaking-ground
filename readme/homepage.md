@@ -50,13 +50,15 @@ import { client } from "@/sanity/client";
 ```tsx
 // nextjs-breaking-ground/src/app/page.tsx
 return (
-  <main className="bg-white text-black px-6 md:px-12 py-12 max-w-5xl mx-auto">
+  <main className="bg-white text-black px-12 md:px-24 py-12 w-full">
     <header className="sticky top-0 z-50 bg-white text-center px-6 py-6 border-b border-gray-200">...</header>
     {featured && (
-      <section className="mt-12 mb-16">
-        <Link href={`/${featured.slug.current}`} className="block group">
-          ...
-        </Link>
+      <section className={`${featured.category === "feature" ? "mt-2" : "mt-12"} mb-16`}>
+        {featured.category === "feature" ? (
+          <Link href={`/${featured.slug.current}`} className="block group">...</Link>
+        ) : (
+          <Link href={`/${featured.slug.current}`} className="block group">...</Link>
+        )}
       </section>
     )}
     {moreStories.length === 0 ? (
@@ -101,6 +103,7 @@ const FEATURED_QUERY = `*[_type in ["article","animatedData"] && featured == tru
     _id,
     title,
     dek,
+    heroLede,
     slug,
     publishedAt,
     category,
@@ -115,6 +118,7 @@ const FALLBACK_LATEST_QUERY = `*[_type in ["article","animatedData"] && defined(
     _id,
     title,
     dek,
+    heroLede,
     slug,
     publishedAt,
     category,
@@ -150,6 +154,7 @@ Selected by all 3 queries:
 - `_id`
 - `title`
 - `dek`
+- `heroLede`
 - `slug`
 - `publishedAt`
 - `category`
@@ -163,12 +168,13 @@ Required by rendered UI path:
   - `slug.current` (used to build `href`)
   - `title` (rendered as headline text and image alt fallback)
 - Conditionally rendered (safe to be missing):
-  - `dek` (shown only if present)
-  - `publishedAt` (shown only if present)
+  - `heroLede` (preferred hero text, shown only if present)
+  - `dek` (hero text fallback when `heroLede` is missing)
   - `category` (shown only if present in story cards)
-  - `author.name` (shown only if present)
   - `headerImage.asset` (if absent, featured shows placeholder; story cards render no image)
 - Selected but not currently used in homepage JSX:
+  - `publishedAt` (queried for sort/filter/fallback selection but not rendered in hero)
+  - `author.name` (queried but not rendered in hero)
   - `author.image`
   - `headerImage.caption`
   - `headerImage.crop`
@@ -186,11 +192,11 @@ Evidence:
   <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight group-hover:underline">
     {featured.title}
   </h2>
-  {featured.dek ? <p className="mt-4 text-lg italic text-gray-600 leading-relaxed max-w-3xl">{featured.dek}</p> : null}
-  <div className="mt-4 text-sm text-gray-500 flex flex-wrap items-center gap-2">
-    {featured.author?.name && <span className="uppercase tracking-wide">By {featured.author.name}</span>}
-    {featured.publishedAt && <time>{formatDate(featured.publishedAt)}</time>}
-  </div>
+  {featured.heroLede || featured.dek ? (
+    <p className="mt-4 text-lg text-gray-600 leading-relaxed max-w-3xl">
+      {featured.heroLede || featured.dek}
+    </p>
+  ) : null}
 </Link>
 ```
 
@@ -216,6 +222,26 @@ Evidence:
 - Featured candidate: newest updated featured doc by `_updatedAt desc`, first item only.
 - Fallback featured: newest published doc by `publishedAt desc`, first item only.
 - More stories source list: newest published docs by `publishedAt desc`.
+
+### Featured header/hero behavior (current)
+
+- Homepage masthead is sticky and always present:
+  - `sticky top-0 z-50 bg-white text-center px-6 py-6 border-b border-gray-200`
+- Featured section has conditional top spacing:
+  - `feature` category: `mt-2`
+  - non-feature category: `mt-12`
+- Featured render path is category-gated:
+  - `featured.category === "feature"` uses split editorial structure
+  - all other categories use legacy full-width featured card
+- Hero text content is now:
+  - `featured.heroLede` when present
+  - fallback to `featured.dek` when `heroLede` is absent
+- Hero byline/date display has been removed in both featured render branches.
+- Feature hero image is Safari-safe viewport sized:
+  - wrapper: `h-[45vh] w-full overflow-hidden rounded-lg`
+  - image: `w-full h-full object-cover object-center`
+- Non-feature hero keeps previous fixed heights:
+  - image: `h-[300px] md:h-[400px]`
 
 ```ts
 // nextjs-breaking-ground/src/app/page.tsx
@@ -274,7 +300,8 @@ Interpretation:
 
 - Masthead text and static labels in homepage JSX.
 - Tailwind classes/layout styling.
-- Optional field usage in UI (`dek`, `author.name`, `category`, `publishedAt`) because each is conditionally rendered.
+- Feature hero viewport height class (`h-[45vh]`) is a safe tuning point for cross-browser sizing.
+- Optional field usage in UI (`heroLede`, `dek`, `category`) because each is conditionally rendered.
 - Image dimensions/crop transform parameters in `urlFor(...).width(...).height(...).fit('crop')`.
 - Increasing/decreasing "more stories" UI slice count as long as query and UI expectations remain aligned.
 

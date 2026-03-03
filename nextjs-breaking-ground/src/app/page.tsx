@@ -11,6 +11,7 @@ const FEATURED_QUERY = `*[_type in ["article","animatedData"] && featured == tru
     _id,
     title,
     dek,
+    heroLede,
     slug,
     publishedAt,
     category,
@@ -23,6 +24,7 @@ const FALLBACK_LATEST_QUERY = `*[_type in ["article","animatedData"] && defined(
     _id,
     title,
     dek,
+    heroLede,
     slug,
     publishedAt,
     category,
@@ -55,11 +57,8 @@ export default async function IndexPage() {
   const list = await client.fetch<any[]>(MORE_STORIES_QUERY, {}, options);
   const moreStories = featured ? list.filter((a) => a._id !== featured._id).slice(0, 6) : list.slice(0, 6);
 
-  const formatDate = (iso?: string) =>
-    iso ? new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "";
-
   return (
-    <main className="bg-white text-black px-6 md:px-12 py-12 w-full">
+    <main className="bg-white text-black px-12 md:px-24 py-12 w-full">
       {/* Masthead */}
       <header className="sticky top-0 z-50 bg-white text-center px-6 py-6 border-b border-gray-200">
         <h1 className="font-serif text-4xl md:text-5xl font-bold tracking-tight">Breaking Ground</h1>
@@ -70,48 +69,79 @@ export default async function IndexPage() {
 
       {/* Featured Article */}
       {featured && (
-        <section className="mt-12 mb-16">
-          <Link href={`/${featured.slug.current}`} className="block group">
-            <div className="w-full overflow-hidden rounded-lg mb-6">
-              {featured?.headerImage?.asset ? (
-                (() => {
-                  const src = urlFor(featured.headerImage as SanityImageSource)
-                    ?.width(1600)
-                    .height(900)
-                    .fit('crop')
-                    .url() || ''
-                  return (
-                    <img
-                      src={src}
-                      alt={featured.headerImage?.alt || featured.title}
-                      className="w-full h-[300px] md:h-[400px] object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.03] group-hover:opacity-95"
-                    />
-                  )
-                })()
-              ) : (
-                <div className="w-full h-[300px] md:h-[400px] bg-gray-100" />
-              )}
-            </div>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight group-hover:underline">
-              {featured.title}
-            </h2>
-            {featured.dek ? (
-              <p className="mt-4 text-lg italic text-gray-600 leading-relaxed max-w-3xl">
-                {featured.dek}
-              </p>
-            ) : null}
-            <div className="mt-4 text-sm text-gray-500 flex flex-wrap items-center gap-2">
-              {featured.author?.name && (
-                <span className="uppercase tracking-wide">By {featured.author.name}</span>
-              )}
-              {featured.publishedAt && (
-                <>
-                  <span aria-hidden="true">•</span>
-                  <time>{formatDate(featured.publishedAt)}</time>
-                </>
-              )}
-            </div>
-          </Link>
+        <section className={`${featured.category === "feature" ? "mt-2" : "mt-12"} mb-16`}>
+          {featured.category === "feature" ? (
+            <Link href={`/${featured.slug.current}`} className="block group">
+              <div className="w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                  <div className="order-2 md:order-1 flex items-center justify-center">
+                    <div className="max-w-2xl w-full flex flex-col items-center text-center">
+                      <h2 className="font-serif text-4xl md:text-5xl font-bold leading-tight group-hover:underline">
+                        {featured.title}
+                      </h2>
+                      {featured.heroLede || featured.dek ? (
+                        <p className="mt-4 text-2xl md:text-3xl text-gray-600 leading-snug">
+                          {featured.heroLede || featured.dek}
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="order-1 md:order-2 h-[45vh] w-full overflow-hidden rounded-lg">
+                    {featured?.headerImage?.asset ? (
+                      (() => {
+                        const src = urlFor(featured.headerImage as SanityImageSource)
+                          ?.width(1200)
+                          .height(1500)
+                          .fit('crop')
+                          .url() || ''
+                        return (
+                          <img
+                            src={src}
+                            alt={featured.headerImage?.alt || featured.title}
+                            className="w-full h-full object-cover object-center"
+                          />
+                        )
+                      })()
+                    ) : (
+                      <div className="w-full h-full bg-gray-100" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <Link href={`/${featured.slug.current}`} className="block group">
+              <div className="w-full overflow-hidden rounded-lg mb-6">
+                {featured?.headerImage?.asset ? (
+                  (() => {
+                    const src = urlFor(featured.headerImage as SanityImageSource)
+                      ?.width(1600)
+                      .height(900)
+                      .fit('crop')
+                      .url() || ''
+                    return (
+                      <img
+                        src={src}
+                        alt={featured.headerImage?.alt || featured.title}
+                        className="w-full h-[300px] md:h-[400px] object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.03] group-hover:opacity-95"
+                      />
+                    )
+                  })()
+                ) : (
+                  <div className="w-full h-[300px] md:h-[400px] bg-gray-100" />
+                )}
+              </div>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight group-hover:underline">
+                {featured.title}
+              </h2>
+              {featured.heroLede || featured.dek ? (
+                <p className="mt-4 text-xl md:text-2xl text-gray-600 leading-snug max-w-3xl">
+                  {featured.heroLede || featured.dek}
+                </p>
+              ) : null}
+            </Link>
+          )}
         </section>
       )}
 

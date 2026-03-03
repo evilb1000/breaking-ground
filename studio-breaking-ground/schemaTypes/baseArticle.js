@@ -31,6 +31,15 @@ export const baseArticle = defineType({
       description: 'A short summary that appears under the title on the front end.',
     }),
     defineField({
+      name: 'heroLede',
+      title: 'Hero lede',
+      type: 'text',
+      rows: 3,
+      description:
+        'Homepage featured hero line (replaces byline/date in hero block). Keep it 1-3 sentences.',
+      validation: (Rule) => Rule.max(240),
+    }),
+    defineField({
       name: 'publishedAt',
       type: 'datetime',
       title: 'Published at',
