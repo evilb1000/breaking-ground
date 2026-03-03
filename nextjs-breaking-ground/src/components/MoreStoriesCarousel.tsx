@@ -41,7 +41,7 @@ export default function MoreStoriesCarousel({ stories }: Props) {
               className="group block snap-start shrink-0 w-[85%] sm:w-[70%] md:w-[48%] lg:w-[32%]"
               key={article._id}
             >
-              <div className="w-full h-[180px] overflow-hidden rounded-md mb-4 bg-gray-100">
+              <div className="w-full h-[390px] overflow-hidden rounded-md mb-4 bg-gray-100">
                 {article.imageSrc ? (
                   <img
                     src={article.imageSrc}
