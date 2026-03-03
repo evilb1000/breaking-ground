@@ -59,9 +59,9 @@ export default async function IndexPage() {
     iso ? new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "";
 
   return (
-    <main className="bg-white text-black px-6 md:px-12 py-12 max-w-5xl mx-auto">
+    <main className="bg-white text-black px-6 md:px-12 py-12 w-full">
       {/* Masthead */}
-      <header className="text-center mb-12">
+      <header className="sticky top-0 z-50 bg-white text-center px-6 py-6 border-b border-gray-200">
         <h1 className="font-serif text-4xl md:text-5xl font-bold tracking-tight">Breaking Ground</h1>
         <p className="text-sm uppercase tracking-wide text-gray-500 mt-4">
           Construction • Industry • Power • Western PA
@@ -70,7 +70,7 @@ export default async function IndexPage() {
 
       {/* Featured Article */}
       {featured && (
-        <section className="mb-16">
+        <section className="mt-12 mb-16">
           <Link href={`/${featured.slug.current}`} className="block group">
             <div className="w-full overflow-hidden rounded-lg mb-6">
               {featured?.headerImage?.asset ? (

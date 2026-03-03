@@ -22,11 +22,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isDev = process.env.NODE_ENV === "development";
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {isDev && (
+          <a
+            href="http://localhost:3333"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed top-3 right-3 z-50 px-3 py-1.5 text-sm font-medium bg-orange-500 text-white rounded shadow hover:bg-orange-600"
+          >
+            Sanity Studio →
+          </a>
+        )}
         {children}
       </body>
     </html>
