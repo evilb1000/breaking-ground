@@ -2,6 +2,7 @@ import Link from "next/link";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
+import MoreStoriesCarousel from "@/components/MoreStoriesCarousel";
 
 export const revalidate = 0;
 const options = { next: { revalidate: 0 } };
@@ -56,6 +57,22 @@ export default async function IndexPage() {
 
   const list = await client.fetch<any[]>(MORE_STORIES_QUERY, {}, options);
   const moreStories = featured ? list.filter((a) => a._id !== featured._id).slice(0, 6) : list.slice(0, 6);
+  const carouselStories = moreStories.map((article) => ({
+    _id: article._id,
+    slug: article.slug,
+    title: article.title,
+    dek: article.dek,
+    category: article.category,
+    authorName: article.author?.name,
+    imageAlt: article.headerImage?.alt || article.title,
+    imageSrc: article?.headerImage?.asset
+      ? urlFor(article.headerImage as SanityImageSource)
+          ?.width(800)
+          .height(600)
+          .fit('crop')
+          .url() || ''
+      : '',
+  }));
 
   return (
     <main className="bg-white text-black px-12 md:px-24 py-12 w-full">
@@ -153,45 +170,7 @@ export default async function IndexPage() {
       {moreStories.length === 0 ? (
         <p className="text-gray-500">No additional articles yet.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {moreStories.map((article) => (
-            <Link href={`/${article.slug.current}`} className="group block" key={article._id}>
-              <div className="w-full h-[180px] overflow-hidden rounded-md mb-4 bg-gray-100">
-                {article?.headerImage?.asset ? (
-                  (() => {
-                    const src = urlFor(article.headerImage as SanityImageSource)
-                      ?.width(800)
-                      .height(600)
-                      .fit('crop')
-                      .url() || ''
-                    return (
-                      <img
-                        src={src}
-                        alt={article.headerImage?.alt || article.title}
-                        className="w-full h-full object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.03] group-hover:opacity-95"
-                      />
-                    )
-                  })()
-                ) : null}
-              </div>
-              <h4 className="font-serif text-xl font-semibold leading-snug group-hover:underline">
-                {article.title}
-              </h4>
-              {article.dek ? (
-                <p className="text-gray-600 text-sm leading-relaxed mt-2 line-clamp-2">{article.dek}</p>
-              ) : null}
-              <div className="text-[11px] uppercase tracking-wide text-gray-500 mt-3 flex flex-wrap gap-2">
-                {article.author?.name && <span>By {article.author.name}</span>}
-                {article.category && (
-                  <>
-                    <span aria-hidden="true">•</span>
-                    <span>{article.category}</span>
-                  </>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
+        <MoreStoriesCarousel stories={carouselStories} />
       )}
     </main>
   );
