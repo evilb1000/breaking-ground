@@ -50,21 +50,12 @@ export default function MoreStoriesCarousel({ stories }: Props) {
                   />
                 ) : null}
               </div>
-              <h4 className="font-serif text-xl font-semibold leading-snug group-hover:underline">
+              <h4 className="font-serif text-4xl font-semibold leading-snug group-hover:underline">
                 {article.title}
               </h4>
               {article.dek ? (
-                <p className="text-gray-600 text-sm leading-relaxed mt-2 line-clamp-2">{article.dek}</p>
+                <p className="text-gray-600 text-2xl leading-relaxed mt-2 line-clamp-2">{article.dek}</p>
               ) : null}
-              <div className="text-[11px] uppercase tracking-wide text-gray-500 mt-3 flex flex-wrap gap-2">
-                {article.authorName && <span>By {article.authorName}</span>}
-                {article.category && (
-                  <>
-                    <span aria-hidden="true">•</span>
-                    <span>{article.category}</span>
-                  </>
-                )}
-              </div>
             </Link>
           ))}
         </div>

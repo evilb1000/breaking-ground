@@ -186,8 +186,8 @@ export default async function IndexPage() {
       />
 
       {/* More Stories */}
-      <h3 className="font-serif text-xl font-bold tracking-tight mb-6 pt-8">
-        More Stories
+      <h3 className="font-serif text-[2rem] font-bold tracking-tight mb-6 pt-8 text-center">
+        Latest News
       </h3>
 
       {moreStories.length === 0 ? (
