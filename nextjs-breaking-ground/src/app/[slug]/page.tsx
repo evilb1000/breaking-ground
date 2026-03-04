@@ -12,7 +12,9 @@ const ENTRY_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   dek,
   publishedAt,
   headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+  heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
   author->{name, image},
+  series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}},
   category,
   body[]{
     ...,
@@ -51,13 +53,20 @@ export default async function PostPage({
     );
   }
 
-  // Build hero image URL either via builder (preferred) or fall back to direct URL if provided
-  const heroImageSource = article?.headerImage?.asset?._ref
-    ? (article.headerImage as SanityImageSource)
+  // Hero image fallback order: article header image -> legacy hero image -> series default image.
+  const resolvedHeroImage = article?.headerImage?.asset?._ref || article?.headerImage?.asset?.url
+    ? article.headerImage
+    : article?.heroImage?.asset?._ref || article?.heroImage?.asset?.url
+    ? article.heroImage
+    : article?.series?.seriesImage?.asset?._ref || article?.series?.seriesImage?.asset?.url
+    ? article.series.seriesImage
+    : null;
+  const heroImageSource = resolvedHeroImage?.asset?._ref
+    ? (resolvedHeroImage as SanityImageSource)
     : null;
   const heroImageUrl = heroImageSource
     ? urlFor(heroImageSource)?.width(1100).height(620).url()
-    : article?.headerImage?.asset?.url ?? null;
+    : resolvedHeroImage?.asset?.url ?? null;
 
   const authorImageUrl = article?.author?.image
     ? urlFor(article.author.image as SanityImageSource)?.width(64).height(64).url()
@@ -182,11 +191,11 @@ export default async function PostPage({
           </Link>
           <img
             src={heroImageUrl}
-            alt={article?.headerImage?.alt || article.title}
+            alt={resolvedHeroImage?.alt || article.title}
             style={{width: '100%', height: '60vh', objectFit: 'cover'}}
           />
-          {article?.headerImage?.caption && (
-            <p className="text-sm text-gray-500 mt-2 px-4 max-w-3xl mx-auto">{article.headerImage.caption}</p>
+          {resolvedHeroImage?.caption && (
+            <p className="text-sm text-gray-500 mt-2 px-4 max-w-3xl mx-auto">{resolvedHeroImage.caption}</p>
           )}
         </div>
       )}

@@ -19,7 +19,8 @@ const FEATURED_QUERY = `*[_type == "article" && featured == true && defined(slug
     category,
   headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
   heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
-    author->{name, image}
+    author->{name, image},
+    series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   }`;
 
 const FALLBACK_LATEST_QUERY = `*[_type == "article" && defined(slug.current)]
@@ -33,7 +34,8 @@ const FALLBACK_LATEST_QUERY = `*[_type == "article" && defined(slug.current)]
     category,
   headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
   heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
-    author->{name, image}
+    author->{name, image},
+    series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   }`;
 
 const MORE_STORIES_QUERY = `*[_type == "article" && defined(slug.current)]
@@ -46,7 +48,8 @@ const MORE_STORIES_QUERY = `*[_type == "article" && defined(slug.current)]
     category,
   headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
   heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
-    author->{name, image}
+    author->{name, image},
+    series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   }`;
 
 const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
@@ -57,19 +60,22 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
     _id, title, dek, heroLede, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
-    author->{name, image}
+    author->{name, image},
+    series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   },
   gridOne[]->{
     _id, title, dek, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
-    author->{name, image}
+    author->{name, image},
+    series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   },
   gridTwo[]->{
     _id, title, dek, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
-    author->{name, image}
+    author->{name, image},
+    series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   },
   secondaryFeature->{
     _id,
@@ -81,7 +87,8 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
     category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
-    author->{name, image}
+    author->{name, image},
+    series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   }
 }`;
 
@@ -91,7 +98,13 @@ const urlFor = (source: SanityImageSource) =>
 
 const hasImageAsset = (image: any) => Boolean(image?.asset?._ref || image?.asset?.url);
 const pickStoryImage = (item: any) =>
-  hasImageAsset(item?.headerImage) ? item.headerImage : hasImageAsset(item?.heroImage) ? item.heroImage : null;
+  hasImageAsset(item?.headerImage)
+    ? item.headerImage
+    : hasImageAsset(item?.heroImage)
+    ? item.heroImage
+    : hasImageAsset(item?.series?.seriesImage)
+    ? item.series.seriesImage
+    : null;
 const getImageSrc = (image: any, width: number, height: number) =>
   (image
     ? urlFor(image as SanityImageSource)?.width(width).height(height).fit('crop').url() || image?.asset?.url || ''
@@ -170,20 +183,20 @@ export default async function IndexPage() {
             <div className="w-full">
               <div className={`${isSecondaryPlacement ? "rounded-lg overflow-hidden" : ""}`}>
                 <div className={`grid grid-cols-1 md:grid-cols-2 ${isSecondaryPlacement ? "gap-0" : "gap-8 md:gap-12"}`}>
-                <div className={`${isSecondaryPlacement ? "order-2 md:order-2 h-[45vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
-                  <div className={`${isSecondaryPlacement ? "w-full h-full bg-black text-white p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-2xl w-full flex flex-col items-center text-center"}`}>
-                    <h2 className="font-serif text-4xl md:text-5xl font-bold leading-tight group-hover:underline">
+                <div className={`${isSecondaryPlacement ? "order-2 md:order-2 h-[65vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
+                  <div className={`${isSecondaryPlacement ? "w-full h-full bg-black text-white p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-3xl w-full flex flex-col items-center text-center"}`}>
+                    <h2 className="font-serif text-5xl md:text-6xl font-bold leading-tight group-hover:underline">
                       {item.title}
                     </h2>
                     {item.heroLede || item.dek ? (
-                      <p className={`mt-4 text-2xl md:text-3xl leading-snug ${isSecondaryPlacement ? "text-white/85" : "text-gray-600"}`}>
+                      <p className={`mt-4 text-3xl md:text-4xl leading-snug ${isSecondaryPlacement ? "text-white/85" : "text-gray-600"}`}>
                         {item.heroLede || item.dek}
                       </p>
                     ) : null}
                   </div>
                 </div>
 
-                <div className={`${isSecondaryPlacement ? "order-1 md:order-1" : "order-1 md:order-2"} h-[45vh] w-full overflow-hidden ${isSecondaryPlacement ? "" : "rounded-lg"}`}>
+                <div className={`${isSecondaryPlacement ? "order-1 md:order-1" : "order-1 md:order-2"} h-[65vh] w-full overflow-hidden ${isSecondaryPlacement ? "" : "rounded-lg"}`}>
                   {featureImage?.asset ? (
                     (() => {
                       const src = getImageSrc(featureImage, 1200, 1500);
