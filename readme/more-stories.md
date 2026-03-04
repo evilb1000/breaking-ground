@@ -42,7 +42,7 @@ Implications:
 
 ```ts
 // nextjs-breaking-ground/src/app/page.tsx
-const MORE_STORIES_QUERY = `*[_type in ["article","animatedData"] && defined(slug.current)]
+const MORE_STORIES_QUERY = `*[_type == "article" && defined(slug.current)]
   | order(publishedAt desc)[0...7]{
     _id,
     title,

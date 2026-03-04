@@ -98,7 +98,7 @@ export const client = createClient({
 Path: `nextjs-breaking-ground/src/app/page.tsx`
 
 ```ts
-const FEATURED_QUERY = `*[_type in ["article","animatedData"] && featured == true && defined(slug.current)]
+const FEATURED_QUERY = `*[_type == "article" && featured == true && defined(slug.current)]
   | order(_updatedAt desc)[0]{
     _id,
     title,
@@ -113,7 +113,7 @@ const FEATURED_QUERY = `*[_type in ["article","animatedData"] && featured == tru
 ```
 
 ```ts
-const FALLBACK_LATEST_QUERY = `*[_type in ["article","animatedData"] && defined(slug.current)]
+const FALLBACK_LATEST_QUERY = `*[_type == "article" && defined(slug.current)]
   | order(publishedAt desc)[0]{
     _id,
     title,
@@ -128,7 +128,7 @@ const FALLBACK_LATEST_QUERY = `*[_type in ["article","animatedData"] && defined(
 ```
 
 ```ts
-const MORE_STORIES_QUERY = `*[_type in ["article","animatedData"] && defined(slug.current)]
+const MORE_STORIES_QUERY = `*[_type == "article" && defined(slug.current)]
   | order(publishedAt desc)[0...7]{
     _id,
     title,
@@ -143,8 +143,8 @@ const MORE_STORIES_QUERY = `*[_type in ["article","animatedData"] && defined(slu
 
 ### What types are queried
 
-- Queried types: `article`, `animatedData`
-- Not queried by homepage: `postType`, `issue`, `chartData`, `author` (as root docs), etc.
+- Queried types: `article`
+- Not queried by homepage: `chartData`, `author` (as root docs), etc.
 - `author` is dereferenced as a field (`author->{name, image}`) on queried docs.
 
 ### Fields selected vs fields required by UI
@@ -252,10 +252,10 @@ Evidence:
 
 ### Filters
 
-- Type filter: `_type in ["article","animatedData"]`
+- Type filter: `_type == "article"`
 - Featured filter (featured query only): `featured == true`
 - Slug gate (all queries): `defined(slug.current)`
-- No filters for `postType`, `section`, `tags`, `issue`, or category values.
+- No filters for `section`, `tags`, or category values.
 
 ### Pagination or limits
 
@@ -315,7 +315,7 @@ Interpretation:
   - Breaks list key and featured dedupe logic.
 - Renaming/removing `headerImage` shape without updating UI:
   - Breaks image rendering/placeholder branching.
-- Dropping support for `_type == "animatedData"` before legacy docs are migrated:
+- Changing article type filters without updating schemas/content can break listings:
   - Homepage content count and featured fallback behavior may change unexpectedly.
 - Changing `publishedAt` usage:
   - Affects fallback selection and recency ordering.
@@ -326,9 +326,9 @@ Contract-sensitive lines:
 
 ```ts
 // nextjs-breaking-ground/src/app/page.tsx
-*[_type in ["article","animatedData"] && featured == true && defined(slug.current)]
+*[_type == "article" && featured == true && defined(slug.current)]
 ...
-*[_type in ["article","animatedData"] && defined(slug.current)]
+*[_type == "article" && defined(slug.current)]
 ...
 const moreStories = featured ? list.filter((a) => a._id !== featured._id).slice(0, 6) : list.slice(0, 6);
 ...

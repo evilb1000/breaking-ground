@@ -39,8 +39,8 @@ export const homepage = defineType({
       name: 'issueHighlight',
       title: 'Issue Highlight',
       type: 'reference',
-      to: [{type: 'issue'}],
-      description: 'Optional issue highlight block.',
+      to: [{type: 'article'}],
+      description: 'Optional highlighted article block.',
     }),
     defineField({
       name: 'announcementMessage',

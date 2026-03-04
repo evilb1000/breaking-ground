@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const query = `*[_type == "post"] | order(publishedAt desc)`
+        const query = `*[_type == "article"] | order(publishedAt desc)`
         
         const data = await client.fetch(query)
         console.log('Fetched posts:', data)
@@ -49,7 +49,7 @@ function App() {
       <main>
         {posts.length === 0 ? (
           <div className="no-posts">
-            <p>No posts yet. Create your first post in the Sanity Studio!</p>
+            <p>No articles yet. Create your first article in the Sanity Studio!</p>
           </div>
         ) : (
           <div className="posts-grid">
@@ -68,7 +68,7 @@ function App() {
                   <time dateTime={post.publishedAt}>
                     {new Date(post.publishedAt).toLocaleDateString()}
                   </time>
-                  <a href={`/post/${post.slug.current}`} className="read-more">
+                  <a href={`/${post.slug.current}`} className="read-more">
                     Read More →
                   </a>
                 </div>

@@ -4,34 +4,19 @@ This document lists areas where the repository indicates partial migration, TODO
 
 ---
 
-### 1. Chart Schema Migration (`animatedData` → `chartData`)
+### 1. Chart Schema Consolidation (`chartData`)
 
 - **Evidence**
-  - `readme/AUDIT.md` and `readme/SCHEMA_DIFF.md` describe:
-    - `animatedData` as a polluted article+chart hybrid schema.
-    - `chartData` as a new standalone chart schema.
-    - Updated references in `blockContent` to point at `chartData`.
-  - Both schemas are still present and exported:
-    - `studio-breaking-ground/schemaTypes/animatedData.ts`
-    - `studio-breaking-ground/schemaTypes/chartData.ts`
-  - Frontend still supports both:
-    - Home and article pages (`page.tsx`, `[slug]/page.tsx`) query `_type in ["article","animatedData"]`.
-    - Chart API route (`/api/chart/[id]`) accepts `_type in ["chartData","animatedData"]`.
-    - Legacy `/data/[slug]` route uses only `animatedData`.
+  - `chartData` is the active chart document schema in Studio.
+  - `blockContent` chart references point at `chartData`.
+  - Frontend chart loading uses `/api/chart/[id]` with `chartData` documents.
 - **Impact**
-  - Mixed usage of `animatedData` and `chartData` increases cognitive load for editors and developers.
-  - The content model is in a transitional state with two ways to define charts.
-- **Decision (recommended)**
-  - **Commit to `chartData` as the canonical chart schema** and plan to phase out `animatedData` as a chart source.
+  - The chart model is now single-path and easier for editors and developers.
+- **Decision (current)**
+  - **`chartData` is the canonical and only chart schema.**
 - **Next actions**
-  1. In Sanity Studio, inventory existing `animatedData` documents and decide which should be migrated to `chartData`.
-  2. Create migration scripts or manual steps (documented in a follow‑up doc) to copy chart fields from `animatedData` → `chartData`.
-  3. After migration:
-     - Adjust frontend queries to stop treating `animatedData` as an article:
-       - In `page.tsx` and `[slug]/page.tsx`, consider limiting `_type` to `"article"` unless legacy content must remain visible.
-     - Update `/api/chart/[id]` to either:
-       - Drop support for `animatedData`, or
-       - Clearly label `animatedData` support as legacy in documentation.
+  1. Keep chart docs and UI docs aligned around `chartData`.
+  2. Continue adding renderer support for remaining chart types as needed.
 
 ---
 
@@ -85,37 +70,29 @@ This document lists areas where the repository indicates partial migration, TODO
 
 ---
 
-### 4. Legacy `/data/[slug]` Route
+### 4. Legacy `/data/[slug]` Route Cleanup
 
 - **Evidence**
-  - `nextjs-breaking-ground/src/app/data/[slug]/page.tsx`:
-    - Fetches `_type == "animatedData"` by slug.
-    - Parses CSV and renders a simple bar chart.
-  - This route is not referenced from the main home page or article page:
-    - Links on the site use `/{slug.current}`, not `/data/{slug}`.
+  - The dedicated `/data/[slug]` route has been removed.
+  - Charts are rendered through article blocks and `/api/chart/[id]`.
 - **Impact**
-  - This route duplicates chart‑rendering logic in a standalone page and uses the legacy `animatedData` schema.
-  - It increases maintenance surface for chart rendering.
-- **Decision (recommended)**
-  - **Treat `/data/[slug]` as legacy/experimental** and not part of the primary user flow.
+  - One fewer legacy rendering path to maintain.
+- **Decision (current)**
+  - **Use inline chart blocks (`chartData` references) as the chart entrypoint.**
 - **Next actions**
-  1. Leave the route in place but:
-     - Document its status (done here and in the system map doc).
-  2. If you standardize fully on article‑embedded charts and `/api/chart/[id]`:
-     - Consider removing or archiving this route once no external links depend on it.
+  1. Keep links and editorial guidance focused on article pages and inline chart blocks.
 
 ---
 
-### 5. Vite SPA and Undefined `post` Schema
+### 5. Vite SPA Legacy Query Alignment
 
 - **Evidence**
-  - `frontend/src/App.tsx` queries:
-    - `*[_type == "post"] | order(publishedAt desc)`.
-  - `studio-breaking-ground/schemaTypes` does not include a `post.ts` schema file.
-  - The main system overview (in `readme/README-root.md`) labels `frontend/` as “React + Vite frontend (legacy)”.
+  - `frontend/src/App.tsx` now queries:
+    - `*[_type == "article"] | order(publishedAt desc)`.
+  - The main system overview labels `frontend/` as “React + Vite frontend (legacy)”.
 - **Impact**
-  - The Vite app depends on a document type that does not exist in the active Studio schema set.
-  - This app cannot show any real content without adding a `post` schema or updating its query.
+  - The Vite app no longer depends on removed legacy schema types.
+  - It remains a separate legacy UI surface with independent rendering/link assumptions.
 - **Decision (recommended)**
   - **Treat the Vite SPA as legacy/experimental, not part of the primary stack.**
 - **Next actions**
@@ -134,7 +111,7 @@ This document lists areas where the repository indicates partial migration, TODO
     - Contains `const nextConfig: NextConfig = { /* config options here */ }` with no non‑default options.
   - README and code assume Vercel deployment but there are no custom `images`, `headers`, `redirects`, or `experimental` settings.
 - **Impact**
-  - No functional issue today, but:
+  - No functional risk today, but:
     - Cross‑origin images, static cache headers, and revalidation strategies may need explicit configuration as the project grows.
 - **Decision (recommended)**
   - **Acknowledge `next.config.ts` as intentionally minimal for now.**

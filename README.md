@@ -12,8 +12,6 @@ Historical and narrative documentation (original READMEs and migration notes) li
 
 - `readme/README-root.md` – original project overview
 - `readme/README-MAPS.md` – map embed design and limitations
-- `readme/AUDIT.md` – chart schema implementation audit
-- `readme/SCHEMA_DIFF.md` – `animatedData` → `chartData` schema diff
 - `readme/README-nextjs.md` – Next.js app details
 - `readme/README-studio.md` – Sanity Studio details
 - `readme/README-frontend.md` – Vite frontend details (legacy/experimental)

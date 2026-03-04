@@ -11,7 +11,7 @@ export async function GET(
   }
 
   try {
-    const doc = await client.fetch(`*[_id == $id && _type in ["chartData", "animatedData"]][0]{
+    const doc = await client.fetch(`*[_id == $id && _type == "chartData"][0]{
       chartType, xField, yFields, colors,
       animationDuration, chartTitle, xLabel, yLabel,
       showAxis, showTicks, tickCount, showLegend,

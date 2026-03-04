@@ -26,7 +26,6 @@ This document describes the contracts between Sanity schemas, PortableText block
       - `name`, `image`.
   - Article page (`nextjs-breaking-ground/src/app/[slug]/page.tsx`):
     - Same as above, plus:
-      - `issue.title` – optional; not rendered currently.
       - `body[]` – PortableText content (see block contract below).
       - `readingTime` – not used directly in the page component.
       - `featured` – not used on this page.
@@ -35,33 +34,7 @@ This document describes the contracts between Sanity schemas, PortableText block
   - `title` is assumed to exist; the UI does not guard against `undefined` titles.
   - `body` is allowed to be empty; page will render with no body if `article.body` is falsy.
 
-#### 1.2 `animatedData` documents (legacy)
-
-- **Schema**
-  - `studio-breaking-ground/schemaTypes/animatedData.ts`.
-  - Extends `baseArticle` and adds chart fields.
-- **Fields used by the frontend**
-  - Same article fields as above (title, dek, slug, header image, author, etc.) when `_type === "animatedData"`:
-    - Home and article pages treat `animatedData` documents like articles for listing and layout.
-  - Additional chart fields used when `_type === "animatedData"`:
-    - Article page (`[slug]/page.tsx`):
-      - `chartType`, `xField`, `yFields`, `groupField`, `colors`,
-      - `animationDuration`, `animationEasing`,
-      - `showAxis`, `showTicks`, `tickCount`,
-      - `chartTitle`, `xLabel`, `yLabel`, `showLegend`,
-      - `dataFile.asset.url`.
-    - Legacy data page (`data/[slug]/page.tsx`):
-      - `title`, `slug`, `chartType`, `xField`, `yFields`, `groupField`, `colors`,
-      - `animationDuration`, `animationEasing`,
-      - `showAxis`, `showLegend`,
-      - `dataFile.asset.url`.
-- **Contract**
-  - For `_type === "animatedData"`:
-    - `slug.current` is required to make the document routable.
-    - `dataFile.asset.url` must be set to generate charts; otherwise, the page falls back to “No CSV uploaded.” or a “renderer coming soon” message.
-  - `animationDuration` and `animationEasing` exist in the schema but are **not honored** by the current chart components; scroll‑based animation logic is fixed in code.
-
-#### 1.3 `chartData` documents (new chart schema)
+#### 1.2 `chartData` documents
 
 - **Schema**
   - `studio-breaking-ground/schemaTypes/chartData.ts`.
@@ -234,7 +207,7 @@ This document describes the contracts between Sanity schemas, PortableText block
 - **Sanity query**
   - GROQ:
     ```groq
-    *[_id == $id && _type in ["chartData", "animatedData"]][0]{
+    *[_id == $id && _type == "chartData"][0]{
       chartType, xField, yFields, colors,
       animationDuration, chartTitle, xLabel, yLabel,
       showAxis, showTicks, tickCount, showLegend,
@@ -364,10 +337,8 @@ This document describes the contracts between Sanity schemas, PortableText block
 
 ### 4. Unused or Experimental Contracts
 
-- **Vite SPA ↔ Sanity `"post"`**
+- **Vite SPA ↔ Sanity `article` (legacy UI)**
   - `frontend/src/App.tsx` queries:
-    - `*[_type == "post"] | order(publishedAt desc)`.
-  - No `post` schema exists in `studio-breaking-ground/schemaTypes`.
-  - Result:
-    - This contract does not currently resolve to any defined schema and is effectively **unused** in the live content model.
+    - `*[_type == "article"] | order(publishedAt desc)`.
+  - This contract resolves to active documents, but the Vite SPA remains legacy/experimental and outside the primary Next.js user flow.
 

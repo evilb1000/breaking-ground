@@ -104,12 +104,6 @@ export const baseArticle = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'issue',
-      type: 'reference',
-      title: 'Issue',
-      to: [{type: 'issue'}],
-    }),
-    defineField({
       name: 'body',
       type: 'blockContent',
       title: 'Body',
