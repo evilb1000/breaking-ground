@@ -89,6 +89,14 @@ const urlFor = (source: SanityImageSource) =>
   imageUrlBuilder({ projectId: client.config().projectId!, dataset: client.config().dataset! })
     .image(source);
 
+const hasImageAsset = (image: any) => Boolean(image?.asset?._ref || image?.asset?.url);
+const pickStoryImage = (item: any) =>
+  hasImageAsset(item?.headerImage) ? item.headerImage : hasImageAsset(item?.heroImage) ? item.heroImage : null;
+const getImageSrc = (image: any, width: number, height: number) =>
+  (image
+    ? urlFor(image as SanityImageSource)?.width(width).height(height).fit('crop').url() || image?.asset?.url || ''
+    : '');
+
 export default async function IndexPage() {
   // Get featured (or fallback) and recent list
   const featured =
@@ -134,7 +142,7 @@ export default async function IndexPage() {
     items
       .filter((article) => article?.slug?.current)
       .map((article) => {
-        const cardImage = article?.headerImage?.asset ? article.headerImage : article?.heroImage;
+        const cardImage = pickStoryImage(article);
         return {
           _id: article._id,
           slug: article.slug,
@@ -143,44 +151,42 @@ export default async function IndexPage() {
           category: article.category,
           authorName: article.author?.name,
           imageAlt: cardImage?.alt || article.title,
-          imageSrc: cardImage?.asset
-            ? urlFor(cardImage as SanityImageSource)?.width(800).height(600).fit('crop').url() || ''
-            : '',
+          imageSrc: getImageSrc(cardImage, 800, 600),
         };
       });
 
   const firstCarouselStories = toCarouselStories(firstCarouselSource);
   const secondCarouselStories = toCarouselStories(secondCarouselSource);
 
-  const renderFeatureBlock = (item: any, isSecondary = false) => {
-    const featureImage = item?.headerImage?.asset ? item.headerImage : item?.heroImage;
+  const renderFeatureBlock = (item: any, placement: "default" | "hero" | "secondary" = "default") => {
+    const featureImage = pickStoryImage(item);
+    const isHeroPlacement = placement === "hero";
+    const isSecondaryPlacement = placement === "secondary";
+    const usePlacementLayout = isHeroPlacement || isSecondaryPlacement;
     return (
-      <section className={`${item.category === "feature" ? "mt-2" : "mt-12"} mb-16`}>
-        {item.category === "feature" ? (
+      <section className={`${usePlacementLayout ? "mt-2" : item.category === "feature" ? "mt-2" : "mt-12"} mb-16`}>
+        {usePlacementLayout ? (
           <Link href={`/${item.slug.current}`} className="block group">
             <div className="w-full">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                <div className={`${isSecondary ? "order-2 md:order-2 h-[45vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
-                  <div className={`${isSecondary ? "w-full h-full bg-black text-white rounded-lg p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-2xl w-full flex flex-col items-center text-center"}`}>
+              <div className={`${isSecondaryPlacement ? "rounded-lg overflow-hidden" : ""}`}>
+                <div className={`grid grid-cols-1 md:grid-cols-2 ${isSecondaryPlacement ? "gap-0" : "gap-8 md:gap-12"}`}>
+                <div className={`${isSecondaryPlacement ? "order-2 md:order-2 h-[45vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
+                  <div className={`${isSecondaryPlacement ? "w-full h-full bg-black text-white p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-2xl w-full flex flex-col items-center text-center"}`}>
                     <h2 className="font-serif text-4xl md:text-5xl font-bold leading-tight group-hover:underline">
                       {item.title}
                     </h2>
                     {item.heroLede || item.dek ? (
-                      <p className={`mt-4 text-2xl md:text-3xl leading-snug ${isSecondary ? "text-white/85" : "text-gray-600"}`}>
+                      <p className={`mt-4 text-2xl md:text-3xl leading-snug ${isSecondaryPlacement ? "text-white/85" : "text-gray-600"}`}>
                         {item.heroLede || item.dek}
                       </p>
                     ) : null}
                   </div>
                 </div>
 
-                <div className={`${isSecondary ? "order-1 md:order-1" : "order-1 md:order-2"} h-[45vh] w-full overflow-hidden rounded-lg`}>
+                <div className={`${isSecondaryPlacement ? "order-1 md:order-1" : "order-1 md:order-2"} h-[45vh] w-full overflow-hidden ${isSecondaryPlacement ? "" : "rounded-lg"}`}>
                   {featureImage?.asset ? (
                     (() => {
-                      const src = urlFor(featureImage as SanityImageSource)
-                        ?.width(1200)
-                        .height(1500)
-                        .fit('crop')
-                        .url() || '';
+                      const src = getImageSrc(featureImage, 1200, 1500);
                       return (
                         <img
                           src={src}
@@ -193,6 +199,7 @@ export default async function IndexPage() {
                     <div className="w-full h-full bg-gray-100" />
                   )}
                 </div>
+                </div>
               </div>
             </div>
           </Link>
@@ -201,11 +208,7 @@ export default async function IndexPage() {
             <div className="w-full overflow-hidden rounded-lg mb-6">
               {featureImage?.asset ? (
                 (() => {
-                  const src = urlFor(featureImage as SanityImageSource)
-                    ?.width(1600)
-                    .height(900)
-                    .fit('crop')
-                    .url() || '';
+                  const src = getImageSrc(featureImage, 1600, 900);
                   return (
                     <img
                       src={src}
@@ -243,7 +246,7 @@ export default async function IndexPage() {
       </header>
 
       {/* Hero */}
-      {activeHero?.slug?.current ? renderFeatureBlock(activeHero) : null}
+      {activeHero?.slug?.current ? renderFeatureBlock(activeHero, "hero") : null}
 
       {/* Announcement Bar */}
       <AnnouncementBar
@@ -264,7 +267,7 @@ export default async function IndexPage() {
       )}
 
       {/* Secondary Feature */}
-      {homepage?.secondaryFeature?.slug?.current ? renderFeatureBlock(homepage.secondaryFeature, true) : null}
+      {homepage?.secondaryFeature?.slug?.current ? renderFeatureBlock(homepage.secondaryFeature, "secondary") : null}
 
       {/* Second Carousel */}
       {secondCarouselStories.length > 0 ? (
