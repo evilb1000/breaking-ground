@@ -61,11 +61,11 @@ export default function MoreStoriesCarousel({ stories }: Props) {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-y-0 left-0 right-0 z-10 hidden md:block">
+      <div className="pointer-events-none absolute left-0 right-0 top-0 h-[390px] z-10 hidden md:block">
         <button
           type="button"
           onClick={() => scrollByPage("left")}
-          className="pointer-events-auto absolute left-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border border-gray-300 bg-white/95 text-gray-700 shadow-sm hover:bg-white"
+          className="pointer-events-auto absolute -left-12 top-0 h-full w-10 border border-gray-400/45 bg-gray-700/18 backdrop-blur-md text-white text-2xl leading-none hover:bg-gray-700/28 transition-colors flex items-center justify-center"
           aria-label="Scroll more stories left"
         >
           ←
@@ -73,7 +73,7 @@ export default function MoreStoriesCarousel({ stories }: Props) {
         <button
           type="button"
           onClick={() => scrollByPage("right")}
-          className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border border-gray-300 bg-white/95 text-gray-700 shadow-sm hover:bg-white"
+          className="pointer-events-auto absolute -right-12 top-0 h-full w-10 border border-gray-400/45 bg-gray-700/18 backdrop-blur-md text-white text-2xl leading-none hover:bg-gray-700/28 transition-colors flex items-center justify-center"
           aria-label="Scroll more stories right"
         >
           →
