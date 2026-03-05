@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const SECTION_ITEMS = [
-  "News",
-  "Project Profiles",
-  "Member Profiles",
-  "Features",
-  "Perspectives",
+  { label: "News", slug: "news" },
+  { label: "Project Profiles", slug: "project-profiles" },
+  { label: "Member Profiles", slug: "member-profiles" },
+  { label: "Features", slug: "features" },
+  { label: "Perspectives", slug: "perspectives" },
+  { label: "Whats It Cost", slug: "whats-it-cost" },
+  { label: "AI In Construction", slug: "ai-in-construction" },
 ];
 
 export default function Masthead({ homeHref }: { homeHref?: string } = {}) {
@@ -83,9 +85,11 @@ export default function Masthead({ homeHref }: { homeHref?: string } = {}) {
           className="text-xs md:text-sm font-semibold uppercase tracking-wide text-gray-600 hidden md:flex items-center justify-center"
         >
           {SECTION_ITEMS.map((item, idx) => (
-            <span key={item} className="inline-flex items-center whitespace-nowrap">
+            <span key={item.slug} className="inline-flex items-center whitespace-nowrap">
               {idx > 0 ? <span className="mx-4 md:mx-5 text-gray-500" aria-hidden="true">•</span> : null}
-              <span>{item}</span>
+              <Link href={`/sections/${item.slug}`} className="hover:opacity-70 transition-opacity">
+                {item.label}
+              </Link>
             </span>
           ))}
         </nav>
