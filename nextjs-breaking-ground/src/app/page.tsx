@@ -184,7 +184,7 @@ export default async function IndexPage() {
             <div className="w-full">
               <div className={`${isSecondaryPlacement ? "rounded-lg overflow-hidden" : ""}`}>
                 <div className={`grid grid-cols-1 md:grid-cols-2 ${isSecondaryPlacement ? "gap-0" : "gap-8 md:gap-12"}`}>
-                <div className={`${isSecondaryPlacement ? "order-2 md:order-2 h-[65vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
+                <div className={`${isSecondaryPlacement ? "order-2 md:order-2 h-[70vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
                   <div className={`${isSecondaryPlacement ? "w-full h-full bg-black text-white p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-3xl w-full flex flex-col items-center text-center"}`}>
                     <h2 className="font-serif text-5xl md:text-6xl font-bold leading-tight group-hover:underline">
                       {item.title}
@@ -197,7 +197,7 @@ export default async function IndexPage() {
                   </div>
                 </div>
 
-                <div className={`${isSecondaryPlacement ? "order-1 md:order-1" : "order-1 md:order-2"} h-[65vh] w-full overflow-hidden ${isSecondaryPlacement ? "" : "rounded-lg"}`}>
+                <div className={`${isSecondaryPlacement ? "order-1 md:order-1" : "order-1 md:order-2"} h-[70vh] w-full overflow-hidden ${isSecondaryPlacement ? "" : "rounded-lg"}`}>
                   {featureImage?.asset ? (
                     (() => {
                       const src = getImageSrc(featureImage, 1200, 1500);

@@ -49,7 +49,7 @@ export default function Masthead() {
   return (
     <header className="sticky top-0 z-50 bg-white/75 backdrop-blur-md text-center px-6 py-4 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.45)] transition-all duration-300">
       <h1
-        className={`font-serif font-bold tracking-tight transition-all duration-300 ${
+        className={`font-serif font-bold uppercase tracking-[0.06em] transition-all duration-300 ${
           isCompact ? "text-3xl md:text-4xl" : "text-4xl md:text-5xl"
         }`}
       >
@@ -61,7 +61,7 @@ export default function Masthead() {
           isCompact ? "max-h-0 opacity-0 mt-0" : "max-h-16 opacity-100 mt-4"
         }`}
       >
-        <p className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
           Construction • Industry • Power • Western PA
         </p>
       </div>
@@ -73,11 +73,12 @@ export default function Masthead() {
       >
         <nav
           aria-label="Section navigation"
-          className="text-xs md:text-sm uppercase tracking-wide text-gray-600 flex items-center justify-center gap-4 md:gap-6"
+          className="text-xs md:text-sm font-semibold uppercase tracking-wide text-gray-600 flex items-center justify-center"
         >
-          {SECTION_ITEMS.map((item) => (
-            <span key={item} className="whitespace-nowrap">
-              {item}
+          {SECTION_ITEMS.map((item, idx) => (
+            <span key={item} className="inline-flex items-center whitespace-nowrap">
+              {idx > 0 ? <span className="mx-4 md:mx-5 text-gray-500" aria-hidden="true">•</span> : null}
+              <span>{item}</span>
             </span>
           ))}
         </nav>
