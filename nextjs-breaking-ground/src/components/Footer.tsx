@@ -1,12 +1,14 @@
 import Link from "next/link";
 
 const sectionLinks = [
-  { label: "Features", href: "#" },
-  { label: "Project Profiles", href: "#" },
-  { label: "Member Profiles", href: "#" },
-  { label: "News", href: "#" },
-  { label: "Perspectives", href: "#" },
-  { label: "Opinion", href: "#" },
+  { label: "Local", href: "/sections/local" },
+  { label: "National", href: "/sections/national" },
+  { label: "Project Profiles", href: "/sections/project-profiles" },
+  { label: "Member Profiles", href: "/sections/member-profiles" },
+  { label: "Features", href: "/sections/features" },
+  { label: "Perspectives", href: "/sections/perspectives" },
+  { label: "Data Insights", href: "/sections/data-insights" },
+  { label: "AI In Construction", href: "/sections/ai-in-construction" },
 ];
 
 const aboutLinks = [
