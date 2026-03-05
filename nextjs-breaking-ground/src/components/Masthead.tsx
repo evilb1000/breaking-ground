@@ -9,7 +9,7 @@ const SECTION_ITEMS = [
   { label: "Member Profiles", slug: "member-profiles" },
   { label: "Features", slug: "features" },
   { label: "Perspectives", slug: "perspectives" },
-  { label: "Whats It Cost", slug: "whats-it-cost" },
+  { label: "Data Insights", slug: "data-insights" },
   { label: "AI In Construction", slug: "ai-in-construction" },
 ];
 
