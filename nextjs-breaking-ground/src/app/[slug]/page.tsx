@@ -204,7 +204,7 @@ export default async function PostPage({
           ← Back to posts
         </Link>
       )}
-      <div className="max-w-3xl ml-[10vw] mr-auto w-full">
+      <div className="max-w-none ml-[5vw] mr-auto w-[67.5vw]">
         <h1 className="text-8xl font-bold font-serif mt-6 text-left">{article.title}</h1>
       {article.dek ? (
         <p className="italic text-gray-700 leading-relaxed mt-2 mb-2 font-serif text-left">
@@ -228,7 +228,7 @@ export default async function PostPage({
       )}
       <p className="text-gray-600 text-left">{new Date(article.publishedAt).toLocaleDateString()}</p>
 
-      <div className="prose prose-lg md:prose-xl leading-relaxed max-w-prose prose-headings:mt-8 prose-headings:mb-4 prose-p:my-6 md:prose-p:my-7 prose-ul:my-5 prose-ol:my-5 prose-li:my-2 prose-img:my-8 prose-figure:my-10 text-left">
+      <div className="prose prose-xl md:prose-2xl font-semibold leading-relaxed max-w-none w-[75%] prose-headings:mt-8 prose-headings:mb-4 prose-p:my-6 md:prose-p:my-7 prose-ul:my-5 prose-ol:my-5 prose-li:my-2 prose-img:my-8 prose-figure:my-10 text-left">
         {Array.isArray(article.body) && (
           <PortableText value={article.body} components={components} />
         )}
