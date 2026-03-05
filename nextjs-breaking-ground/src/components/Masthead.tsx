@@ -80,7 +80,7 @@ export default function Masthead({ homeHref }: { homeHref?: string } = {}) {
       >
         <nav
           aria-label="Section navigation"
-          className="text-xs md:text-sm font-semibold uppercase tracking-wide text-gray-600 flex items-center justify-center"
+          className="text-xs md:text-sm font-semibold uppercase tracking-wide text-gray-600 hidden md:flex items-center justify-center"
         >
           {SECTION_ITEMS.map((item, idx) => (
             <span key={item} className="inline-flex items-center whitespace-nowrap">

@@ -34,14 +34,14 @@ export default function MoreStoriesCarousel({ stories }: Props) {
         ref={trackRef}
         className="overflow-x-auto overscroll-x-contain scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
-        <div className="flex gap-8 snap-x snap-mandatory">
+        <div className="flex gap-4 md:gap-8 snap-x snap-mandatory">
           {stories.map((article) => (
             <Link
               href={`/${article.slug?.current ?? ""}`}
               className="group block snap-start shrink-0 w-[85%] sm:w-[70%] md:w-[48%] lg:w-[32%]"
               key={article._id}
             >
-              <div className="w-full h-[390px] overflow-hidden rounded-md mb-4 bg-gray-100">
+              <div className="w-full h-[280px] md:h-[390px] overflow-hidden rounded-md mb-4 bg-gray-100">
                 {article.imageSrc ? (
                   <img
                     src={article.imageSrc}
@@ -50,18 +50,18 @@ export default function MoreStoriesCarousel({ stories }: Props) {
                   />
                 ) : null}
               </div>
-              <h4 className="font-serif text-4xl font-semibold leading-snug group-hover:underline">
+              <h4 className="font-serif text-2xl md:text-4xl font-semibold leading-snug group-hover:underline">
                 {article.title}
               </h4>
               {article.dek ? (
-                <p className="text-gray-600 text-2xl leading-relaxed mt-2 line-clamp-2">{article.dek}</p>
+                <p className="text-gray-600 text-lg md:text-2xl leading-relaxed mt-2 line-clamp-2">{article.dek}</p>
               ) : null}
             </Link>
           ))}
         </div>
       </div>
 
-      <div className="pointer-events-none absolute left-0 right-0 top-0 h-[390px] z-10 hidden md:block">
+      <div className="pointer-events-none absolute left-0 right-0 top-0 h-[280px] md:h-[390px] z-10 hidden md:block">
         <button
           type="button"
           onClick={() => scrollByPage("left")}

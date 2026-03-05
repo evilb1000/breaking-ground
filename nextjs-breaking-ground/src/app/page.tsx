@@ -184,20 +184,20 @@ export default async function IndexPage() {
             <div className="w-full">
               <div className={`${isSecondaryPlacement ? "rounded-lg overflow-hidden" : ""}`}>
                 <div className={`grid grid-cols-1 md:grid-cols-2 ${isSecondaryPlacement ? "gap-0" : "gap-8 md:gap-12"}`}>
-                <div className={`${isSecondaryPlacement ? "order-2 md:order-2 h-[70vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
+                <div className={`${isSecondaryPlacement ? "order-2 md:order-2 h-[50vh] md:h-[70vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
                   <div className={`${isSecondaryPlacement ? "w-full h-full bg-black text-white p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-3xl w-full flex flex-col items-center text-center"}`}>
-                    <h2 className="font-serif text-5xl md:text-6xl font-bold leading-tight group-hover:underline">
+                    <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold leading-tight group-hover:underline">
                       {item.title}
                     </h2>
                     {item.heroLede || item.dek ? (
-                      <p className={`mt-4 text-3xl md:text-4xl leading-snug ${isSecondaryPlacement ? "text-white/85" : "text-gray-600"}`}>
+                      <p className={`mt-4 text-xl md:text-3xl lg:text-4xl leading-snug ${isSecondaryPlacement ? "text-white/85" : "text-gray-600"}`}>
                         {item.heroLede || item.dek}
                       </p>
                     ) : null}
                   </div>
                 </div>
 
-                <div className={`${isSecondaryPlacement ? "order-1 md:order-1" : "order-1 md:order-2"} h-[70vh] w-full overflow-hidden ${isSecondaryPlacement ? "" : "rounded-lg"}`}>
+                <div className={`${isSecondaryPlacement ? "order-1 md:order-1" : "order-1 md:order-2"} h-[50vh] md:h-[70vh] w-full overflow-hidden ${isSecondaryPlacement ? "" : "rounded-lg"}`}>
                   {featureImage?.asset ? (
                     (() => {
                       const src = getImageSrc(featureImage, 1200, 1500);
@@ -250,7 +250,7 @@ export default async function IndexPage() {
   };
 
   return (
-    <main className="bg-white text-black px-12 md:px-24 py-12 w-full">
+    <main className="bg-white text-black px-4 md:px-12 lg:px-24 py-12 w-full">
       {/* Masthead */}
       <Masthead />
 
@@ -267,7 +267,7 @@ export default async function IndexPage() {
       </div>
 
       {/* First Carousel */}
-      <h3 className="font-serif text-[2rem] font-bold tracking-tight mb-6 pt-8 text-center">
+      <h3 className="font-serif text-2xl md:text-[2rem] font-bold tracking-tight mb-6 pt-8 text-center">
         Latest News
       </h3>
 
@@ -283,7 +283,7 @@ export default async function IndexPage() {
       {/* Second Carousel */}
       {secondCarouselStories.length > 0 ? (
         <>
-          <h3 className="font-serif text-[2rem] font-bold tracking-tight mb-6 pt-8 text-center">
+          <h3 className="font-serif text-2xl md:text-[2rem] font-bold tracking-tight mb-6 pt-8 text-center">
             More Coverage
           </h3>
           <MoreStoriesCarousel stories={secondCarouselStories} />

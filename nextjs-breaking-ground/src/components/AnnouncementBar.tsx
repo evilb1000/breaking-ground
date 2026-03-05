@@ -12,8 +12,8 @@ export default function AnnouncementBar({ message, linkLabel, linkUrl }: Props) 
   const href = linkUrl || "#";
 
   return (
-    <section className="w-full h-28 border-y border-gray-200 flex items-center justify-center mb-10 bg-white" aria-label="Announcement">
-      <p className="text-3xl font-sans font-medium tracking-wide text-gray-700 text-center">
+    <section className="w-full h-20 md:h-28 border-y border-gray-200 flex items-center justify-center mb-10 px-4 md:px-0 bg-white" aria-label="Announcement">
+      <p className="text-xl md:text-3xl font-sans font-medium tracking-wide text-gray-700 text-center">
         {text}{" "}
         <Link
           href={href}
