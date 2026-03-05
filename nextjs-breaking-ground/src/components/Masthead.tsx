@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const SECTION_ITEMS = [
-  { label: "News", slug: "news" },
+  { label: "Local", slug: "local" },
+  { label: "National", slug: "national" },
   { label: "Project Profiles", slug: "project-profiles" },
   { label: "Member Profiles", slug: "member-profiles" },
   { label: "Features", slug: "features" },
