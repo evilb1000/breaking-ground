@@ -4,6 +4,7 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
 import ChartFromRefClient from "@/components/ChartFromRefClient";
 import MapEmbedClient from "@/components/MapEmbedClient";
+import Masthead from "@/components/Masthead";
 import Link from "next/link";
 
 const ENTRY_QUERY = `*[_type == "article" && slug.current == $slug][0]{
@@ -183,6 +184,8 @@ export default async function PostPage({
   }
 
   return (
+    <>
+    <Masthead />
     <main className="min-h-screen w-full px-6 md:px-12 pt-0 pb-8 flex flex-col gap-6 bg-white text-black items-start text-left">
       {heroImageUrl && (
         <div style={{marginLeft: 'calc(50% - 50vw)', width: '100vw', position: 'relative'}}>
@@ -235,6 +238,7 @@ export default async function PostPage({
       </div>
       </div>
     </main>
+    </>
   );
 }
 

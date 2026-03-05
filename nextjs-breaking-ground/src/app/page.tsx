@@ -254,6 +254,9 @@ export default async function IndexPage() {
       {/* Masthead */}
       <Masthead />
 
+      {/* Masthead */}
+      <Masthead />
+
       {/* Hero */}
       {activeHero?.slug?.current ? renderFeatureBlock(activeHero, "hero") : null}
 
