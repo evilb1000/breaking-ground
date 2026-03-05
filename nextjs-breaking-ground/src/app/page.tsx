@@ -4,6 +4,7 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
 import MoreStoriesCarousel from "@/components/MoreStoriesCarousel";
 import AnnouncementBar from "@/components/AnnouncementBar";
+import Masthead from "@/components/Masthead";
 
 export const revalidate = 0;
 const options = { next: { revalidate: 0 } };
@@ -251,22 +252,19 @@ export default async function IndexPage() {
   return (
     <main className="bg-white text-black px-12 md:px-24 py-12 w-full">
       {/* Masthead */}
-      <header className="sticky top-0 z-50 bg-white text-center px-6 py-6 border-b border-gray-200">
-        <h1 className="font-serif text-4xl md:text-5xl font-bold tracking-tight">Breaking Ground</h1>
-        <p className="text-sm uppercase tracking-wide text-gray-500 mt-4">
-          Construction • Industry • Power • Western PA
-        </p>
-      </header>
+      <Masthead />
 
       {/* Hero */}
       {activeHero?.slug?.current ? renderFeatureBlock(activeHero, "hero") : null}
 
       {/* Announcement Bar */}
-      <AnnouncementBar
-        message={homepage?.announcementMessage}
-        linkLabel={homepage?.announcementLinkLabel}
-        linkUrl={homepage?.announcementLinkUrl}
-      />
+      <div id="announcement-fold-trigger">
+        <AnnouncementBar
+          message={homepage?.announcementMessage}
+          linkLabel={homepage?.announcementLinkLabel}
+          linkUrl={homepage?.announcementLinkUrl}
+        />
+      </div>
 
       {/* First Carousel */}
       <h3 className="font-serif text-[2rem] font-bold tracking-tight mb-6 pt-8 text-center">
