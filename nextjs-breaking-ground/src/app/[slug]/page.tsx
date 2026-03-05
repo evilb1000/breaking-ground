@@ -185,13 +185,10 @@ export default async function PostPage({
 
   return (
     <>
-    <Masthead />
+    <Masthead homeHref="/" />
     <main className="min-h-screen w-full px-6 md:px-12 pt-0 pb-8 flex flex-col gap-6 bg-white text-black items-start text-left">
       {heroImageUrl && (
         <div style={{marginLeft: 'calc(50% - 50vw)', width: '100vw', position: 'relative'}}>
-          <Link href="/" className="absolute top-4 left-4 z-10 bg-white/90 px-3 py-1.5 rounded hover:bg-white text-sm hover:underline">
-            Home
-          </Link>
           <img
             src={heroImageUrl}
             alt={resolvedHeroImage?.alt || article.title}

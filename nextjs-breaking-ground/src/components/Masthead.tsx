@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const SECTION_ITEMS = [
   "News",
@@ -10,7 +11,7 @@ const SECTION_ITEMS = [
   "Perspectives",
 ];
 
-export default function Masthead() {
+export default function Masthead({ homeHref }: { homeHref?: string } = {}) {
   const [isCompact, setIsCompact] = useState(false);
 
   useEffect(() => {
@@ -53,7 +54,13 @@ export default function Masthead() {
           isCompact ? "text-3xl md:text-4xl" : "text-4xl md:text-5xl"
         }`}
       >
-        Breaking Ground
+        {homeHref ? (
+          <Link href={homeHref} className="hover:opacity-70 transition-opacity">
+            Breaking Ground
+          </Link>
+        ) : (
+          "Breaking Ground"
+        )}
       </h1>
 
       <div
