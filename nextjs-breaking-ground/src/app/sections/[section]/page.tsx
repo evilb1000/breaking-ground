@@ -25,6 +25,7 @@ const ARTICLES_BY_SERIES_QUERY = `*[_type == "article" && series->slug.current =
     category,
     headerImage{asset->{url,_ref,_type}, alt},
     heroImage{asset->{url,_ref,_type}, alt},
+    homepageImage{asset->{url,_ref,_type}, alt},
     author->{name},
     series->{title, seriesImage{asset->{url,_ref,_type}, alt}}
   }`;
@@ -40,7 +41,9 @@ const urlFor = (source: SanityImageSource) =>
 
 const hasAsset = (img: any) => Boolean(img?.asset?._ref || img?.asset?.url);
 const pickImage = (article: any) =>
-  hasAsset(article?.headerImage)
+  hasAsset(article?.homepageImage)
+    ? article.homepageImage
+    : hasAsset(article?.headerImage)
     ? article.headerImage
     : hasAsset(article?.heroImage)
     ? article.heroImage

@@ -20,6 +20,7 @@ const FEATURED_QUERY = `*[_type == "article" && featured == true && defined(slug
     category,
   headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
   heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+  homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     author->{name, image},
     series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   }`;
@@ -35,6 +36,7 @@ const FALLBACK_LATEST_QUERY = `*[_type == "article" && defined(slug.current)]
     category,
   headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
   heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+  homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     author->{name, image},
     series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   }`;
@@ -49,6 +51,7 @@ const MORE_STORIES_QUERY = `*[_type == "article" && defined(slug.current)]
     category,
   headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
   heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+  homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     author->{name, image},
     series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   }`;
@@ -83,6 +86,7 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
     _id, title, dek, heroLede, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     author->{name, image},
     series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   },
@@ -90,6 +94,7 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
     _id, title, dek, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     author->{name, image},
     series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   },
@@ -97,6 +102,7 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
     _id, title, dek, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     author->{name, image},
     series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   },
@@ -110,6 +116,7 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
     category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     author->{name, image},
     series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   }
@@ -121,7 +128,9 @@ const urlFor = (source: SanityImageSource) =>
 
 const hasImageAsset = (image: any) => Boolean(image?.asset?._ref || image?.asset?.url);
 const pickStoryImage = (item: any) =>
-  hasImageAsset(item?.headerImage)
+  hasImageAsset(item?.homepageImage)
+    ? item.homepageImage
+    : hasImageAsset(item?.headerImage)
     ? item.headerImage
     : hasImageAsset(item?.heroImage)
     ? item.heroImage

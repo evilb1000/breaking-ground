@@ -69,6 +69,29 @@ export const baseArticle = defineType({
       ],
     }),
 
+    // Optional separate image for homepage/listing presentation
+    defineField({
+      name: 'homepageImage',
+      title: 'Homepage Image',
+      type: 'image',
+      options: {hotspot: true},
+      description: 'Optional. If set, this image is used when the article appears on the homepage, carousels, and section pages. The Header Image is still used on the article page itself.',
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+          description: 'Describe the image for accessibility and SEO.',
+        }),
+        defineField({
+          name: 'caption',
+          type: 'string',
+          title: 'Caption',
+          description: 'Optional image caption.',
+        }),
+      ],
+    }),
+
     // Legacy hero image kept hidden/read-only for migration/back-compat
     defineField({
       name: 'heroImage',
