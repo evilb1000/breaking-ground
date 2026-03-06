@@ -63,12 +63,22 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
   heroHeadlineSize,
   heroBodySize,
   heroTextColor,
+  heroSplitBgColor,
+  heroSplitGradient,
+  heroSplitGradientDirection,
+  heroSplitGradientFrom,
+  heroSplitGradientTo,
   secondaryLayout,
   secondaryTextPosition,
   secondaryTextWidth,
   secondaryHeadlineSize,
   secondaryBodySize,
   secondaryTextColor,
+  secondarySplitBgColor,
+  secondarySplitGradient,
+  secondarySplitGradientDirection,
+  secondarySplitGradientFrom,
+  secondarySplitGradientTo,
   heroArticle->{
     _id, title, dek, heroLede, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
@@ -141,12 +151,22 @@ export default async function IndexPage() {
     heroHeadlineSize?: string;
     heroBodySize?: string;
     heroTextColor?: { hex?: string };
+    heroSplitBgColor?: { hex?: string };
+    heroSplitGradient?: boolean;
+    heroSplitGradientDirection?: string;
+    heroSplitGradientFrom?: { hex?: string };
+    heroSplitGradientTo?: { hex?: string };
     secondaryLayout?: string;
     secondaryTextPosition?: string;
     secondaryTextWidth?: string;
     secondaryHeadlineSize?: string;
     secondaryBodySize?: string;
     secondaryTextColor?: { hex?: string };
+    secondarySplitBgColor?: { hex?: string };
+    secondarySplitGradient?: boolean;
+    secondarySplitGradientDirection?: string;
+    secondarySplitGradientFrom?: { hex?: string };
+    secondarySplitGradientTo?: { hex?: string };
     heroArticle?: any;
     gridOne?: any[];
     gridTwo?: any[];
@@ -204,6 +224,11 @@ export default async function IndexPage() {
     headlineSize: string = "medium",
     bodySize: string = "medium",
     textColor?: string,
+    splitBgColor?: string,
+    splitGradient?: boolean,
+    splitGradientDirection?: string,
+    splitGradientFrom?: string,
+    splitGradientTo?: string,
   ) => {
     const featureImage = pickStoryImage(item);
     const isDark = layout === "split-dark";
@@ -288,6 +313,33 @@ export default async function IndexPage() {
       );
     }
 
+    const headlineSizeClassesSplit: Record<string, string> = {
+      small: "text-2xl md:text-4xl lg:text-5xl",
+      medium: "text-3xl md:text-5xl lg:text-6xl",
+      large: "text-4xl md:text-6xl lg:text-7xl",
+      xl: "text-5xl md:text-7xl lg:text-8xl",
+    };
+    const bodySizeClassesSplit: Record<string, string> = {
+      small: "text-lg md:text-xl lg:text-2xl",
+      medium: "text-xl md:text-3xl lg:text-4xl",
+      large: "text-2xl md:text-4xl lg:text-5xl",
+    };
+    const splitHeadlineClass = headlineSizeClassesSplit[headlineSize] || headlineSizeClassesSplit.medium;
+    const splitBodyClass = bodySizeClassesSplit[bodySize] || bodySizeClassesSplit.medium;
+
+    const defaultBg = isDark ? "#000000" : "#ffffff";
+    const defaultText = isDark ? "#ffffff" : "#000000";
+    const bgColor = splitBgColor || defaultBg;
+    const fontColor = textColor || defaultText;
+
+    let bgStyle: React.CSSProperties;
+    if (splitGradient && splitGradientFrom && splitGradientTo) {
+      const dir = splitGradientDirection || "to bottom";
+      bgStyle = { background: `linear-gradient(${dir}, ${splitGradientFrom}, ${splitGradientTo})` };
+    } else {
+      bgStyle = { backgroundColor: bgColor };
+    }
+
     return (
       <section className="mt-2 mb-16">
         <Link href={`/${item.slug.current}`} className="block group">
@@ -295,12 +347,15 @@ export default async function IndexPage() {
             <div className={`${isDark ? "rounded-lg overflow-hidden" : ""}`}>
               <div className={`grid grid-cols-1 md:grid-cols-2 ${isDark ? "gap-0" : "gap-8 md:gap-12"}`}>
                 <div className={`${isDark ? "order-2 md:order-2 h-[50vh] md:h-[70vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
-                  <div className={`${isDark ? "w-full h-full bg-black text-white p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-3xl w-full flex flex-col items-center text-center"}`}>
-                    <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold leading-tight group-hover:underline">
+                  <div
+                    className={`${isDark ? "w-full h-full p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-3xl w-full flex flex-col items-center text-center"}`}
+                    style={{ ...bgStyle, color: fontColor }}
+                  >
+                    <h2 className={`font-serif ${splitHeadlineClass} font-bold leading-tight group-hover:underline`}>
                       {item.title}
                     </h2>
                     {item.heroLede || item.dek ? (
-                      <p className={`mt-4 text-xl md:text-3xl lg:text-4xl leading-snug ${isDark ? "text-white/85" : "text-gray-600"}`}>
+                      <p className={`mt-4 ${splitBodyClass} leading-snug`} style={{ opacity: 0.85 }}>
                         {item.heroLede || item.dek}
                       </p>
                     ) : null}
@@ -337,7 +392,7 @@ export default async function IndexPage() {
       <Masthead />
 
       {/* Hero */}
-      {activeHero?.slug?.current ? renderFeatureBlock(activeHero, (homepage?.heroLayout as any) || "split-white", homepage?.heroTextPosition || "bottom-left", homepage?.heroTextWidth || "medium", homepage?.heroHeadlineSize || "medium", homepage?.heroBodySize || "medium", homepage?.heroTextColor?.hex) : null}
+      {activeHero?.slug?.current ? renderFeatureBlock(activeHero, (homepage?.heroLayout as any) || "split-white", homepage?.heroTextPosition || "bottom-left", homepage?.heroTextWidth || "medium", homepage?.heroHeadlineSize || "medium", homepage?.heroBodySize || "medium", homepage?.heroTextColor?.hex, homepage?.heroSplitBgColor?.hex, homepage?.heroSplitGradient, homepage?.heroSplitGradientDirection, homepage?.heroSplitGradientFrom?.hex, homepage?.heroSplitGradientTo?.hex) : null}
 
       {/* Announcement Bar */}
       <div id="announcement-fold-trigger">
@@ -360,7 +415,7 @@ export default async function IndexPage() {
       )}
 
       {/* Secondary Feature */}
-      {homepage?.secondaryFeature?.slug?.current ? renderFeatureBlock(homepage.secondaryFeature, (homepage?.secondaryLayout as any) || "split-dark", homepage?.secondaryTextPosition || "bottom-left", homepage?.secondaryTextWidth || "medium", homepage?.secondaryHeadlineSize || "medium", homepage?.secondaryBodySize || "medium", homepage?.secondaryTextColor?.hex) : null}
+      {homepage?.secondaryFeature?.slug?.current ? renderFeatureBlock(homepage.secondaryFeature, (homepage?.secondaryLayout as any) || "split-dark", homepage?.secondaryTextPosition || "bottom-left", homepage?.secondaryTextWidth || "medium", homepage?.secondaryHeadlineSize || "medium", homepage?.secondaryBodySize || "medium", homepage?.secondaryTextColor?.hex, homepage?.secondarySplitBgColor?.hex, homepage?.secondarySplitGradient, homepage?.secondarySplitGradientDirection, homepage?.secondarySplitGradientFrom?.hex, homepage?.secondarySplitGradientTo?.hex) : null}
 
       {/* Second Carousel */}
       {secondCarouselStories.length > 0 ? (
