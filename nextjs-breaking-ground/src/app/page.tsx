@@ -57,6 +57,18 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
   announcementMessage,
   announcementLinkLabel,
   announcementLinkUrl,
+  heroLayout,
+  heroTextPosition,
+  heroTextWidth,
+  heroHeadlineSize,
+  heroBodySize,
+  heroTextColor,
+  secondaryLayout,
+  secondaryTextPosition,
+  secondaryTextWidth,
+  secondaryHeadlineSize,
+  secondaryBodySize,
+  secondaryTextColor,
   heroArticle->{
     _id, title, dek, heroLede, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
@@ -123,6 +135,18 @@ export default async function IndexPage() {
     announcementMessage?: string;
     announcementLinkLabel?: string;
     announcementLinkUrl?: string;
+    heroLayout?: string;
+    heroTextPosition?: string;
+    heroTextWidth?: string;
+    heroHeadlineSize?: string;
+    heroBodySize?: string;
+    heroTextColor?: { hex?: string };
+    secondaryLayout?: string;
+    secondaryTextPosition?: string;
+    secondaryTextWidth?: string;
+    secondaryHeadlineSize?: string;
+    secondaryBodySize?: string;
+    secondaryTextColor?: { hex?: string };
     heroArticle?: any;
     gridOne?: any[];
     gridTwo?: any[];
@@ -172,32 +196,118 @@ export default async function IndexPage() {
   const firstCarouselStories = toCarouselStories(firstCarouselSource);
   const secondCarouselStories = toCarouselStories(secondCarouselSource);
 
-  const renderFeatureBlock = (item: any, placement: "default" | "hero" | "secondary" = "default") => {
+  const renderFeatureBlock = (
+    item: any,
+    layout: "split-white" | "split-dark" | "full-bleed" = "split-white",
+    textPosition: string = "bottom-left",
+    textWidth: string = "medium",
+    headlineSize: string = "medium",
+    bodySize: string = "medium",
+    textColor?: string,
+  ) => {
     const featureImage = pickStoryImage(item);
-    const isHeroPlacement = placement === "hero";
-    const isSecondaryPlacement = placement === "secondary";
-    const usePlacementLayout = isHeroPlacement || isSecondaryPlacement;
+    const isDark = layout === "split-dark";
+    const isFullBleed = layout === "full-bleed";
+
+    if (isFullBleed) {
+      const src = featureImage?.asset ? getImageSrc(featureImage, 1920, 1080) : "";
+
+      const positionClasses: Record<string, string> = {
+        "bottom-left": "absolute bottom-0 left-0 p-6 md:p-12 text-left",
+        "bottom-center": "absolute bottom-0 inset-x-0 p-6 md:p-12 text-center flex flex-col items-center",
+        "bottom-right": "absolute bottom-0 right-0 p-6 md:p-12 text-right",
+        "center": "absolute inset-0 flex flex-col items-center justify-center p-6 md:p-12 text-center",
+        "top-left": "absolute top-0 left-0 p-6 md:p-12 text-left",
+        "top-center": "absolute top-0 inset-x-0 p-6 md:p-12 text-center flex flex-col items-center",
+      };
+
+      const widthClasses: Record<string, string> = {
+        narrow: "max-w-[600px]",
+        medium: "max-w-[800px]",
+        wide: "max-w-[1000px]",
+        full: "max-w-full",
+      };
+
+      const gradientClasses: Record<string, string> = {
+        "bottom-left": "bg-gradient-to-t from-black/80 via-black/30 to-transparent",
+        "bottom-center": "bg-gradient-to-t from-black/80 via-black/30 to-transparent",
+        "bottom-right": "bg-gradient-to-t from-black/80 via-black/30 to-transparent",
+        "center": "bg-black/40",
+        "top-left": "bg-gradient-to-b from-black/80 via-black/30 to-transparent",
+        "top-center": "bg-gradient-to-b from-black/80 via-black/30 to-transparent",
+      };
+
+      const headlineSizeClasses: Record<string, string> = {
+        small: "text-2xl md:text-4xl lg:text-5xl",
+        medium: "text-3xl md:text-5xl lg:text-6xl",
+        large: "text-4xl md:text-6xl lg:text-7xl",
+        xl: "text-5xl md:text-7xl lg:text-8xl",
+      };
+
+      const bodySizeClasses: Record<string, string> = {
+        small: "text-base md:text-lg",
+        medium: "text-xl md:text-2xl",
+        large: "text-2xl md:text-3xl",
+      };
+
+      const posClass = positionClasses[textPosition] || positionClasses["bottom-left"];
+      const widthClass = widthClasses[textWidth] || widthClasses["medium"];
+      const gradientClass = gradientClasses[textPosition] || gradientClasses["bottom-left"];
+      const headlineClass = headlineSizeClasses[headlineSize] || headlineSizeClasses["medium"];
+      const bodyClass = bodySizeClasses[bodySize] || bodySizeClasses["medium"];
+
+      return (
+        <section className="mt-2 mb-16">
+          <Link href={`/${item.slug.current}`} className="block group relative rounded-lg overflow-hidden">
+            <div className="w-full h-[50vh] md:h-[80vh]">
+              {src ? (
+                <img
+                  src={src}
+                  alt={featureImage?.alt || item.title}
+                  className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-100" />
+              )}
+            </div>
+            <div className={`absolute inset-0 ${gradientClass}`} />
+            <div className={posClass} style={textColor ? { color: textColor } : undefined}>
+              <div className={widthClass}>
+                <h2 className={`font-serif ${headlineClass} font-bold leading-tight ${textColor ? "" : "text-white"} group-hover:underline`}>
+                  {item.title}
+                </h2>
+                {item.heroLede || item.dek ? (
+                  <p className={`mt-4 ${bodyClass} leading-snug ${textColor ? "opacity-85" : "text-white/85"}`}>
+                    {item.heroLede || item.dek}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          </Link>
+        </section>
+      );
+    }
+
     return (
-      <section className={`${usePlacementLayout ? "mt-2" : item.category === "feature" ? "mt-2" : "mt-12"} mb-16`}>
-        {usePlacementLayout ? (
-          <Link href={`/${item.slug.current}`} className="block group">
-            <div className="w-full">
-              <div className={`${isSecondaryPlacement ? "rounded-lg overflow-hidden" : ""}`}>
-                <div className={`grid grid-cols-1 md:grid-cols-2 ${isSecondaryPlacement ? "gap-0" : "gap-8 md:gap-12"}`}>
-                <div className={`${isSecondaryPlacement ? "order-2 md:order-2 h-[50vh] md:h-[70vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
-                  <div className={`${isSecondaryPlacement ? "w-full h-full bg-black text-white p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-3xl w-full flex flex-col items-center text-center"}`}>
+      <section className="mt-2 mb-16">
+        <Link href={`/${item.slug.current}`} className="block group">
+          <div className="w-full">
+            <div className={`${isDark ? "rounded-lg overflow-hidden" : ""}`}>
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${isDark ? "gap-0" : "gap-8 md:gap-12"}`}>
+                <div className={`${isDark ? "order-2 md:order-2 h-[50vh] md:h-[70vh]" : "order-2 md:order-1"} flex items-center justify-center`}>
+                  <div className={`${isDark ? "w-full h-full bg-black text-white p-8 md:p-10 flex flex-col items-center text-center justify-center" : "max-w-3xl w-full flex flex-col items-center text-center"}`}>
                     <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold leading-tight group-hover:underline">
                       {item.title}
                     </h2>
                     {item.heroLede || item.dek ? (
-                      <p className={`mt-4 text-xl md:text-3xl lg:text-4xl leading-snug ${isSecondaryPlacement ? "text-white/85" : "text-gray-600"}`}>
+                      <p className={`mt-4 text-xl md:text-3xl lg:text-4xl leading-snug ${isDark ? "text-white/85" : "text-gray-600"}`}>
                         {item.heroLede || item.dek}
                       </p>
                     ) : null}
                   </div>
                 </div>
 
-                <div className={`${isSecondaryPlacement ? "order-1 md:order-1" : "order-1 md:order-2"} h-[50vh] md:h-[70vh] w-full overflow-hidden ${isSecondaryPlacement ? "" : "rounded-lg"}`}>
+                <div className={`${isDark ? "order-1 md:order-1" : "order-1 md:order-2"} h-[50vh] md:h-[70vh] w-full overflow-hidden ${isDark ? "" : "rounded-lg"}`}>
                   {featureImage?.asset ? (
                     (() => {
                       const src = getImageSrc(featureImage, 1200, 1500);
@@ -213,38 +323,10 @@ export default async function IndexPage() {
                     <div className="w-full h-full bg-gray-100" />
                   )}
                 </div>
-                </div>
               </div>
             </div>
-          </Link>
-        ) : (
-          <Link href={`/${item.slug.current}`} className="block group">
-            <div className="w-full overflow-hidden rounded-lg mb-6">
-              {featureImage?.asset ? (
-                (() => {
-                  const src = getImageSrc(featureImage, 1600, 900);
-                  return (
-                    <img
-                      src={src}
-                      alt={featureImage?.alt || item.title}
-                      className="w-full h-[300px] md:h-[400px] object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.03] group-hover:opacity-95"
-                    />
-                  );
-                })()
-              ) : (
-                <div className="w-full h-[300px] md:h-[400px] bg-gray-100" />
-              )}
-            </div>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight group-hover:underline">
-              {item.title}
-            </h2>
-            {item.heroLede || item.dek ? (
-              <p className="mt-4 text-xl md:text-2xl text-gray-600 leading-snug max-w-3xl">
-                {item.heroLede || item.dek}
-              </p>
-            ) : null}
-          </Link>
-        )}
+          </div>
+        </Link>
       </section>
     );
   };
@@ -255,7 +337,7 @@ export default async function IndexPage() {
       <Masthead />
 
       {/* Hero */}
-      {activeHero?.slug?.current ? renderFeatureBlock(activeHero, "hero") : null}
+      {activeHero?.slug?.current ? renderFeatureBlock(activeHero, (homepage?.heroLayout as any) || "split-white", homepage?.heroTextPosition || "bottom-left", homepage?.heroTextWidth || "medium", homepage?.heroHeadlineSize || "medium", homepage?.heroBodySize || "medium", homepage?.heroTextColor?.hex) : null}
 
       {/* Announcement Bar */}
       <div id="announcement-fold-trigger">
@@ -278,7 +360,7 @@ export default async function IndexPage() {
       )}
 
       {/* Secondary Feature */}
-      {homepage?.secondaryFeature?.slug?.current ? renderFeatureBlock(homepage.secondaryFeature, "secondary") : null}
+      {homepage?.secondaryFeature?.slug?.current ? renderFeatureBlock(homepage.secondaryFeature, (homepage?.secondaryLayout as any) || "split-dark", homepage?.secondaryTextPosition || "bottom-left", homepage?.secondaryTextWidth || "medium", homepage?.secondaryHeadlineSize || "medium", homepage?.secondaryBodySize || "medium", homepage?.secondaryTextColor?.hex) : null}
 
       {/* Second Carousel */}
       {secondCarouselStories.length > 0 ? (
