@@ -12,10 +12,10 @@ const ENTRY_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   title,
   dek,
   publishedAt,
-  headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
-  heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+  headerImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot},
+  heroImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot},
   author->{name, image},
-  series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}},
+  series->{title, slug, seriesImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot}},
   category,
   body[]{
     ...,
@@ -55,19 +55,20 @@ export default async function PostPage({
   }
 
   // Hero image fallback order: article header image -> legacy hero image -> series default image.
-  const resolvedHeroImage = article?.headerImage?.asset?._ref || article?.headerImage?.asset?.url
+  const resolvedHeroImage = article?.headerImage?.asset?._ref
     ? article.headerImage
-    : article?.heroImage?.asset?._ref || article?.heroImage?.asset?.url
+    : article?.heroImage?.asset?._ref
     ? article.heroImage
-    : article?.series?.seriesImage?.asset?._ref || article?.series?.seriesImage?.asset?.url
+    : article?.series?.seriesImage?.asset?._ref
     ? article.series.seriesImage
     : null;
-  const heroImageSource = resolvedHeroImage?.asset?._ref
-    ? (resolvedHeroImage as SanityImageSource)
-    : null;
-  const heroImageUrl = heroImageSource
-    ? urlFor(heroImageSource)?.width(1100).height(620).url()
-    : resolvedHeroImage?.asset?.url ?? null;
+  const heroImageUrl = resolvedHeroImage?.asset?._ref
+    ? urlFor(resolvedHeroImage as SanityImageSource)?.width(1600).fit('crop').url()
+    : resolvedHeroImage?.assetUrl ?? null;
+  const hotspot = resolvedHeroImage?.hotspot;
+  const heroObjectPosition = hotspot
+    ? `${(hotspot.x * 100).toFixed(1)}% ${(hotspot.y * 100).toFixed(1)}%`
+    : "50% 50%";
 
   const authorImageUrl = article?.author?.image
     ? urlFor(article.author.image as SanityImageSource)?.width(64).height(64).url()
@@ -192,7 +193,7 @@ export default async function PostPage({
           <img
             src={heroImageUrl}
             alt={resolvedHeroImage?.alt || article.title}
-            style={{width: '100%', height: '60vh', objectFit: 'cover'}}
+            style={{width: '100%', height: '60vh', objectFit: 'cover', objectPosition: heroObjectPosition}}
           />
           {resolvedHeroImage?.caption && (
             <p className="text-sm text-gray-500 mt-2 px-4 max-w-3xl mx-auto">{resolvedHeroImage.caption}</p>
