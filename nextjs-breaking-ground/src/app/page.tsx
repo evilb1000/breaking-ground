@@ -423,6 +423,9 @@ export default async function IndexPage() {
         <MoreStoriesCarousel stories={firstCarouselStories} />
       )}
 
+      {/* Sponsorship / whitespace gap */}
+      <div className="my-16 md:my-24" />
+
       {/* Secondary Feature */}
       {homepage?.secondaryFeature?.slug?.current ? renderFeatureBlock(homepage.secondaryFeature, (homepage?.secondaryLayout as any) || "split-dark", homepage?.secondaryTextPosition || "bottom-left", homepage?.secondaryTextWidth || "medium", homepage?.secondaryHeadlineSize || "medium", homepage?.secondaryBodySize || "medium", homepage?.secondaryTextColor?.hex, homepage?.secondarySplitBgColor?.hex, homepage?.secondarySplitGradient, homepage?.secondarySplitGradientDirection, homepage?.secondarySplitGradientFrom?.hex, homepage?.secondarySplitGradientTo?.hex) : null}
 

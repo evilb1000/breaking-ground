@@ -38,7 +38,7 @@ export default function MoreStoriesCarousel({ stories }: Props) {
           {stories.map((article) => (
             <Link
               href={`/${article.slug?.current ?? ""}`}
-              className="group block snap-start shrink-0 w-[85%] sm:w-[70%] md:w-[48%] lg:w-[32%]"
+              className="group flex flex-col snap-start shrink-0 w-[85%] sm:w-[70%] md:w-[48%] lg:w-[32%]"
               key={article._id}
             >
               <div className="w-full h-[280px] md:h-[390px] overflow-hidden rounded-md mb-4 bg-gray-100">
@@ -50,12 +50,14 @@ export default function MoreStoriesCarousel({ stories }: Props) {
                   />
                 ) : null}
               </div>
-              <h4 className="font-serif text-2xl md:text-4xl font-semibold leading-snug group-hover:underline">
-                {article.title}
-              </h4>
-              {article.dek ? (
-                <p className="text-gray-600 text-lg md:text-2xl leading-relaxed mt-2 line-clamp-2">{article.dek}</p>
-              ) : null}
+              <div className="flex flex-col flex-1">
+                <h4 className="font-serif text-2xl md:text-4xl font-semibold leading-snug group-hover:underline line-clamp-2 min-h-[calc(2*1.375em)]">
+                  {article.title}
+                </h4>
+                <p className="text-gray-600 text-lg md:text-2xl leading-relaxed mt-2 line-clamp-2">
+                  {article.dek || "\u00A0"}
+                </p>
+              </div>
             </Link>
           ))}
         </div>
