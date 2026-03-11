@@ -12,10 +12,9 @@ const sectionLinks = [
 ];
 
 const aboutLinks = [
-  { label: "About Breaking Ground", href: "#" },
-  { label: "Sponsors", href: "#" },
-  { label: "Contact", href: "#" },
-  { label: "Submit a Story", href: "#" },
+  { label: "About Breaking Ground", href: "/about" },
+  { label: "Sponsors", href: "/sponsors" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Footer() {
