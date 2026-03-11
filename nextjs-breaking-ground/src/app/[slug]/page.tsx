@@ -15,6 +15,7 @@ const ENTRY_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   headerImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot},
   heroImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot},
   author->{name, image},
+  coAuthors[]->{name, image},
   series->{title, slug, seriesImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot}},
   category,
   body[]{
@@ -73,6 +74,11 @@ export default async function PostPage({
   const authorImageUrl = article?.author?.image
     ? urlFor(article.author.image as SanityImageSource)?.width(64).height(64).url()
     : null;
+
+  const allAuthors = [
+    ...(article?.author ? [article.author] : []),
+    ...(article?.coAuthors || []),
+  ];
 
   // PortableText custom renderers for inline/floating images
   const components = {
@@ -213,18 +219,26 @@ export default async function PostPage({
         </p>
       ) : null}
 
-      {(article?.author?.name || authorImageUrl) && (
-        <div className="flex items-center gap-3 mt-6 text-left">
-          {authorImageUrl && (
-            <img
-              src={authorImageUrl}
-              alt={article?.author?.name || 'Author'}
-              className="h-10 w-10 rounded-full object-cover"
-              width="40"
-              height="40"
-            />
-          )}
-          {article?.author?.name && <span className="text-sm text-gray-700">By {article.author.name}</span>}
+      {allAuthors.length > 0 && (
+        <div className="flex items-center gap-3 mt-6 text-left flex-wrap">
+          {allAuthors.map((a: any) => {
+            const imgUrl = a?.image
+              ? urlFor(a.image as SanityImageSource)?.width(64).height(64).url()
+              : null;
+            return imgUrl ? (
+              <img
+                key={a.name}
+                src={imgUrl}
+                alt={a.name || "Author"}
+                className="h-10 w-10 rounded-full object-cover"
+                width="40"
+                height="40"
+              />
+            ) : null;
+          })}
+          <span className="text-sm text-gray-700">
+            By {allAuthors.map((a: any) => a.name).filter(Boolean).join(" and ")}
+          </span>
         </div>
       )}
       <p className="text-gray-600 text-left">{new Date(article.publishedAt).toLocaleDateString()}</p>

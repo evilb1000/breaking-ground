@@ -113,6 +113,13 @@ export const baseArticle = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'coAuthors',
+      type: 'array',
+      title: 'Co-Authors',
+      of: [{type: 'reference', to: [{type: 'author'}]}],
+      description: 'Optional additional authors when multiple people co-write a piece.',
+    }),
+    defineField({
       name: 'category',
       type: 'string',
       title: 'Category',
