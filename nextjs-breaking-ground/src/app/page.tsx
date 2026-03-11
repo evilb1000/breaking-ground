@@ -502,6 +502,9 @@ export default async function IndexPage() {
         </>
       ) : null}
 
+      {/* Sponsorship / whitespace gap */}
+      <div className="my-16 md:my-24" />
+
       {/* Tertiary Feature */}
       {homepage?.tertiaryFeature?.slug?.current ? renderFeatureBlock(homepage.tertiaryFeature, (homepage?.tertiaryLayout as any) || "split-white", homepage?.tertiaryTextPosition || "bottom-left", homepage?.tertiaryTextWidth || "medium", homepage?.tertiaryHeadlineSize || "medium", homepage?.tertiaryBodySize || "medium", homepage?.tertiaryTextColor?.hex, homepage?.tertiarySplitBgColor?.hex, homepage?.tertiarySplitGradient, homepage?.tertiarySplitGradientDirection, homepage?.tertiarySplitGradientFrom?.hex, homepage?.tertiarySplitGradientTo?.hex) : null}
 
