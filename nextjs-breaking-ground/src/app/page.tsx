@@ -82,6 +82,17 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
   secondarySplitGradientDirection,
   secondarySplitGradientFrom,
   secondarySplitGradientTo,
+  tertiaryLayout,
+  tertiaryTextPosition,
+  tertiaryTextWidth,
+  tertiaryHeadlineSize,
+  tertiaryBodySize,
+  tertiaryTextColor,
+  tertiarySplitBgColor,
+  tertiarySplitGradient,
+  tertiarySplitGradientDirection,
+  tertiarySplitGradientFrom,
+  tertiarySplitGradientTo,
   heroArticle->{
     _id, title, dek, heroLede, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
@@ -114,6 +125,28 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
     slug,
     publishedAt,
     category,
+    headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    author->{name, image},
+    series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
+  },
+  tertiaryFeature->{
+    _id,
+    title,
+    dek,
+    heroLede,
+    slug,
+    publishedAt,
+    category,
+    headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
+    author->{name, image},
+    series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
+  },
+  gridThree[]->{
+    _id, title, dek, slug, publishedAt, category,
     headerImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     heroImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
     homepageImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot},
@@ -176,10 +209,38 @@ export default async function IndexPage() {
     secondarySplitGradientDirection?: string;
     secondarySplitGradientFrom?: { hex?: string };
     secondarySplitGradientTo?: { hex?: string };
+    tertiaryLayout?: string;
+    tertiaryTextPosition?: string;
+    tertiaryTextWidth?: string;
+    tertiaryHeadlineSize?: string;
+    tertiaryBodySize?: string;
+    tertiaryTextColor?: { hex?: string };
+    tertiarySplitBgColor?: { hex?: string };
+    tertiarySplitGradient?: boolean;
+    tertiarySplitGradientDirection?: string;
+    tertiarySplitGradientFrom?: { hex?: string };
+    tertiarySplitGradientTo?: { hex?: string };
     heroArticle?: any;
     gridOne?: any[];
     gridTwo?: any[];
+    gridThree?: any[];
     secondaryFeature?: {
+      _id: string;
+      title: string;
+      dek?: string;
+      heroLede?: string;
+      slug?: {current?: string};
+      category?: string;
+      headerImage?: {
+        asset?: unknown;
+        alt?: string;
+      };
+      heroImage?: {
+        asset?: unknown;
+        alt?: string;
+      };
+    };
+    tertiaryFeature?: {
       _id: string;
       title: string;
       dek?: string;
@@ -204,6 +265,7 @@ export default async function IndexPage() {
   const activeHero = homepage?.heroArticle && homepage.heroArticle.slug?.current ? homepage.heroArticle : featured;
   const firstCarouselSource = homepage?.gridOne?.length ? homepage.gridOne : moreStories;
   const secondCarouselSource = homepage?.gridTwo?.length ? homepage.gridTwo : [];
+  const thirdCarouselSource = homepage?.gridThree?.length ? homepage.gridThree : [];
 
   const toCarouselStories = (items: any[]) =>
     items
@@ -224,6 +286,7 @@ export default async function IndexPage() {
 
   const firstCarouselStories = toCarouselStories(firstCarouselSource);
   const secondCarouselStories = toCarouselStories(secondCarouselSource);
+  const thirdCarouselStories = toCarouselStories(thirdCarouselSource);
 
   const renderFeatureBlock = (
     item: any,
@@ -436,6 +499,19 @@ export default async function IndexPage() {
             More Coverage
           </h3>
           <MoreStoriesCarousel stories={secondCarouselStories} />
+        </>
+      ) : null}
+
+      {/* Tertiary Feature */}
+      {homepage?.tertiaryFeature?.slug?.current ? renderFeatureBlock(homepage.tertiaryFeature, (homepage?.tertiaryLayout as any) || "split-white", homepage?.tertiaryTextPosition || "bottom-left", homepage?.tertiaryTextWidth || "medium", homepage?.tertiaryHeadlineSize || "medium", homepage?.tertiaryBodySize || "medium", homepage?.tertiaryTextColor?.hex, homepage?.tertiarySplitBgColor?.hex, homepage?.tertiarySplitGradient, homepage?.tertiarySplitGradientDirection, homepage?.tertiarySplitGradientFrom?.hex, homepage?.tertiarySplitGradientTo?.hex) : null}
+
+      {/* Third Carousel */}
+      {thirdCarouselStories.length > 0 ? (
+        <>
+          <h3 className="font-serif text-2xl md:text-[2rem] font-bold tracking-tight mb-6 pt-8 text-center">
+            Even More
+          </h3>
+          <MoreStoriesCarousel stories={thirdCarouselStories} />
         </>
       ) : null}
     </main>
