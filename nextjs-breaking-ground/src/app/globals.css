@@ -220,38 +220,41 @@ body {
   display: flex;
   pointer-events: none;
   color: #fff;
+  padding: 48px 0;
 }
 .pp-fw-overlay .pp-grid-container { width: 100%; }
 .pp-fw-overlay-text {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(2rem, 4.5vw, 3.75rem);
-  line-height: 1.12;
+  display: block;
   font-weight: 700;
+  line-height: 1.12;
   text-shadow: 0 2px 24px rgba(0,0,0,0.4);
 }
-.pp-fw-overlay--bottom-left {
-  align-items: flex-end;
-  padding-bottom: 48px;
-  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%);
-}
-.pp-fw-overlay--bottom-center {
-  align-items: flex-end;
-  justify-content: center;
-  text-align: center;
-  padding-bottom: 48px;
-  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%);
-}
-.pp-fw-overlay--center {
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: rgba(0,0,0,0.25);
-}
-.pp-fw-overlay--top-left {
-  align-items: flex-start;
-  padding-top: 48px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 50%);
-}
+
+/* Font styles */
+.pp-fw-font--serif      { font-family: Georgia, 'Times New Roman', serif; }
+.pp-fw-font--sans       { font-family: system-ui, -apple-system, 'Helvetica Neue', sans-serif; }
+.pp-fw-font--serif-caps { font-family: Georgia, 'Times New Roman', serif; text-transform: uppercase; letter-spacing: 0.06em; }
+.pp-fw-font--sans-caps  { font-family: system-ui, -apple-system, 'Helvetica Neue', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* Font sizes */
+.pp-fw-size--sm      { font-size: clamp(0.875rem, 1.5vw, 1.125rem) !important; line-height: 1.4; }
+.pp-fw-size--md      { font-size: clamp(1.25rem, 2.5vw, 2rem) !important; line-height: 1.3; }
+.pp-fw-size--lg      { font-size: clamp(2rem, 4.5vw, 3.75rem) !important; }
+.pp-fw-size--xl      { font-size: clamp(3rem, 6vw, 5rem) !important; }
+.pp-fw-size--display { font-size: clamp(4rem, 10vw, 9rem) !important; line-height: 0.95; }
+
+/* Positions — bottom row */
+.pp-fw-overlay--bottom-left   { align-items: flex-end; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%); }
+.pp-fw-overlay--bottom-center { align-items: flex-end; text-align: center; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%); }
+.pp-fw-overlay--bottom-right  { align-items: flex-end; text-align: right; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%); }
+/* Positions — center row */
+.pp-fw-overlay--center-left  { align-items: center; }
+.pp-fw-overlay--center       { align-items: center; text-align: center; }
+.pp-fw-overlay--center-right { align-items: center; text-align: right; }
+/* Positions — top row */
+.pp-fw-overlay--top-left   { align-items: flex-start; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 50%); }
+.pp-fw-overlay--top-center { align-items: flex-start; text-align: center; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 50%); }
+.pp-fw-overlay--top-right  { align-items: flex-start; text-align: right; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 50%); }
 
 /* Scroll-triggered reveal effects */
 [data-reveal] {

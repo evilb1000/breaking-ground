@@ -285,35 +285,59 @@ function PullQuoteContent({ section }: { section: any }) {
   );
 }
 
-const OVERLAY_POS: Record<string, string> = {
-  "bottom-left": "flex-end flex-start",
-  "bottom-center": "flex-end center",
-  "center": "center center",
-  "top-left": "flex-start flex-start",
-};
-
 function FullWidthImageContent({ section }: { section: any }) {
   const src = imgUrl(section.image, 2400);
   if (!src) return null;
   const width = section.contentWidth || "bleed";
   const fade = section.imageFade;
   const reveal = section.revealEffect && section.revealEffect !== "none" ? section.revealEffect : null;
-  const overlayText = section.overlayText;
-  const pos = section.overlayPosition || "bottom-left";
+  const captionPos = section.captionPosition || "below";
+  const captionOnImage = section.caption && captionPos !== "below";
+  const captionSize = section.captionSize || "sm";
+  const captionFont = section.captionFont || "serif";
 
   const wrapReveal = (el: React.ReactNode) => {
     if (reveal === "scroll-fade") return <ScrollOpacity>{el}</ScrollOpacity>;
     return reveal ? <RevealOnScroll effect={reveal}>{el}</RevealOnScroll> : el;
   };
 
-  const overlayEl = overlayText ? (
-    <div className={`pp-fw-overlay pp-fw-overlay--${pos}`}>
+  const overlayEl = captionOnImage ? (
+    <div className={`pp-fw-overlay pp-fw-overlay--${captionPos}`}>
       <div className="pp-grid-container">
         <div className="pp-span-8">
-          <span className="pp-fw-overlay-text">{overlayText}</span>
+          <span className={`pp-fw-overlay-text pp-fw-size--${captionSize} pp-fw-font--${captionFont}`}>
+            {section.caption}
+          </span>
         </div>
       </div>
     </div>
+  ) : null;
+
+  const FONT_MAP: Record<string, React.CSSProperties> = {
+    serif: { fontFamily: "Georgia, 'Times New Roman', serif" },
+    sans: { fontFamily: "system-ui, -apple-system, 'Helvetica Neue', sans-serif" },
+    "serif-caps": { fontFamily: "Georgia, 'Times New Roman', serif", textTransform: "uppercase", letterSpacing: "0.06em" },
+    "sans-caps": { fontFamily: "system-ui, -apple-system, 'Helvetica Neue', sans-serif", textTransform: "uppercase", letterSpacing: "0.1em" },
+  };
+  const SIZE_MAP: Record<string, string> = {
+    sm: "0.8125rem",
+    md: "clamp(1.25rem, 2.5vw, 2rem)",
+    lg: "clamp(2rem, 4.5vw, 3.75rem)",
+    xl: "clamp(3rem, 6vw, 5rem)",
+    display: "clamp(4rem, 10vw, 9rem)",
+  };
+
+  const belowCaption = section.caption && !captionOnImage && !fade;
+  const captionStyle: React.CSSProperties = {
+    fontSize: SIZE_MAP[captionSize] || SIZE_MAP.sm,
+    marginTop: 8,
+    lineHeight: captionSize === "sm" ? 1.4 : 1.12,
+    fontWeight: captionSize === "sm" ? 400 : 700,
+    color: captionSize === "sm" ? "#666" : "inherit",
+    ...(FONT_MAP[captionFont] || FONT_MAP.serif),
+  };
+  const belowCaptionEl = belowCaption ? (
+    <p style={captionStyle}>{section.caption}</p>
   ) : null;
 
   if (width === "bleed") {
@@ -321,9 +345,9 @@ function FullWidthImageContent({ section }: { section: any }) {
       <div className={`pp-fw-wrap ${fade ? "pp-fade" : ""}`}>
         <img src={src} alt={section.alt || ""} className="pp-img" />
         {overlayEl}
-        {section.caption && !fade && (
+        {belowCaptionEl && (
           <div className="pp-grid-container" style={{ marginTop: 8 }}>
-            <p className="pp-span-8 pp-caption">{section.caption}</p>
+            <div className="pp-span-8">{belowCaptionEl}</div>
           </div>
         )}
       </div>,
@@ -340,7 +364,7 @@ function FullWidthImageContent({ section }: { section: any }) {
             {overlayEl}
           </div>,
         )}
-        {section.caption && <p className="pp-caption">{section.caption}</p>}
+        {belowCaptionEl}
       </div>
     </div>
   );
