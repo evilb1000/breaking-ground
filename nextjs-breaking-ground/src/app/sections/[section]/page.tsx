@@ -30,6 +30,19 @@ const ARTICLES_BY_SERIES_QUERY = `*[_type == "article" && series->slug.current =
     series->{title, seriesImage{asset->{url,_ref,_type}, alt}}
   }`;
 
+const PROJECT_PROFILES_QUERY = `*[_type == "projectProfile" && defined(slug.current)]
+  | order(publishedAt desc){
+    _id,
+    title,
+    dek,
+    slug,
+    publishedAt,
+    projectName,
+    location,
+    headerImage{asset->{url,_ref,_type}, alt},
+    author->{name}
+  }`;
+
 export const revalidate = 0;
 const options = { next: { revalidate: 0 } };
 
@@ -73,11 +86,15 @@ export default async function SectionPage({
     );
   }
 
-  const articles = await client.fetch<any[]>(
-    ARTICLES_BY_SERIES_QUERY,
-    { seriesSlug: config.seriesSlug },
-    options
-  );
+  const isProjectProfiles = section === "project-profiles";
+
+  const articles = isProjectProfiles
+    ? await client.fetch<any[]>(PROJECT_PROFILES_QUERY, {}, options)
+    : await client.fetch<any[]>(
+        ARTICLES_BY_SERIES_QUERY,
+        { seriesSlug: config.seriesSlug },
+        options
+      );
 
   return (
     <>
@@ -120,6 +137,9 @@ export default async function SectionPage({
                       {article.dek}
                     </p>
                   ) : null}
+                  {isProjectProfiles && article.location && (
+                    <p className="text-sm text-gray-500 mt-2">{article.location}</p>
+                  )}
                   {article.author?.name && (
                     <p className="text-sm text-gray-500 mt-3">
                       By {article.author.name}

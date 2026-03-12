@@ -4,10 +4,11 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
 import ChartFromRefClient from "@/components/ChartFromRefClient";
 import MapEmbedClient from "@/components/MapEmbedClient";
+import ProjectProfilePage from "@/components/ProjectProfilePage";
 import Masthead from "@/components/Masthead";
 import Link from "next/link";
 
-const ENTRY_QUERY = `*[_type == "article" && slug.current == $slug][0]{
+const ENTRY_QUERY = `*[_type in ["article", "projectProfile"] && slug.current == $slug][0]{
   _type,
   title,
   dek,
@@ -20,12 +21,38 @@ const ENTRY_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   category,
   body[]{
     ...,
-    // ensure map/file URLs are present for mapEmbed blocks
     mapFile{asset->{url}},
     dataFile{asset->{url}}
   },
   readingTime,
-  featured
+  featured,
+  // Project Profile fields
+  projectName,
+  architect,
+  generalContractor,
+  owner,
+  completionDate,
+  projectSize,
+  projectCost,
+  location,
+  projectType,
+  pageContent[]{
+    ...,
+    image{..., asset->{url}},
+    imageLeft{..., asset->{url}},
+    imageRight{..., asset->{url}},
+    images[]{..., image{..., asset->{url}}},
+    body[]{
+      ...,
+      mapFile{asset->{url}},
+      dataFile{asset->{url}}
+    },
+    text[]{
+      ...,
+      mapFile{asset->{url}},
+      dataFile{asset->{url}}
+    }
+  }
 }`;
 
 const { projectId, dataset } = client.config();
@@ -55,6 +82,19 @@ export default async function PostPage({
     );
   }
 
+  /* ---- Project Profile template ---- */
+  if (article._type === "projectProfile") {
+    return (
+      <div className="pp-profile-layout">
+        <Masthead homeHref="/" />
+        <main className="min-h-screen bg-white text-black">
+          <ProjectProfilePage project={article} />
+        </main>
+      </div>
+    );
+  }
+
+  /* ---- Standard Article template ---- */
   // Hero image fallback order: article header image -> legacy hero image -> series default image.
   const resolvedHeroImage = article?.headerImage?.asset?._ref
     ? article.headerImage

@@ -5,5 +5,6 @@ import series from './series'
 import chartData from './chartData'
 import mapEmbed from './mapEmbed.tsx'
 import {homepage} from './homepage'
+import projectProfile from './projectProfile'
 
-export const schemaTypes = [blockContent, author, article, series, chartData, mapEmbed, homepage]
+export const schemaTypes = [blockContent, author, article, series, chartData, mapEmbed, homepage, projectProfile]

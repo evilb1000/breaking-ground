@@ -41,9 +41,10 @@ const FALLBACK_LATEST_QUERY = `*[_type == "article" && defined(slug.current)]
     series->{title, slug, seriesImage{asset->{url,_ref,_type}, alt, caption, crop, hotspot}}
   }`;
 
-const MORE_STORIES_QUERY = `*[_type == "article" && defined(slug.current)]
+const MORE_STORIES_QUERY = `*[_type in ["article", "projectProfile"] && defined(slug.current)]
   | order(publishedAt desc)[0...7]{
     _id,
+    _type,
     title,
     dek,
     slug,
