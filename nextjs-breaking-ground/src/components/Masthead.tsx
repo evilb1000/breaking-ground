@@ -12,6 +12,7 @@ const SECTION_ITEMS = [
   { label: "Perspectives", slug: "perspectives" },
   { label: "Data Insights", slug: "data-insights" },
   { label: "AI In Construction", slug: "ai-in-construction" },
+  { label: "News Feed", slug: "news-feed", href: "/news-feed" },
 ];
 
 export default function Masthead({ homeHref }: { homeHref?: string } = {}) {
@@ -88,7 +89,7 @@ export default function Masthead({ homeHref }: { homeHref?: string } = {}) {
           {SECTION_ITEMS.map((item, idx) => (
             <span key={item.slug} className="inline-flex items-center whitespace-nowrap">
               {idx > 0 ? <span className="mx-4 md:mx-5 text-gray-500" aria-hidden="true">•</span> : null}
-              <Link href={`/sections/${item.slug}`} className="hover:opacity-70 transition-opacity">
+              <Link href={item.href || `/sections/${item.slug}`} className="hover:opacity-70 transition-opacity">
                 {item.label}
               </Link>
             </span>
