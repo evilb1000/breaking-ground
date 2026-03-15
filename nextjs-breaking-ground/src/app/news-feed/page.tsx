@@ -23,6 +23,23 @@ function itemDateValue(item: ManifestItem): number {
   return Number.isNaN(ts) ? 0 : ts;
 }
 
+function formatDisplayDate(raw?: string): string | null {
+  if (!raw) return null;
+  const ymd = /^(\d{4})-(\d{2})-(\d{2})$/;
+  const match = raw.match(ymd);
+  if (match) {
+    const [, y, m, d] = match;
+    return `${m}/${d}/${y}`;
+  }
+
+  const dt = new Date(raw);
+  if (Number.isNaN(dt.getTime())) return null;
+  const dd = String(dt.getUTCDate()).padStart(2, "0");
+  const mm = String(dt.getUTCMonth() + 1).padStart(2, "0");
+  const yyyy = String(dt.getUTCFullYear());
+  return `${mm}/${dd}/${yyyy}`;
+}
+
 export default async function NewsFeedPage() {
   const manifestPath = path.join(
     process.cwd(),
@@ -51,8 +68,10 @@ export default async function NewsFeedPage() {
             No news feed entries found.
           </p>
         ) : (
-          <div className="mt-12 max-w-5xl mx-auto space-y-10">
-            {items.map((item) => (
+          <div className="mt-12 max-w-5xl mx-auto space-y-24 text-center">
+            {items.map((item) => {
+              const displayDate = formatDisplayDate(item.pubDate);
+              return (
               <article key={`${item.link}-${item.pubDate || item.publicationAddedAt || "na"}`}>
                 <a
                   href={item.link}
@@ -65,13 +84,18 @@ export default async function NewsFeedPage() {
                   </h2>
                 </a>
                 <p className="mt-2 text-sm text-gray-600">
-                  {[item.source, item.pubDate].filter(Boolean).join(" • ")}
+                  {item.source ? <span className="font-bold text-black">{item.source}</span> : null}
+                  {item.source && displayDate ? <span> • </span> : null}
+                  {displayDate ? <span className="font-bold text-black">{displayDate}</span> : null}
                 </p>
                 {item.blurb ? (
-                  <p className="mt-3 text-lg leading-relaxed text-gray-800">{item.blurb}</p>
+                  <p className="mt-3 mb-10 md:mb-12 text-xl md:text-2xl font-bold leading-relaxed text-gray-900">
+                    {item.blurb}
+                  </p>
                 ) : null}
               </article>
-            ))}
+              );
+            })}
           </div>
         )}
       </main>
