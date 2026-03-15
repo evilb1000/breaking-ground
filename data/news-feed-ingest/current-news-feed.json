@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-03-15T23:40:10.939Z",
+  "updatedAt": "2026-03-15T23:49:41.265Z",
   "summaries": [
     {
       "link": "https://www.trepp.com/trepptalk/cre-prices-stabilize-tppi-q4-2025",
@@ -265,6 +265,28 @@
       "headline": "Goldman Sachs Highlights Shift to \"Americas First\" with New \"Donroe Doctrine\" Initiative Under Trump Administration",
       "blurb": "In a groundbreaking report, Goldman Sachs unveils the Trump Administration's new “Donroe Doctrine,” a bold shift toward an assertive foreign policy dubbed “Americas First.” This initiative aims to bolster U.S. influence in the Western Hemisphere and outlines significant implications for economic conditions, asset valuations, and geopolitical dynamics. Stakeholders are urged to closely monitor how this evolving directive could reshape regional and global interactions.",
       "publicationAddedAt": "2026-03-15T23:40:10.939Z"
+    },
+    {
+      "link": "https://news.agc.org/economics/construction-employment-falls-by-11000-in-february-with-declines-in-residential-and-nonresidential-as-firms-worry-about-demand-levels/",
+      "source": "AGC Construction Data",
+      "title": "Construction Employment Falls By 11,000 In February With Declines In Residential And Nonresidential As Firms Worry About Demand Levels",
+      "pubDate": "2026-03-06",
+      "summaryText": "A March report from the Associated General Contractors of America reveals that construction employment fell by 11,000 jobs in February, encompassing both residential and nonresidential sectors. This decline comes on the heels of stronger hiring in January, which had been reported more favorably than initially understood. The current downturn indicates that contractors are adopting a more cautious stance regarding workforce expansion, primarily due to uncertainties related to material prices and project demand.\n\nMacrina Wilkins, the association’s director of market insights, stated, “Contractors may be more reluctant to add workers amid uncertainty about how much they will pay for construction materials and demand for certain types of construction projects.” Despite this monthly drop, the construction employment sector has experienced growth at a faster pace compared to the broader economy over the past year, underscoring the sector's resilience even in the face of current challenges.\n\nThe report emphasizes that both residential and nonresidential construction areas have seen job losses, reflecting a broader trend of caution among firms as they reassess their hiring strategies in light of prevailing economic conditions. The overall employment picture within the construction industry remains a point of discussion as firms grapple with these evolving challenges.\n\nSource URL: https://news.agc.org/economics/construction-employment-falls-by-11000-in-february-with-declines-in-residential-and-nonresidential-as-firms-worry-about-demand-levels/",
+      "addedAt": "2026-03-15T23:49:18.478Z",
+      "headline": "Construction Employment Dips by 11,000 as Firms Cautiously Navigate Economic Uncertainties",
+      "blurb": "A recent report from the Associated General Contractors of America reveals a dip in construction employment, with 11,000 jobs lost in February across both residential and nonresidential sectors. This cautious trend, following a surge in hiring the previous month, highlights contractors' growing concerns about fluctuating material costs and demand for projects. Despite this setback, the construction industry continues to outpace the broader economy in job growth over the past year, showcasing its resilience amid uncertainty.",
+      "publicationAddedAt": "2026-03-15T23:49:38.190Z"
+    },
+    {
+      "link": "https://news.agc.org/economics/extreme-increases-in-aluminum-steel-and-copper-costs-drive-up-prices-for-construction-materials-in-january-spending-ends-2025-down-from-2024/",
+      "source": "AGC Construction Data",
+      "title": "Extreme Increases In Aluminum, Steel And Copper Costs Drive Up Prices For Construction Materials In January; Spending Ends 2025 Down From 2024",
+      "pubDate": "2026-02-27",
+      "summaryText": "A February report from AGC Construction Data highlights significant cost increases in construction materials, with the producer price index for materials and services used in nonresidential construction rising by 2.9 percent from January 2025 to February 2026. The report also notes a decline in construction spending, which fell by 0.4 percent from December 2024 to December 2025. This analysis was conducted by the Associated General Contractors of America based on two government reports released on the same date.\n\nThe association's officials attribute the rising costs to tariffs on key materials, which they argue inflate prices. They are calling on federal officials to promptly renew vital infrastructure legislation, such as the surface transportation bill, to provide stability for domestic suppliers, which in turn may lead to increased production.\n\nKen Simonson, the association’s chief economist, stated, “Although producer indexes are based on selling prices of domestic producers, the steep tariffs on imported metals and products are clearly enabling U.S. sellers to push up costs for construction materials and equipment.” Simonson emphasized that ensuring domestic producers have greater certainty regarding future demand could incentivize them to enhance production capacities, potentially resulting in lower prices for construction materials in the long term.\n\nOverall, the findings underline economic pressures within the construction sector, particularly regarding material costs and spending trends, while also highlighting the influence of policy decisions on production and pricing.\n\nSource URL: https://news.agc.org/economics/extreme-increases-in-aluminum-steel-and-copper-costs-drive-up-prices-for-construction-materials-in-january-spending-ends-2025-down-from-2024/",
+      "addedAt": "2026-03-15T23:49:22.298Z",
+      "headline": "Construction Material Costs Surge Amid Declining Spending, Tariff Pressures Highlighted in February Report",
+      "blurb": "A new report from AGC Construction Data reveals a concerning 2.9 percent spike in construction material costs, driven largely by tariffs on essential metals like aluminum, steel, and copper. While construction spending has dipped slightly, industry leaders stress the urgency for renewed infrastructure legislation to stabilize prices and boost domestic production. This dynamic landscape underscores the critical link between policy decisions and economic pressures facing the construction sector.",
+      "publicationAddedAt": "2026-03-15T23:49:40.500Z"
     }
   ]
 }
