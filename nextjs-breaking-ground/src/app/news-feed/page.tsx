@@ -41,14 +41,47 @@ function formatDisplayDate(raw?: string): string | null {
 }
 
 export default async function NewsFeedPage() {
-  const manifestPath = path.join(
+  const ingestDir = path.join(
     process.cwd(),
     "..",
     "data",
-    "page-json",
-    "publication-summaries.manifest.json",
+    "news-feed-ingest",
   );
 
+  const dirEntries = await fs.readdir(ingestDir, { withFileTypes: true });
+  const jsonNames = dirEntries
+    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".json"))
+    .map((entry) => entry.name);
+
+  if (jsonNames.length === 0) {
+    return (
+      <>
+        <Masthead homeHref="/" />
+        <main className="min-h-screen bg-white text-black px-4 md:px-12 lg:px-24 py-12">
+          <h1 className="font-serif text-5xl md:text-6xl font-bold tracking-tight text-center">
+            News Feed
+          </h1>
+          <p className="mt-8 text-lg text-gray-500 text-center">
+            No JSON files found in the news feed ingest folder.
+          </p>
+        </main>
+      </>
+    );
+  }
+
+  const latestJsonName = (
+    await Promise.all(
+      jsonNames.map(async (name) => {
+        const fullPath = path.join(ingestDir, name);
+        const stats = await fs.stat(fullPath);
+        return { name, mtimeMs: stats.mtimeMs };
+      }),
+    )
+  )
+    .sort((a, b) => b.mtimeMs - a.mtimeMs)[0]
+    .name;
+
+  const manifestPath = path.join(ingestDir, latestJsonName);
   const raw = await fs.readFile(manifestPath, "utf8");
   const manifest = JSON.parse(raw) as Manifest;
   const items = [...(manifest.summaries || [])]
