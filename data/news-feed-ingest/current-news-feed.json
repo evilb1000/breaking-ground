@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-03-23T13:08:29.252Z",
+  "updatedAt": "2026-03-26T14:35:47.248Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -375,6 +375,39 @@
       "headline": "Construction Starts Dip 13.2% in February Amid Mixed Performance Across Sectors",
       "blurb": "In a March report from Dodge Construction Network, total construction starts dropped 13.2% in February, reaching an annual rate of $1.08 trillion. Despite this setback, nonresidential building starts surged by 17.8%, driven by dramatic increases in commercial and office construction. Meanwhile, the residential sector showed mixed results, with a notable 8.3% increase in building starts, highlighting a complex landscape in the construction industry.",
       "publicationAddedAt": "2026-03-23T13:08:28.623Z"
+    },
+    {
+      "link": "https://www.clarkhill.com/news-events/news/april-2026-visa-bulletin-current-events/",
+      "source": "Clark Hill",
+      "title": "April 2026 Visa Bulletin: “Current” Events",
+      "pubDate": "2026-03-25",
+      "summaryText": "A March 2026 release from Clark Hill discusses the April 2026 Visa Bulletin, which reveals positive changes for foreign nationals seeking permanent residence in the US. The bulletin indicates that priority dates in certain employment-based second (EB-2) and third preference (EB-3) categories are now “current,” meaning there is no backlog and applicants can proceed without delay. \n\nThis advancement benefits those who faced many months of waiting, particularly individuals in EB-3 categories that had been backlogged for years. Some categories advanced by up to a year, allowing even those with petitions filed after the retrogression that began in May 2023 to apply for adjustment of status. \n\nThe bulletin serves as a reminder to US employers that visa processing times can fluctuate, and they should continue to sponsor foreign nationals. It highlights a diverse range of sponsored professions, from software developers to engineers and nurses. \n\nEmployers are encouraged to trust the process, as the absence of a processing queue can occur. For further inquiries regarding employer-sponsored case processing's relationship with the Visa Bulletin, the Clark Hill Immigration team can be contacted. \n\nThis publication is meant for general informational purposes only and does not constitute legal advice. \n\nSource URL: https://www.clarkhill.com/news-events/news/april-2026-visa-bulletin-current-events/",
+      "addedAt": "2026-03-26T14:29:45.362Z",
+      "headline": "April 2026 Visa Bulletin: Backlogs Lift for EB-2 and EB-3 Applicants, Speeding Path to Permanent Residency",
+      "blurb": "The April 2026 Visa Bulletin brings exciting news for foreign nationals seeking permanent residence in the U.S., as backlogs for EB-2 and EB-3 applicants have officially lifted. With priority dates now “current,” many can move forward without delay, marking a significant transformation for those who have faced extended wait times. Employers are reminded to stay engaged with the visa process, as this shift highlights the dynamic nature of visa processing.",
+      "publicationAddedAt": "2026-03-26T14:30:02.878Z"
+    },
+    {
+      "link": "https://news.agc.org/economics/construction-spending-dips-0-3-percent-in-january-as-weakness-in-private-residential-and-nonresidential-investment-offsets-public-outlay-gains/",
+      "source": "AGC Construction Data",
+      "title": "Construction Spending Dips 0.3 Percent In January As Weakness In Private Residential And Nonresidential Investment Offsets Public Outlay Gains",
+      "pubDate": "2026-03-23",
+      "summaryText": "A March report from the Associated General Contractors of America indicates that construction spending decreased by 0.3 percent from December to January, driven by declines in private residential and nonresidential investment, despite increases in public construction spending. The report emphasizes the economic uncertainties affecting construction demand, with rising costs and geopolitical concerns contributing to project slowdowns. Ken Simonson, the association's chief economist, noted a trend of slumping private construction activities, except for investments in data centers and residential improvements. \n\nSource URL: https://news.agc.org/economics/construction-spending-dips-0-3-percent-in-january-as-weakness-in-private-residential-and-nonresidential-investment-offsets-public-outlay-gains/",
+      "addedAt": "2026-03-26T14:35:42.541Z",
+      "headline": "Construction Spending Slides 0.3% Amid Weak Private Investment, Despite Public Sector Gains",
+      "blurb": "A recent report from the Associated General Contractors of America reveals a 0.3 percent dip in construction spending from December to January, primarily due to a decline in private investment. While public sector spending saw gains, economic uncertainties and rising costs are putting a damper on overall construction demand. Chief economist Ken Simonson highlights a troubling trend, noting that only data centers and residential improvements are bucking the slowdown.",
+      "publicationAddedAt": "2026-03-26T14:35:46.470Z"
+    },
+    {
+      "link": "https://www.goldmansachs.com/insights/top-of-mind/iran-conflict-how-long-and-how-bad",
+      "source": "Goldman Sachs",
+      "title": "Iran Conflict: How Long, and How Bad?",
+      "pubDate": "2026-03-23",
+      "summaryText": "A March report from Goldman Sachs discusses the unprecedented US and Israeli attack on Iran, which has led to the largest energy supply disruption in history. Shipping traffic in the Strait of Hormuz has nearly halted, and regional energy infrastructure has been targeted. The report explores the potential duration of the conflict, its impact on global energy supplies, and the economic and market implications arising from these developments. \n\nSource URL: https://www.goldmansachs.com/insights/top-of-mind/iran-conflict-how-long-and-how-bad",
+      "addedAt": "2026-03-26T14:35:40.529Z",
+      "headline": "Goldman Sachs Report: Iran Conflict Triggers Historic Energy Supply Crisis",
+      "blurb": "In a groundbreaking report, Goldman Sachs highlights the startling effects of the recent US and Israeli attacks on Iran, which have precipitated the largest energy supply crisis in history. With shipping traffic in the vital Strait of Hormuz nearly at a standstill, the analysis delves into the conflict's duration and its far-reaching repercussions on global energy markets and economies. Discover how this escalating situation could reshape the energy landscape as we know it.",
+      "publicationAddedAt": "2026-03-26T14:35:47.247Z"
     }
   ]
 }
