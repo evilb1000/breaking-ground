@@ -170,7 +170,7 @@ async function loadLatestNewsItems(): Promise<NewsFeedItem[]> {
 }
 
 function TopRibbon() {
-  const nav = [
+  const nav: { label: string; hasChevron: boolean; href?: string }[] = [
     { label: "Region", hasChevron: true },
     { label: "Profiles", hasChevron: true },
     { label: "Features", hasChevron: false },
@@ -178,7 +178,7 @@ function TopRibbon() {
     { label: "Insights", hasChevron: true },
     { label: "About", hasChevron: true },
     { label: "News", hasChevron: false, href: "/news" },
-  ] as const;
+  ];
   return (
     <div className="absolute left-0 top-0 flex w-[1440px] items-center justify-between bg-[#f5f3f0] px-[26px] pb-[28px] pt-[36px]">
       <div className="relative h-[65px] w-[266px]">

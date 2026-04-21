@@ -90,7 +90,7 @@ const pickImage = (article: LandingSourceItem) =>
     : hasAsset(article?.heroImage)
     ? article.heroImage
     : hasAsset(article?.series?.seriesImage)
-    ? article.series.seriesImage
+    ? article.series?.seriesImage ?? null
     : null;
 
 function formatDisplayDate(raw?: string): string {
