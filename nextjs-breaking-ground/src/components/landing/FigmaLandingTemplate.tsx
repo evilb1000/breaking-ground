@@ -2,7 +2,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
-import Footer from "@/components/Footer";
 
 const FALLBACK_TILE_IMAGE =
   "https://www.figma.com/api/mcp/asset/af02818a-070c-415b-a4fa-499e77541459";
@@ -33,6 +32,11 @@ type FigmaLandingTemplateProps = {
   loadMoreLabel?: string;
   loadMoreExternal?: boolean;
   variant?: "default" | "newsFeed";
+  pagination?: {
+    currentPage: number;
+    totalPages: number;
+    buildHref: (page: number) => string;
+  };
 };
 
 function ItemLink({
@@ -96,6 +100,7 @@ export default function FigmaLandingTemplate({
   loadMoreLabel = "Load more",
   loadMoreExternal = false,
   variant = "default",
+  pagination,
 }: FigmaLandingTemplateProps) {
   return (
     <main className="min-h-screen bg-white text-[#312e28]">
@@ -105,18 +110,20 @@ export default function FigmaLandingTemplate({
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.2))]" />
         <div className="relative mx-auto flex h-[148px] w-full max-w-[1440px] items-end px-6 pb-6 text-white">
           <div className="mx-auto w-[922px] text-right">
-            <p className="bg-font-roboto text-[14px] leading-[18px]">
-              <Link href="/" className="underline">
-                Home
-              </Link>{" "}
-              / <span className="text-white/70">{breadcrumbCurrent}</span>
-            </p>
+            {variant === "default" ? (
+              <p className="bg-font-roboto text-[14px] leading-[18px]">
+                <Link href="/" className="underline">
+                  Home
+                </Link>{" "}
+                / <span className="text-white/70">{breadcrumbCurrent}</span>
+              </p>
+            ) : null}
           </div>
         </div>
       </section>
 
       <section className="mx-auto w-full max-w-[922px] px-4 pb-[72px] pt-[40px] md:px-0">
-        <h1 className="bg-type-h1 text-[#312e28]">{pageTitle}</h1>
+        {pageTitle ? <h1 className="bg-type-h1 text-[#312e28]">{pageTitle}</h1> : null}
 
         {variant === "default" && featuredItem ? (
           <ItemLink
@@ -158,30 +165,53 @@ export default function FigmaLandingTemplate({
           </div>
 
           {variant === "newsFeed" ? (
-            <div className="mt-[24px] flex flex-col divide-y divide-[#312e28]/25 border-y-2 border-[#312e28]/25">
-              {tiles.map((item) => (
-                <article key={item.id} className="py-[34px]">
-                  <ItemLink
-                    href={item.href}
-                    external={item.external}
-                    className="group inline-block"
-                  >
-                    <h3 className="bg-font-roboto-flex text-[52px] leading-[56px] font-[900] text-[#113251] underline decoration-[#113251]/40 underline-offset-[8px] group-hover:decoration-[#113251] transition-colors">
-                      {item.title}
-                    </h3>
-                  </ItemLink>
-                  <p className="mt-[14px] bg-font-roboto text-[20px] leading-[28px] font-semibold text-[#312e28]">
-                    {item.sourceLabel ? `${item.sourceLabel} • ` : ""}
-                    {item.dateLabel || "APRIL 15, 2026"}
-                  </p>
-                  {item.summary ? (
-                    <p className="mt-[16px] bg-font-crimson text-[32px] leading-[44px] text-[#312e28]">
-                      {item.summary}
+            <>
+              <div className="mt-[24px] flex flex-col divide-y divide-[#312e28]/25 border-y-2 border-[#312e28]/25">
+                {tiles.map((item) => (
+                  <article key={item.id} className="py-[34px]">
+                    <ItemLink
+                      href={item.href}
+                      external={item.external}
+                      className="group inline-block"
+                    >
+                      <h3 className="bg-font-roboto-flex text-[52px] leading-[56px] font-[900] text-[#113251] underline decoration-[#113251]/40 underline-offset-[8px] group-hover:decoration-[#113251] transition-colors">
+                        {item.title}
+                      </h3>
+                    </ItemLink>
+                    <p className="mt-[14px] bg-font-roboto text-[20px] leading-[28px] font-semibold text-[#312e28]">
+                      {item.sourceLabel ? `${item.sourceLabel} • ` : ""}
+                      {item.dateLabel || "APRIL 15, 2026"}
                     </p>
-                  ) : null}
-                </article>
-              ))}
-            </div>
+                    {item.summary ? (
+                      <p className="mt-[16px] bg-font-crimson text-[32px] leading-[44px] text-[#312e28]">
+                        {item.summary}
+                      </p>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+              {pagination && pagination.totalPages > 1 ? (
+                <nav className="mt-[28px] flex flex-wrap items-center gap-[10px]" aria-label="News pages">
+                  {Array.from({ length: pagination.totalPages }, (_, idx) => idx + 1).map((pageNum) => {
+                    const isCurrent = pageNum === pagination.currentPage;
+                    return (
+                      <Link
+                        key={pageNum}
+                        href={pagination.buildHref(pageNum)}
+                        aria-current={isCurrent ? "page" : undefined}
+                        className={`inline-flex min-w-[36px] items-center justify-center rounded-[4px] border px-[10px] py-[6px] bg-font-roboto text-[14px] leading-[18px] ${
+                          isCurrent
+                            ? "border-[#113251] bg-[#113251] font-bold text-white"
+                            : "border-[#113251]/30 text-[#113251] hover:border-[#113251]"
+                        }`}
+                      >
+                        {pageNum}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              ) : null}
+            </>
           ) : (
             <div className="mt-[31px] grid grid-cols-3 gap-x-[23px] gap-y-[25px]">
               {tiles.slice(0, 6).map((item) => (
@@ -214,8 +244,6 @@ export default function FigmaLandingTemplate({
           ctaHref="https://www.mbawpa.org/events/mba-young-constructors-leadership-development-seminar/"
         />
       </div>
-
-      <Footer />
     </main>
   );
 }
