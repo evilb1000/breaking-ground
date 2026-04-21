@@ -174,7 +174,7 @@ export default function FigmaLandingTemplate({
                       external={item.external}
                       className="group inline-block"
                     >
-                      <h3 className="bg-font-roboto-flex text-[52px] leading-[56px] font-[900] text-[#113251] underline decoration-[#113251]/40 underline-offset-[8px] group-hover:decoration-[#113251] transition-colors">
+                      <h3 className="bg-font-roboto-flex text-[30px] leading-[36px] font-[900] text-[#113251] no-underline group-hover:underline underline-offset-[8px] decoration-[#113251] transition-colors">
                         {item.title}
                       </h3>
                     </ItemLink>
@@ -183,7 +183,7 @@ export default function FigmaLandingTemplate({
                       {item.dateLabel || "APRIL 15, 2026"}
                     </p>
                     {item.summary ? (
-                      <p className="mt-[16px] bg-font-crimson text-[32px] leading-[44px] text-[#312e28]">
+                      <p className="mt-[16px] bg-font-crimson text-[18px] leading-[28px] text-[#312e28]">
                         {item.summary}
                       </p>
                     ) : null}
