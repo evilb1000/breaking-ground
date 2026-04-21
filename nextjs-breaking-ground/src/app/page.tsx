@@ -171,12 +171,12 @@ async function loadLatestNewsItems(): Promise<NewsFeedItem[]> {
 
 function TopRibbon() {
   const nav: { label: string; hasChevron: boolean; href?: string }[] = [
-    { label: "Region", hasChevron: true },
-    { label: "Profiles", hasChevron: true },
-    { label: "Features", hasChevron: false },
-    { label: "Perspectives", hasChevron: false },
-    { label: "Insights", hasChevron: true },
-    { label: "About", hasChevron: true },
+    { label: "Region", hasChevron: true, href: "/sections/local" },
+    { label: "Profiles", hasChevron: true, href: "/sections/project-profiles" },
+    { label: "Features", hasChevron: false, href: "/sections/features" },
+    { label: "Perspectives", hasChevron: false, href: "/sections/perspectives" },
+    { label: "Insights", hasChevron: true, href: "/sections/data-insights" },
+    { label: "About", hasChevron: true, href: "/about" },
     { label: "News", hasChevron: false, href: "/news" },
   ];
   return (
