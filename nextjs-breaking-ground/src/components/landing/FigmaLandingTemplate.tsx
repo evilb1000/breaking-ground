@@ -174,7 +174,7 @@ export default function FigmaLandingTemplate({
                       external={item.external}
                       className="group inline-block"
                     >
-                      <h3 className="bg-font-roboto-flex text-[30px] leading-[36px] font-[900] text-[#113251] no-underline group-hover:underline underline-offset-[8px] decoration-[#113251] transition-colors">
+                      <h3 className="bg-font-roboto-condensed text-[30px] leading-[36px] font-medium text-[#113251] no-underline group-hover:underline underline-offset-[8px] decoration-[#113251] transition-colors">
                         {item.title}
                       </h3>
                     </ItemLink>
