@@ -308,7 +308,14 @@ function TabbedPanel({ entries }: { entries: HomepageEntry[] }) {
     <div className="absolute left-[850px] top-[631px] h-[717px] w-[566px] bg-[#f5f3f0] px-[28px] pt-[32px]">
       <div className="flex items-center gap-[12px]">
         <button className="rounded-[4px] bg-[#ff611d] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-white">Profiles</button>
-        <button className="rounded-[4px] bg-[rgba(161,161,161,0.1)] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-[#595959]">Issues</button>
+        <a
+          href="https://www.mbawpa.org/news/breaking-ground-magazine/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-[4px] bg-[rgba(161,161,161,0.1)] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-[#595959]"
+        >
+          Issues
+        </a>
         <button className="rounded-[4px] bg-[rgba(161,161,161,0.1)] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-[#595959]">Perspectives</button>
       </div>
       <h2 className="bg-type-h2 mt-[24px] text-[#312e28]">Breaking Ground Profiles</h2>
