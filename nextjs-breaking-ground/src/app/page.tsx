@@ -1,8 +1,12 @@
 import Link from "next/link";
+import fs from "node:fs/promises";
+import path from "node:path";
+import imageUrlBuilder from "@sanity/image-url";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { client } from "@/sanity/client";
 
 const imgRectangle10 = "https://www.figma.com/api/mcp/asset/6c59e688-e35f-4e4f-bbc2-ab33435c85c4";
 const imgIcon = "https://www.figma.com/api/mcp/asset/41630572-64c1-457a-904a-0c86bee9151f";
-const imgIcon1 = "https://www.figma.com/api/mcp/asset/9d000c3e-a0a0-4639-8400-25a4748f81d9";
 const imgInstagramWhite = "https://www.figma.com/api/mcp/asset/65a7b66a-686d-4b22-91e9-3308c2d30d21";
 const imgYoutubeWhite = "https://www.figma.com/api/mcp/asset/7dde89aa-1ea9-4ac7-84f6-fce6c9a025b5";
 const imgLinkedInWhite = "https://www.figma.com/api/mcp/asset/33903285-e910-4f19-b151-3f464cad87a0";
@@ -19,7 +23,151 @@ const imgScreenshot20260402At34147Pm1 = "https://www.figma.com/api/mcp/asset/d1c
 const imgScreenshot20260402At34120Pm1 = "https://www.figma.com/api/mcp/asset/ca867f23-f84e-49a9-989e-67f94a8a88c3";
 const imgScreenshot20260402At34131Pm1 = "https://www.figma.com/api/mcp/asset/2b98f650-e0b6-4325-9a19-0f1dcfe223cb";
 const imgScreenshot20260319At103148Am2 = "https://www.figma.com/api/mcp/asset/ac3eed3d-50fe-44e9-bea9-4339f21bde42";
-const imgIcon6 = "https://www.figma.com/api/mcp/asset/39ced4f3-b3a9-4c67-bbe0-f0c3517c6f3a";
+const imgItemBadge = "https://www.figma.com/api/mcp/asset/39ced4f3-b3a9-4c67-bbe0-f0c3517c6f3a";
+const imgEventRegistration = "https://www.figma.com/api/mcp/asset/39ced4f3-b3a9-4c67-bbe0-f0c3517c6f3a";
+const imgCoffee = "https://www.figma.com/api/mcp/asset/b9f91e7a-8deb-4f88-b389-2fbb17186e26";
+
+const HOMEPAGE_QUERY = `*[_type == "updatedHomepage"] | order(_updatedAt desc)[0]{
+  heroArticle->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
+  secondaryFeature->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
+  tertiaryFeature->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
+  issueHighlight->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
+  gridTwo[]->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
+  gridThree[]->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
+  announcementMessage,
+  announcementLinkLabel,
+  announcementLinkUrl
+}`;
+
+type HomepageEntry = {
+  _id: string;
+  _type: string;
+  title?: string;
+  dek?: string;
+  slug?: { current?: string };
+  publishedAt?: string;
+  readingTime?: number;
+  category?: string;
+  projectType?: string;
+  projectName?: string;
+  headerImage?: SanityImageLike;
+  heroImage?: SanityImageLike;
+  homepageImage?: SanityImageLike;
+};
+
+type HomepageDoc = {
+  heroArticle?: HomepageEntry | null;
+  secondaryFeature?: HomepageEntry | null;
+  tertiaryFeature?: HomepageEntry | null;
+  issueHighlight?: HomepageEntry | null;
+  gridTwo?: HomepageEntry[];
+  gridThree?: HomepageEntry[];
+  announcementMessage?: string;
+  announcementLinkLabel?: string;
+  announcementLinkUrl?: string;
+} | null;
+
+type NewsFeedItem = {
+  link?: string;
+  title?: string;
+  headline?: string;
+  pubDate?: string;
+  publicationAddedAt?: string;
+};
+
+type NewsFeedManifest = {
+  summaries?: NewsFeedItem[];
+};
+
+export const revalidate = 0;
+const options = { next: { revalidate: 0 } };
+
+type SanityImageLike = {
+  asset?: {
+    _ref?: string;
+    url?: string;
+  };
+  alt?: string;
+};
+
+const urlFor = (source: SanityImageSource) => {
+  const { projectId, dataset } = client.config();
+  return projectId && dataset ? imageUrlBuilder({ projectId, dataset }).image(source) : null;
+};
+
+const hasAsset = (img?: SanityImageLike | null) => Boolean(img?.asset?._ref || img?.asset?.url);
+const pickImage = (entry?: HomepageEntry | null) =>
+  hasAsset(entry?.homepageImage)
+    ? entry?.homepageImage
+    : hasAsset(entry?.headerImage)
+    ? entry?.headerImage
+    : hasAsset(entry?.heroImage)
+    ? entry?.heroImage
+    : null;
+
+const entryImageUrl = (entry?: HomepageEntry | null, width = 1200, height = 800) => {
+  const image = pickImage(entry);
+  if (!image) return null;
+  if (image?.asset?._ref) return urlFor(image as SanityImageSource)?.width(width).height(height).fit("crop").url() ?? null;
+  return image?.asset?.url ?? null;
+};
+
+const entryHref = (entry?: HomepageEntry | null) => {
+  const slug = entry?.slug?.current;
+  return slug ? `/${slug}` : "#";
+};
+
+const displayDate = (date?: string) => {
+  if (!date) return "APRIL 15, 2026";
+  const d = new Date(date);
+  if (Number.isNaN(d.getTime())) return "APRIL 15, 2026";
+  return d.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).toUpperCase();
+};
+
+function newsItemDateValue(item: NewsFeedItem): number {
+  const raw = item.pubDate || item.publicationAddedAt;
+  if (!raw) return 0;
+  const ts = new Date(raw).getTime();
+  return Number.isNaN(ts) ? 0 : ts;
+}
+
+async function loadLatestNewsItems(): Promise<NewsFeedItem[]> {
+  try {
+    const ingestDir = path.join(process.cwd(), "..", "data", "news-feed-ingest");
+    const entries = await fs.readdir(ingestDir, { withFileTypes: true });
+    const jsonNames = entries
+      .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".json"))
+      .map((entry) => entry.name);
+
+    if (!jsonNames.length) return [];
+
+    const latestJsonName = (
+      await Promise.all(
+        jsonNames.map(async (name) => {
+          const fullPath = path.join(ingestDir, name);
+          const stats = await fs.stat(fullPath);
+          return { name, mtimeMs: stats.mtimeMs };
+        }),
+      )
+    )
+      .sort((a, b) => b.mtimeMs - a.mtimeMs)[0]
+      .name;
+
+    const manifestPath = path.join(ingestDir, latestJsonName);
+    const raw = await fs.readFile(manifestPath, "utf8");
+    const manifest = JSON.parse(raw) as NewsFeedManifest;
+
+    return [...(manifest.summaries || [])]
+      .filter((item) => item.link && (item.headline || item.title))
+      .sort((a, b) => newsItemDateValue(b) - newsItemDateValue(a));
+  } catch {
+    return [];
+  }
+}
 
 function TopRibbon() {
   const nav = [
@@ -67,55 +215,86 @@ function TopRibbon() {
   );
 }
 
-function LatestNews() {
-  const cards = [1, 2, 3];
+function LatestNews({ news }: { news: NewsFeedItem[] }) {
+  const cards = news.length > 0 ? news.slice(0, 3) : [];
   return (
-    <div className="absolute left-[26px] top-[611px] w-[776px]">
+    <div className="absolute left-[26px] top-[611px] h-[501px] w-[776px] border-b border-[rgba(55,54,50,0.65)] pb-[40px] pt-[20px]">
       <div className="flex items-center gap-[8px]">
-        <img src={imgIcon6} alt="" className="h-[14px] w-[14px]" />
+        <div className="relative h-[20px] w-[20px] overflow-hidden">
+          <div className="absolute inset-[4.17%_4.17%_12.5%_8.33%]">
+            <div className="absolute inset-[-6%_-5.71%]">
+              <img src={imgCoffee} alt="" className="block h-full w-full" />
+            </div>
+          </div>
+        </div>
         <h2 className="bg-type-h2 text-[#312e28]">Latest news</h2>
       </div>
-      <div className="mt-[20px] grid grid-cols-3 gap-[12px]">
-        {cards.map((id) => (
-          <div key={id} className="w-[250px]">
-            <img src={imgRectangle10} alt="" className="h-[133px] w-[250px] rounded-[4px] object-cover" />
-            <p className="bg-type-meta mt-[6px] text-[#312e28]">APRIL 15, 2026</p>
-            <h3 className="bg-type-h3 text-[#312e28]">Iran Conflict Fuels Economic Concerns: Key Indicators to Watch This Week</h3>
-          </div>
+      <div className="mt-[20px] grid grid-cols-3 gap-[17px]">
+        {(cards.length ? cards : [{}, {}, {}] as NewsFeedItem[]).map((entry, i) => (
+          <a
+            key={`${entry.link || "latest"}-${i}`}
+            href={entry.link || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block w-[250px]"
+          >
+            <img
+              src={imgRectangle10}
+              alt={entry?.headline || entry?.title || ""}
+              className="h-[133px] w-[250px] rounded-[4px] object-cover"
+            />
+            <div className="mt-[6px] flex items-center gap-[12px]">
+              <p className="bg-type-meta text-[#312e28]">{displayDate(entry?.pubDate || entry?.publicationAddedAt)}</p>
+              <div className="flex items-center gap-[4px]">
+                <img src={imgIcon2} alt="" className="h-[12px] w-[12px]" />
+                <p className="bg-type-meta text-[#312e28]">3 MIN READ</p>
+              </div>
+              <img src={imgReply} alt="" className="h-[14px] w-[14px]" />
+            </div>
+            <h3 className="bg-type-h3 text-[#312e28] group-hover:underline">
+              {entry?.headline || entry?.title || "Iran Conflict Fuels Economic Concerns: Key Indicators to Watch This Week"}
+            </h3>
+          </a>
         ))}
       </div>
-      <button className="mt-[20px] rounded-[4px] bg-[#113251] px-[12px] py-[12px] bg-font-roboto text-[12px] font-bold text-white">
+      <Link href="/news-feed" className="mt-[20px] inline-flex rounded-[4px] bg-[#113251] px-[12px] py-[12px] bg-font-roboto text-[12px] font-bold text-white">
         View all news
-      </button>
+      </Link>
     </div>
   );
 }
 
-function HeroFeature() {
+function HeroFeature({ entry }: { entry?: HomepageEntry | null }) {
+  const heroImage = entryImageUrl(entry, 1800, 900) || imgScreenshot20260319At103148Am2;
+  const heroTitle = entry?.title || "Profile article headline text content area placeholder";
+  const heroDek = entry?.dek;
+  const tag = entry?.category || entry?.projectType || "ARTICLE TAG";
   return (
     <div className="absolute left-[26px] top-[156px] flex h-[428px] w-[1392px] gap-[20px]">
-      <img src={imgScreenshot20260319At103148Am2} alt="" className="h-[428px] w-[686px] rounded-[4px] object-cover" />
+      <img src={heroImage} alt={heroTitle} className="h-[428px] w-[686px] rounded-[4px] object-cover" />
       <div className="relative flex h-[428px] w-[686px] flex-col justify-center bg-[#f5f3f0] px-[24px] pb-[42px]">
-        <p className="bg-type-tag text-[#ff611d]">ARTICLE TAG</p>
+        <p className="bg-type-tag text-[#ff611d]">{tag}</p>
         <h1 className="bg-type-h1 mt-[8px] w-[654px] text-[#312e28]">
-          Profile article headline text content area placeholder
+          {heroTitle}
         </h1>
         <div className="mt-[10px] flex items-center gap-[12px]">
-          <p className="bg-type-meta text-[#312e28]">APRIL 15, 2026</p>
+          <p className="bg-type-meta text-[#312e28]">{displayDate(entry?.publishedAt)}</p>
           <div className="flex items-center gap-[4px]">
             <img src={imgIcon2} alt="" className="h-[12px] w-[12px]" />
-            <p className="bg-type-meta text-[#312e28]">3 MIN READ</p>
+            <p className="bg-type-meta text-[#312e28]">{entry?.readingTime ? `${entry.readingTime} MIN READ` : "3 MIN READ"}</p>
           </div>
           <img src={imgReply} alt="" className="h-[14px] w-[14px]" />
         </div>
-        <p className="bg-type-body mt-[20px] w-[654px] text-[#312e28]">
-          Produced six times a year, BreakingGround is the first comprehensive source of local market information for all professionals of the commercial building. Produced six times a year, BreakingGround is the first comprehensive source of local market information for all professionals of the commercial building ...
-        </p>
-        <button className="mt-[20px] w-[156px] rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white">
+        {heroDek ? (
+          <p className="bg-type-body mt-[20px] w-[654px] text-[#312e28]">
+            {heroDek}
+          </p>
+        ) : null}
+        <Link href={entryHref(entry)} className="mt-[20px] inline-flex w-[156px] items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white">
           Read article
-        </button>
+        </Link>
         <div className="absolute left-[264px] top-0 flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
-          <img src={imgIcon6} alt="" className="h-[14px] w-[14px]" />
+          <img src={imgItemBadge} alt="" className="h-[14px] w-[14px]" />
           <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px] text-white">ITEM BADGE</p>
         </div>
       </div>
@@ -123,8 +302,8 @@ function HeroFeature() {
   );
 }
 
-function TabbedPanel() {
-  const rows = [1, 2, 3, 4];
+function TabbedPanel({ entries }: { entries: HomepageEntry[] }) {
+  const rows = entries.length > 0 ? entries.slice(0, 4) : [];
   return (
     <div className="absolute left-[850px] top-[631px] h-[717px] w-[566px] bg-[#f5f3f0] px-[28px] pt-[32px]">
       <div className="flex items-center gap-[12px]">
@@ -134,53 +313,71 @@ function TabbedPanel() {
       </div>
       <h2 className="bg-type-h2 mt-[24px] text-[#312e28]">Breaking Ground Profiles</h2>
       <div className="mt-[16px] space-y-[16px]">
-        {rows.map((r) => (
-          <div key={r} className="flex w-[508px] items-center gap-[13px]">
-            <img src={imgRectangle10} alt="" className="h-[100px] w-[140px] rounded-[4px] object-cover" />
+        {(rows.length ? rows : [{ _id: "tab-fallback-1" }, { _id: "tab-fallback-2" }, { _id: "tab-fallback-3" }, { _id: "tab-fallback-4" }] as HomepageEntry[]).map((entry, r) => (
+          <Link key={entry._id || r} href={entryHref(entry)} className="flex w-[508px] items-center gap-[13px] group">
+            <img src={entryImageUrl(entry, 420, 300) || imgRectangle10} alt="" className="h-[100px] w-[140px] rounded-[4px] object-cover" />
             <div className="w-[355px]">
-              <p className="bg-type-h3 text-[#312e28]">Profile title</p>
-              <p className="bg-type-body text-[#312e28]">Produced six times a year, Breaking Ground is the first comprehensive source ...</p>
+              <p className="bg-type-h3 text-[#312e28] group-hover:underline">{entry?.title || "Profile title"}</p>
+              <p className="bg-type-body text-[#312e28]">{entry?.dek || "Produced six times a year, Breaking Ground is the first comprehensive source ..."}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
-      <button className="mt-[24px] w-[156px] rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white">
+      <Link href="/sections/project-profiles" className="mt-[24px] inline-flex w-[156px] items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white">
         View all profiles
-      </button>
+      </Link>
     </div>
   );
 }
 
-function MidAd() {
+function MidAd({ entry }: { entry?: HomepageEntry | null }) {
   return (
-    <div className="absolute left-[26px] top-[1163px] flex h-[145px] w-[684px] items-center gap-[28px]">
-      <img src={imgImage3} alt="" className="h-[145px] w-[160px] rounded-[4px] object-cover" />
+    <div className="absolute left-0 top-[1163px] flex h-[145px] w-[684px] items-center gap-[28px]">
+      <img src={entryImageUrl(entry, 500, 500) || imgImage3} alt="" className="ml-[24px] h-[145px] w-[160px] rounded-[4px] object-cover" />
       <div className="w-[480px]">
-        <h2 className="bg-type-h2 text-[#312e28]">The IBEW Union Hall</h2>
-        <p className="bg-type-body mt-[6px] text-[#312e28]">
-          For more than a century, the International Brotherhood of Electrical Workers Local 712 has trained and supplied skilled electricians to contractors throughout Beaver, Crawford, Lawrence, and Mercer ...
-        </p>
-        <p className="mt-[6px] bg-font-roboto text-[14px] text-[#c85006] underline">Call to action link</p>
+        <h2 className="bg-type-h2 text-[#312e28]">{entry?.title || "The IBEW Union Hall"}</h2>
+        {entry?.dek ? (
+          <p className="bg-type-body mt-[6px] text-[#312e28]">
+            {entry.dek}
+          </p>
+        ) : null}
+        <Link href={entryHref(entry)} className="mt-[6px] inline-block bg-font-roboto text-[14px] text-[#c85006] underline">
+          Call to action link
+        </Link>
       </div>
     </div>
   );
 }
 
-function EventBanner() {
+function EventBanner({ entry, ctaLabel, ctaHref, body }: { entry?: HomepageEntry | null; ctaLabel?: string; ctaHref?: string; body?: string }) {
+  const title = entry?.title || "Come Join Us At the 2025 Evening of Excellence";
+  const subtitle = `Event starts 8:00 pm on ${entry?.publishedAt ? new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".") : "04.13.2026"}`;
   return (
     <div className="absolute left-0 top-[1372px] h-[336px] w-[1440px] overflow-hidden">
-      <img src={imgRectangle15} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      <img src={entryImageUrl(entry, 1800, 600) || imgRectangle15} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-[#113251]/70" />
       <div className="absolute left-0 top-0 h-[336px] w-[1440px] text-center text-white">
         <div className="mt-[80px]">
           <div className="mx-auto inline-flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
-            <img src={imgIcon6} alt="" className="h-[14px] w-[14px]" />
+            <img src={imgEventRegistration} alt="" className="h-[14px] w-[14px]" />
             <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px]">EVENT REGISTRATION</p>
           </div>
-          <h2 className="bg-type-h1 mt-[16px] text-white">Come Join Us At the 2025 Evening of Excellence</h2>
-          <h3 className="bg-type-h2 mt-[12px] text-white">Event starts 8:00 pm on 04.13.2026</h3>
-          <p className="bg-type-h3 mt-[14px] text-white">Join us for an unforgettable evening of celebration, inspiration, and impact.</p>
-          <p className="mt-[18px] bg-font-helvetica text-[14px] underline">Register here</p>
+          <h2 className="bg-type-h1 mt-[16px] text-white">{title}</h2>
+          <h3 className="bg-type-h2 mt-[12px] text-white">{subtitle}</h3>
+          <p className="bg-type-h3 mt-[14px] text-white">{body || "Join us for an unforgettable evening of celebration, inspiration, and impact."}</p>
+          <Link href={ctaHref || entryHref(entry)} className="mt-[18px] inline-flex items-center gap-[5px] bg-font-helvetica text-[14px] underline">
+            <span>{ctaLabel || "Register here"}</span>
+            <svg viewBox="0 0 24 24" className="h-[24px] w-[24px]" aria-hidden="true">
+              <path
+                d="M5 12h14M13 6l6 6-6 6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
         </div>
       </div>
     </div>
@@ -248,16 +445,28 @@ function FigmaFooter() {
   );
 }
 
-export default function IndexPage() {
+export default async function IndexPage() {
+  const homepage = await client.fetch<HomepageDoc>(HOMEPAGE_QUERY, {}, options);
+  const hero = homepage?.heroArticle ?? null;
+  const latest = await loadLatestNewsItems();
+  const tabbed = homepage?.gridTwo?.length ? homepage.gridTwo : homepage?.gridThree ?? [];
+  const midAd = homepage?.secondaryFeature ?? null;
+  const event = homepage?.tertiaryFeature ?? homepage?.issueHighlight ?? null;
+
   return (
-    <main className="figma-homepage min-h-screen bg-[#e8e8e8] py-6 overflow-x-auto">
+    <main className="figma-homepage min-h-screen bg-[#e8e8e8] overflow-x-auto">
       <div className="relative mx-auto h-[2644px] w-[1440px] bg-white">
         <TopRibbon />
-        <HeroFeature />
-        <LatestNews />
-        <TabbedPanel />
-        <MidAd />
-        <EventBanner />
+        <HeroFeature entry={hero} />
+        <LatestNews news={latest} />
+        <TabbedPanel entries={tabbed} />
+        <MidAd entry={midAd} />
+        <EventBanner
+          entry={event}
+          ctaLabel={homepage?.announcementLinkLabel}
+          ctaHref={homepage?.announcementLinkUrl}
+          body={homepage?.announcementMessage}
+        />
         <SponsorsAndAd />
         <FigmaFooter />
       </div>
