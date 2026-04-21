@@ -32,17 +32,27 @@ function TopRibbon() {
   ] as const;
   return (
     <div className="absolute left-0 top-0 flex w-[1440px] items-center justify-between bg-[#f5f3f0] px-[26px] pb-[28px] pt-[36px]">
-      <img src={imgBg2} alt="Breaking Ground" className="h-[65px] w-[266px] object-cover" />
+      <div className="relative h-[65px] w-[266px]">
+        <img src={imgBg2} alt="Breaking Ground" className="absolute inset-0 h-full w-full object-cover" />
+      </div>
       <div className="flex items-center gap-[24px]">
         <div className="flex items-center gap-[28px]">
           {nav.map(([label, hasChevron]) => (
             <div key={label} className="flex items-center gap-[2px]">
               <p className="bg-type-nav whitespace-nowrap text-[#312e28]">{label}</p>
-              {hasChevron ? <img src={imgIcon1} alt="" className="h-[24px] w-[24px] rotate-180 opacity-80" /> : null}
+              {hasChevron ? (
+                <div className="relative flex h-[24px] w-[24px] items-center justify-center">
+                  <img src={imgIcon1} alt="" className="h-[24px] w-[24px] -scale-y-100 opacity-80" />
+                </div>
+              ) : null}
             </div>
           ))}
         </div>
-        <img src={imgIcon} alt="Search" className="h-[36px] w-[36px]" />
+        <div className="relative h-[36px] w-[36px]">
+          <div className="absolute inset-[12.5%]">
+            <img src={imgIcon} alt="Search" className="absolute inset-0 h-full w-full" />
+          </div>
+        </div>
       </div>
     </div>
   );
