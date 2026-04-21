@@ -4,12 +4,12 @@ const FIGMA_HEADER_LOGO =
   "https://www.figma.com/api/mcp/asset/961e793c-d56e-4301-a43b-7c3d4b349e0e";
 
 const NAV_ITEMS = [
-  { label: "Region", href: "/sections/local" },
-  { label: "Profiles", href: "/sections/project-profiles" },
-  { label: "Features", href: "/sections/features" },
-  { label: "Perspectives", href: "/sections/perspectives" },
-  { label: "Insights", href: "/sections/data-insights" },
-  { label: "About", href: "/about" },
+  { label: "Region", href: "/sections/local", chevron: true },
+  { label: "Profiles", href: "/sections/project-profiles", chevron: true },
+  { label: "Features", href: "/sections/features", chevron: false },
+  { label: "Perspectives", href: "/sections/perspectives", chevron: false },
+  { label: "Insights", href: "/sections/data-insights", chevron: true },
+  { label: "About", href: "/about", chevron: true },
 ];
 
 export default function HomepageTopRibbon() {
@@ -24,22 +24,21 @@ export default function HomepageTopRibbon() {
           />
         </Link>
 
-        <nav
-          className="bg-font-roboto-flex hidden lg:flex items-center gap-6 text-[14px] leading-[20px] text-[#312e28]"
-          style={{
-            fontVariationSettings:
-              "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 151",
-            fontWeight: 838 as any,
-          }}
-        >
+        <nav className="hidden lg:flex items-center gap-6 text-[#312e28]">
           {NAV_ITEMS.map((item) => (
-            <Link key={item.href} href={item.href} className="hover:opacity-70 transition-opacity whitespace-nowrap">
-              {item.label}
-            </Link>
+            <span key={item.href} className="inline-flex items-center gap-[2px]">
+              <Link href={item.href} className="bg-type-nav hover:opacity-70 transition-opacity whitespace-nowrap">
+                {item.label}
+              </Link>
+              {item.chevron ? (
+                <span className="bg-type-nav leading-none opacity-80 -mt-[1px]" aria-hidden="true">▾</span>
+              ) : null}
+            </span>
           ))}
-          <Link href="/news-feed" className="hover:opacity-70 transition-opacity whitespace-nowrap">
+          <Link href="/news-feed" className="bg-type-nav hover:opacity-70 transition-opacity whitespace-nowrap">
             News Feed
           </Link>
+          <span className="text-[18px] leading-none ml-1" aria-hidden="true">⌕</span>
         </nav>
       </div>
     </header>

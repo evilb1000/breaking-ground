@@ -16,10 +16,10 @@ export default function HomepageSponsorsRow({ sponsors }: HomepageSponsorsRowPro
             </span>
           ))}
         </div>
-        <h3 className="bg-font-roboto-flex mt-8 text-center text-[36px] leading-[1.2] font-semibold text-[#312e28]">
+        <h3 className="bg-type-h1 mt-8 text-center text-[#312e28]">
           Our sponsors
         </h3>
-        <p className="bg-font-crimson mt-3 text-center text-[#5f5b55] leading-relaxed">
+        <p className="bg-type-body mt-3 text-center text-[#5f5b55]">
           Text about how to become a sponsor or who to contact to learn more.
         </p>
       </div>

@@ -29,6 +29,64 @@
   font-family: var(--font-crimson-text), Georgia, serif;
 }
 
+.bg-font-helvetica {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Figma homepage typography tokens */
+.bg-type-h1 {
+  font-family: var(--font-roboto-flex), var(--font-roboto), Arial, sans-serif;
+  font-size: 36px;
+  line-height: 44px;
+  font-variation-settings: "GRAD" 0, "XOPQ" 96, "XTRA" 468, "YOPQ" 79, "YTAS" 750, "YTDE" -203, "YTFI" 738, "YTLC" 514, "YTUC" 712, "wdth" 100;
+  font-weight: 838;
+}
+
+.bg-type-h2 {
+  font-family: var(--font-roboto-flex), var(--font-roboto), Arial, sans-serif;
+  font-size: 28px;
+  line-height: 34px;
+  font-variation-settings: "GRAD" 0, "XOPQ" 96, "XTRA" 468, "YOPQ" 79, "YTAS" 750, "YTDE" -203, "YTFI" 738, "YTLC" 514, "YTUC" 712, "wdth" 100;
+  font-weight: 838;
+}
+
+.bg-type-nav {
+  font-family: var(--font-roboto-flex), var(--font-roboto), Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-variation-settings: "GRAD" 0, "XOPQ" 96, "XTRA" 468, "YOPQ" 79, "YTAS" 750, "YTDE" -203, "YTFI" 738, "YTLC" 514, "YTUC" 712, "wdth" 151;
+  font-weight: 838;
+}
+
+.bg-type-h3 {
+  font-family: var(--font-roboto-condensed), var(--font-roboto), Arial, sans-serif;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 500;
+}
+
+.bg-type-body {
+  font-family: var(--font-crimson-text), Georgia, serif;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+.bg-type-meta {
+  font-family: var(--font-roboto), Arial, sans-serif;
+  font-size: 10px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.bg-type-tag {
+  font-family: var(--font-roboto), Arial, sans-serif;
+  font-size: 10px;
+  line-height: 24px;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+}
+
 /* Force a white, magazine-style base regardless of system theme */
 body {
   background: #ffffff;

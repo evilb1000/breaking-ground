@@ -20,11 +20,11 @@ export default function HomepageEventBanner({
         <p className="bg-font-roboto mx-auto mb-5 inline-flex rounded bg-[#ff611d] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em]">
           Event registration
         </p>
-        <h3 className="bg-font-roboto-flex text-4xl md:text-5xl font-semibold leading-tight">
+        <h3 className="bg-type-h1">
           {title}
         </h3>
-        <p className="bg-font-roboto-flex mt-3 text-2xl md:text-3xl font-semibold">{subtitle}</p>
-        <p className="bg-font-crimson mx-auto mt-5 max-w-3xl text-lg md:text-xl leading-relaxed">
+        <p className="bg-type-h2 mt-3">{subtitle}</p>
+        <p className="bg-type-body mx-auto mt-5 max-w-3xl">
           {body}
         </p>
         <a

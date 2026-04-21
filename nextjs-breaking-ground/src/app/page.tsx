@@ -310,7 +310,7 @@ export default async function IndexPage() {
 
       <section className="mt-7 grid grid-cols-1 xl:grid-cols-[1fr_566px] gap-10 items-start">
         <div>
-          <h2 className="bg-font-roboto-flex flex items-center gap-2 text-[28px] leading-[1.2] font-semibold text-[#312e28]">
+          <h2 className="bg-type-h2 flex items-center gap-2 text-[#312e28]">
             <span className="inline-block size-2 rounded-full bg-[#ff611d]" />
             Latest news
           </h2>
@@ -333,10 +333,10 @@ export default async function IndexPage() {
                 Partner
               </div>
               <div>
-                <h3 className="bg-font-roboto-flex text-[36px] leading-[1.12] font-semibold text-[#312e28]">
+                <h3 className="bg-type-h1 text-[#312e28]">
                   {adArticle?.title || "The IBEW Union Hall"}
                 </h3>
-                <p className="bg-font-crimson mt-2 text-[16px] leading-[1.4] text-[#4a4640]">
+                <p className="bg-type-body mt-2 text-[#4a4640]">
                   {adArticle?.dek ||
                     "For more than a century, this sponsored section highlights skilled workforce partnerships and regional project momentum."}
                 </p>

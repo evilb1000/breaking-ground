@@ -61,7 +61,7 @@ export default function HomepageTabbedPanel({
         })}
       </div>
 
-      <h3 className="bg-font-roboto-flex mt-6 text-[28px] leading-[1.2] font-semibold text-[#312e28]">
+      <h3 className="bg-type-h2 mt-6 text-[#312e28]">
         Breaking Ground {TAB_LABELS[activeTab]}
       </h3>
 
@@ -82,10 +82,10 @@ export default function HomepageTabbedPanel({
               ) : null}
             </div>
             <div className="min-w-0 text-[#312e28]">
-              <p className="bg-font-roboto-condensed text-[20px] leading-[1.3] font-medium group-hover:underline">
+              <p className="bg-type-h3 group-hover:underline">
                 {item.title}
               </p>
-              <p className="bg-font-crimson mt-1 text-[16px] leading-[1.375] line-clamp-3">
+              <p className="bg-type-body mt-1 line-clamp-3">
                 {item.description}
               </p>
             </div>
