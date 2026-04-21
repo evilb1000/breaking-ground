@@ -2,6 +2,7 @@ import Link from "next/link";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
+import FigmaLandingTemplate, { type LandingItem } from "@/components/landing/FigmaLandingTemplate";
 import Masthead from "@/components/Masthead";
 
 const SECTIONS: Record<string, { title: string; seriesSlug: string }> = {
@@ -33,11 +34,17 @@ const ARTICLES_BY_SERIES_QUERY = `*[_type == "article" && series->slug.current =
 const PROJECT_PROFILES_QUERY = `*[_type == "projectProfile" && defined(slug.current)]
   | order(publishedAt desc){
     _id,
+    _type,
     title,
     dek,
     slug,
     publishedAt,
+    category,
+    readingTime,
+    heroImage{asset->{url,_ref,_type}, alt},
+    homepageImage{asset->{url,_ref,_type}, alt},
     projectName,
+    projectType,
     location,
     headerImage{asset->{url,_ref,_type}, alt},
     author->{name}
@@ -52,8 +59,30 @@ const urlFor = (source: SanityImageSource) =>
     dataset: client.config().dataset!,
   }).image(source);
 
-const hasAsset = (img: any) => Boolean(img?.asset?._ref || img?.asset?.url);
-const pickImage = (article: any) =>
+type ImageAssetRef = {
+  asset?: { url?: string; _ref?: string; _type?: string };
+  alt?: string;
+};
+
+type LandingSourceItem = {
+  _id: string;
+  _type: string;
+  title?: string;
+  dek?: string;
+  slug?: { current?: string };
+  publishedAt?: string;
+  category?: string;
+  readingTime?: number;
+  projectName?: string;
+  projectType?: string;
+  headerImage?: ImageAssetRef | null;
+  heroImage?: ImageAssetRef | null;
+  homepageImage?: ImageAssetRef | null;
+  series?: { seriesImage?: ImageAssetRef | null } | null;
+};
+
+const hasAsset = (img?: ImageAssetRef | null) => Boolean(img?.asset?._ref || img?.asset?.url);
+const pickImage = (article: LandingSourceItem) =>
   hasAsset(article?.homepageImage)
     ? article.homepageImage
     : hasAsset(article?.headerImage)
@@ -63,6 +92,19 @@ const pickImage = (article: any) =>
     : hasAsset(article?.series?.seriesImage)
     ? article.series.seriesImage
     : null;
+
+function formatDisplayDate(raw?: string): string {
+  if (!raw) return "APRIL 15, 2026";
+  const dt = new Date(raw);
+  if (Number.isNaN(dt.getTime())) return "APRIL 15, 2026";
+  return dt
+    .toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })
+    .toUpperCase();
+}
 
 export default async function SectionPage({
   params,
@@ -88,72 +130,41 @@ export default async function SectionPage({
 
   const isProjectProfiles = section === "project-profiles";
 
-  const articles = isProjectProfiles
-    ? await client.fetch<any[]>(PROJECT_PROFILES_QUERY, {}, options)
-    : await client.fetch<any[]>(
+  const items = isProjectProfiles
+    ? await client.fetch<LandingSourceItem[]>(PROJECT_PROFILES_QUERY, {}, options)
+    : await client.fetch<LandingSourceItem[]>(
         ARTICLES_BY_SERIES_QUERY,
         { seriesSlug: config.seriesSlug },
         options
       );
+  const mappedItems: LandingItem[] = items.map((article) => {
+    const img = pickImage(article);
+    const imageSrc = img
+      ? urlFor(img as SanityImageSource)?.width(900).height(600).fit("crop").url()
+      : null;
+
+    return {
+      id: article._id,
+      title: article.title || "Untitled",
+      summary: article.dek || undefined,
+      href: article.slug?.current ? `/${article.slug.current}` : "#",
+      imageSrc,
+      imageAlt: img?.alt || article.title || "Article image",
+      dateLabel: formatDisplayDate(article.publishedAt),
+      readTimeLabel: article.readingTime ? `${article.readingTime} MIN READ` : "3 MIN READ",
+      external: false,
+    };
+  });
 
   return (
-    <>
-      <Masthead homeHref="/" />
-      <main className="min-h-screen bg-white text-black px-4 md:px-12 lg:px-24 py-12">
-        <h1 className="font-serif text-5xl md:text-6xl font-bold tracking-tight text-center">
-          {config.title}
-        </h1>
-
-        {articles.length === 0 ? (
-          <p className="mt-8 text-lg text-gray-500 text-center">No articles yet.</p>
-        ) : (
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article) => {
-              const img = pickImage(article);
-              const imgSrc = img
-                ? urlFor(img as SanityImageSource)?.width(800).height(600).fit("crop").url()
-                : null;
-
-              return (
-                <Link
-                  key={article._id}
-                  href={`/${article.slug.current}`}
-                  className="group block"
-                >
-                  <div className="w-full h-[240px] md:h-[280px] overflow-hidden rounded-lg bg-gray-100 mb-4">
-                    {imgSrc ? (
-                      <img
-                        src={imgSrc}
-                        alt={img?.alt || article.title}
-                        className="w-full h-full object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.03] group-hover:opacity-95"
-                      />
-                    ) : null}
-                  </div>
-                  <h2 className="font-serif text-2xl md:text-3xl font-bold leading-snug group-hover:underline">
-                    {article.title}
-                  </h2>
-                  {article.dek ? (
-                    <p className="text-gray-600 text-base md:text-lg leading-relaxed mt-2 line-clamp-2">
-                      {article.dek}
-                    </p>
-                  ) : null}
-                  {isProjectProfiles && article.location && (
-                    <p className="text-sm text-gray-500 mt-2">{article.location}</p>
-                  )}
-                  {article.author?.name && (
-                    <p className="text-sm text-gray-500 mt-3">
-                      By {article.author.name}
-                      {article.publishedAt
-                        ? ` · ${new Date(article.publishedAt).toLocaleDateString()}`
-                        : null}
-                    </p>
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </main>
-    </>
+    <FigmaLandingTemplate
+      pageTitle={config.title}
+      breadcrumbCurrent={config.title}
+      featuredItem={mappedItems[0]}
+      tiles={mappedItems.slice(1, 7)}
+      currentListLabel={`Current ${config.title.toLowerCase()}`}
+      loadMoreHref={`/sections/${section}`}
+      loadMoreLabel="Load more"
+    />
   );
 }

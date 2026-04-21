@@ -171,12 +171,13 @@ async function loadLatestNewsItems(): Promise<NewsFeedItem[]> {
 
 function TopRibbon() {
   const nav = [
-    ["Region", true],
-    ["Profiles", true],
-    ["Features", false],
-    ["Perspectives", false],
-    ["Insights", true],
-    ["About", true],
+    { label: "Region", hasChevron: true },
+    { label: "Profiles", hasChevron: true },
+    { label: "Features", hasChevron: false },
+    { label: "Perspectives", hasChevron: false },
+    { label: "Insights", hasChevron: true },
+    { label: "About", hasChevron: true },
+    { label: "News", hasChevron: false, href: "/news" },
   ] as const;
   return (
     <div className="absolute left-0 top-0 flex w-[1440px] items-center justify-between bg-[#f5f3f0] px-[26px] pb-[28px] pt-[36px]">
@@ -185,10 +186,16 @@ function TopRibbon() {
       </div>
       <div className="flex items-center gap-[24px]">
         <div className="flex items-center gap-[28px]">
-          {nav.map(([label, hasChevron]) => (
-            <div key={label} className="flex items-center gap-[2px]">
-              <p className="bg-type-nav whitespace-nowrap text-[#312e28]">{label}</p>
-              {hasChevron ? (
+          {nav.map((item) => (
+            <div key={item.label} className="flex items-center gap-[2px]">
+              {item.href ? (
+                <Link href={item.href} className="bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity">
+                  {item.label}
+                </Link>
+              ) : (
+                <p className="bg-type-nav whitespace-nowrap text-[#312e28]">{item.label}</p>
+              )}
+              {item.hasChevron ? (
                 <span className="inline-flex h-[24px] w-[24px] items-center justify-center translate-y-[1px]" aria-hidden="true">
                   <svg viewBox="0 0 24 24" className="h-[24px] w-[24px] text-[#312e28] opacity-80">
                     <path
@@ -244,20 +251,22 @@ function LatestNews({ news }: { news: NewsFeedItem[] }) {
               className="h-[133px] w-[250px] rounded-[4px] object-cover"
             />
             <div className="mt-[6px] flex items-center gap-[12px]">
-              <p className="bg-type-meta text-[#312e28]">{displayDate(entry?.pubDate || entry?.publicationAddedAt)}</p>
+              <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">
+                {displayDate(entry?.pubDate || entry?.publicationAddedAt)}
+              </p>
               <div className="flex items-center gap-[4px]">
                 <img src={imgIcon2} alt="" className="h-[12px] w-[12px]" />
-                <p className="bg-type-meta text-[#312e28]">3 MIN READ</p>
+                <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">3 MIN READ</p>
               </div>
               <img src={imgReply} alt="" className="h-[14px] w-[14px]" />
             </div>
-            <h3 className="bg-type-h3 text-[#312e28] group-hover:underline">
+            <h3 className="bg-font-roboto-condensed text-[20px] leading-[26px] font-medium text-[#312e28] group-hover:underline">
               {entry?.headline || entry?.title || "Iran Conflict Fuels Economic Concerns: Key Indicators to Watch This Week"}
             </h3>
           </a>
         ))}
       </div>
-      <Link href="/news-feed" className="mt-[20px] inline-flex rounded-[4px] bg-[#113251] px-[12px] py-[12px] bg-font-roboto text-[12px] font-bold text-white">
+      <Link href="/news" className="mt-[20px] inline-flex rounded-[4px] bg-[#113251] px-[12px] py-[12px] bg-font-roboto text-[12px] font-bold text-white">
         View all news
       </Link>
     </div>

@@ -35,8 +35,8 @@ export default function HomepageTopRibbon() {
               ) : null}
             </span>
           ))}
-          <Link href="/news-feed" className="bg-type-nav hover:opacity-70 transition-opacity whitespace-nowrap">
-            News Feed
+          <Link href="/news" className="bg-type-nav hover:opacity-70 transition-opacity whitespace-nowrap">
+            News
           </Link>
           <span className="text-[18px] leading-none ml-1" aria-hidden="true">⌕</span>
         </nav>

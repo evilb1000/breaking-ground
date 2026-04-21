@@ -12,7 +12,7 @@ const SECTION_ITEMS = [
   { label: "Perspectives", slug: "perspectives" },
   { label: "Data Insights", slug: "data-insights" },
   { label: "AI In Construction", slug: "ai-in-construction" },
-  { label: "News Feed", slug: "news-feed", href: "/news-feed" },
+  { label: "News", slug: "news", href: "/news" },
 ];
 
 export default function Masthead({ homeHref }: { homeHref?: string } = {}) {
