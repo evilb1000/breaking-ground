@@ -2,11 +2,11 @@ import Link from "next/link";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
-import Masthead from "@/components/Masthead";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import HomepageHeroFeature from "@/components/homepage/HomepageHeroFeature";
 import HomepageLatestNewsCard from "@/components/homepage/HomepageLatestNewsCard";
 import HomepageSponsorsRow from "@/components/homepage/HomepageSponsorsRow";
+import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageTabbedPanel, { type HomepageTabItem } from "@/components/homepage/HomepageTabbedPanel";
 
 export const revalidate = 0;
@@ -293,8 +293,8 @@ export default async function IndexPage() {
   const adArticle = profiles[0];
 
   return (
-    <main className="bg-white text-black px-4 md:px-8 lg:px-[26px] py-10 w-full">
-      <Masthead />
+    <main className="bg-white text-black px-4 md:px-8 lg:px-[26px] pb-10 w-full">
+      <HomepageTopRibbon />
 
       {activeHero?.slug?.current ? (
         <HomepageHeroFeature
@@ -310,7 +310,7 @@ export default async function IndexPage() {
 
       <section className="mt-7 grid grid-cols-1 xl:grid-cols-[1fr_566px] gap-10 items-start">
         <div>
-          <h2 className="flex items-center gap-2 font-serif text-4xl font-bold text-[#312e28]">
+          <h2 className="bg-font-roboto-flex flex items-center gap-2 text-[28px] leading-[1.2] font-semibold text-[#312e28]">
             <span className="inline-block size-2 rounded-full bg-[#ff611d]" />
             Latest news
           </h2>
@@ -333,16 +333,16 @@ export default async function IndexPage() {
                 Partner
               </div>
               <div>
-                <h3 className="font-serif text-[42px] leading-[1.08] font-bold text-[#312e28]">
+                <h3 className="bg-font-roboto-flex text-[36px] leading-[1.12] font-semibold text-[#312e28]">
                   {adArticle?.title || "The IBEW Union Hall"}
                 </h3>
-                <p className="mt-2 font-serif text-[18px] leading-relaxed text-[#4a4640]">
+                <p className="bg-font-crimson mt-2 text-[16px] leading-[1.4] text-[#4a4640]">
                   {adArticle?.dek ||
                     "For more than a century, this sponsored section highlights skilled workforce partnerships and regional project momentum."}
                 </p>
                 <Link
                   href={adArticle?.slug?.current ? `/${adArticle.slug.current}` : "/"}
-                  className="mt-3 inline-flex text-[#d45422] font-semibold underline underline-offset-2"
+                  className="bg-font-roboto mt-3 inline-flex text-[14px] text-[#d45422] font-medium underline underline-offset-2"
                 >
                   Call to action link
                 </Link>

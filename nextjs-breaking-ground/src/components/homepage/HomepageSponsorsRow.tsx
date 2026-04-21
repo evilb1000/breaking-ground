@@ -10,16 +10,16 @@ export default function HomepageSponsorsRow({ sponsors }: HomepageSponsorsRowPro
           {sponsors.map((sponsor) => (
             <span
               key={sponsor}
-              className="inline-flex items-center justify-center rounded-full border border-[#d0ccc6] px-4 py-2 text-xs md:text-sm font-bold text-[#57534e]"
+              className="bg-font-roboto inline-flex items-center justify-center rounded-full border border-[#d0ccc6] px-4 py-2 text-xs md:text-sm font-bold text-[#57534e]"
             >
               {sponsor}
             </span>
           ))}
         </div>
-        <h3 className="mt-8 text-center font-serif text-4xl font-bold text-[#312e28]">
+        <h3 className="bg-font-roboto-flex mt-8 text-center text-[36px] leading-[1.2] font-semibold text-[#312e28]">
           Our sponsors
         </h3>
-        <p className="mt-3 text-center text-[#5f5b55] leading-relaxed">
+        <p className="bg-font-crimson mt-3 text-center text-[#5f5b55] leading-relaxed">
           Text about how to become a sponsor or who to contact to learn more.
         </p>
       </div>

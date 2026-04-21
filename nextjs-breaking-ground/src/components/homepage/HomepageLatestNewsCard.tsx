@@ -27,11 +27,11 @@ export default function HomepageLatestNewsCard({
         ) : null}
       </div>
       {publishedAt ? (
-        <p className="mt-2 text-[10px] uppercase tracking-[0.08em] text-[#7c7975]">
+        <p className="bg-font-roboto mt-2 text-[10px] uppercase leading-[2.2] tracking-[0.08em] text-[#7c7975]">
           {publishedAt}
         </p>
       ) : null}
-      <h3 className="mt-1 font-serif text-[21px] leading-[1.2] font-bold text-[#312e28] group-hover:underline">
+      <h3 className="bg-font-roboto-condensed mt-1 text-[20px] leading-[1.3] font-medium text-[#312e28] group-hover:underline">
         {title}
       </h3>
     </Link>

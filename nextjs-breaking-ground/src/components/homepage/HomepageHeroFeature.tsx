@@ -33,23 +33,23 @@ export default function HomepageHeroFeature({
             ) : null}
           </div>
           <div className="flex flex-col justify-center px-3 md:px-4 py-2 md:py-4 text-[#312e28]">
-            <p className="text-[10px] uppercase tracking-[0.14em] font-bold text-[#ff611d]">
+            <p className="bg-font-roboto text-[10px] uppercase tracking-[0.2em] font-bold text-[#ff611d]">
               {category || "Article tag"}
             </p>
-            <h2 className="mt-3 font-serif text-3xl md:text-[44px] md:leading-[1.06] font-bold">
+            <h2 className="bg-font-roboto-flex mt-3 text-[36px] leading-[1.12] md:text-[44px] md:leading-[1.06] font-semibold">
               {title}
             </h2>
             {publishedAt ? (
-              <p className="mt-3 text-[11px] text-[#6a6762] uppercase tracking-[0.08em]">
+              <p className="bg-font-roboto mt-3 text-[10px] leading-[2.2] text-[#6a6762] uppercase tracking-[0.08em]">
                 {publishedAt}
               </p>
             ) : null}
             {lede ? (
-              <p className="mt-5 text-[17px] leading-relaxed font-serif text-[#3b3833]">
+              <p className="bg-font-crimson mt-5 text-[16px] leading-[1.4] text-[#3b3833]">
                 {lede}
               </p>
             ) : null}
-            <span className="mt-6 inline-flex w-fit items-center justify-center rounded bg-[#113251] px-5 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white">
+            <span className="bg-font-roboto mt-6 inline-flex w-fit items-center justify-center rounded bg-[#113251] px-5 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white">
               Read article
             </span>
           </div>

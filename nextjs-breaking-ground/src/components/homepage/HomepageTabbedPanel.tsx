@@ -49,7 +49,7 @@ export default function HomepageTabbedPanel({
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`rounded px-3 py-2 text-[12px] font-bold uppercase tracking-[0.08em] transition-colors ${
+              className={`bg-font-roboto rounded px-3 py-2 text-[12px] font-bold uppercase tracking-[0.08em] transition-colors ${
                 isActive
                   ? "bg-[#ff611d] text-white"
                   : "bg-[rgba(161,161,161,0.1)] text-[#595959] hover:bg-[rgba(161,161,161,0.22)]"
@@ -61,7 +61,7 @@ export default function HomepageTabbedPanel({
         })}
       </div>
 
-      <h3 className="mt-6 font-serif text-[32px] leading-[1.1] font-bold text-[#312e28]">
+      <h3 className="bg-font-roboto-flex mt-6 text-[28px] leading-[1.2] font-semibold text-[#312e28]">
         Breaking Ground {TAB_LABELS[activeTab]}
       </h3>
 
@@ -82,10 +82,10 @@ export default function HomepageTabbedPanel({
               ) : null}
             </div>
             <div className="min-w-0 text-[#312e28]">
-              <p className="text-[20px] leading-[1.25] font-semibold group-hover:underline">
+              <p className="bg-font-roboto-condensed text-[20px] leading-[1.3] font-medium group-hover:underline">
                 {item.title}
               </p>
-              <p className="mt-1 text-[16px] leading-[1.35] font-serif line-clamp-3">
+              <p className="bg-font-crimson mt-1 text-[16px] leading-[1.375] line-clamp-3">
                 {item.description}
               </p>
             </div>
@@ -95,7 +95,7 @@ export default function HomepageTabbedPanel({
 
       <button
         type="button"
-        className="mt-6 inline-flex items-center justify-center rounded bg-[#113251] px-4 py-3 text-[12px] font-bold uppercase tracking-[0.08em] text-white"
+        className="bg-font-roboto mt-6 inline-flex items-center justify-center rounded bg-[#113251] px-4 py-3 text-[12px] font-bold uppercase tracking-[0.08em] text-white"
       >
         View all {activeTab}
       </button>

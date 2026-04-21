@@ -13,6 +13,22 @@
   --font-mono: var(--font-geist-mono);
 }
 
+.bg-font-roboto {
+  font-family: var(--font-roboto), Arial, sans-serif;
+}
+
+.bg-font-roboto-flex {
+  font-family: var(--font-roboto-flex), var(--font-roboto), Arial, sans-serif;
+}
+
+.bg-font-roboto-condensed {
+  font-family: var(--font-roboto-condensed), var(--font-roboto), Arial, sans-serif;
+}
+
+.bg-font-crimson {
+  font-family: var(--font-crimson-text), Georgia, serif;
+}
+
 /* Force a white, magazine-style base regardless of system theme */
 body {
   background: #ffffff;
