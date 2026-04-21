@@ -41,9 +41,16 @@ function TopRibbon() {
             <div key={label} className="flex items-center gap-[2px]">
               <p className="bg-type-nav whitespace-nowrap text-[#312e28]">{label}</p>
               {hasChevron ? (
-                <span className="inline-flex h-[14px] w-[14px] items-center justify-center" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" className="h-[14px] w-[14px] text-[#312e28] opacity-80" fill="currentColor">
-                    <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
+                <span className="inline-flex h-[24px] w-[24px] items-center justify-center translate-y-[1px]" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" className="h-[24px] w-[24px] text-[#312e28] opacity-80">
+                    <path
+                      d="M7 10l5 5 5-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </span>
               ) : null}
