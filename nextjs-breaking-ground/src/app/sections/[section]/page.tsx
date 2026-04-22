@@ -16,14 +16,16 @@ const SECTIONS: Record<string, { title: string; seriesSlug: string }> = {
   "ai-in-construction": { title: "AI In Construction", seriesSlug: "ai-in-construction" },
 };
 
-const ARTICLES_BY_SERIES_QUERY = `*[_type == "article" && series->slug.current == $seriesSlug && defined(slug.current)]
+const ARTICLES_BY_SERIES_QUERY = `*[_type == "figmaArticle" && series->slug.current == $seriesSlug && defined(slug.current)]
   | order(publishedAt desc){
     _id,
-    title,
+    "title": coalesce(headline, title),
     dek,
     slug,
     publishedAt,
-    category,
+    readingTime,
+    "category": coalesce(articleTag, category, section),
+    introImage{asset->{url,_ref,_type}, alt},
     headerImage{asset->{url,_ref,_type}, alt},
     heroImage{asset->{url,_ref,_type}, alt},
     homepageImage{asset->{url,_ref,_type}, alt},
@@ -75,6 +77,7 @@ type LandingSourceItem = {
   readingTime?: number;
   projectName?: string;
   projectType?: string;
+  introImage?: ImageAssetRef | null;
   headerImage?: ImageAssetRef | null;
   heroImage?: ImageAssetRef | null;
   homepageImage?: ImageAssetRef | null;
@@ -89,6 +92,8 @@ const pickImage = (article: LandingSourceItem) =>
     ? article.headerImage
     : hasAsset(article?.heroImage)
     ? article.heroImage
+    : hasAsset(article?.introImage)
+    ? article.introImage
     : hasAsset(article?.series?.seriesImage)
     ? article.series?.seriesImage ?? null
     : null;

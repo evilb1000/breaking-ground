@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrate:audit": "node scripts/migrate-articles-to-figma.mjs --phase=audit",
+    "migrate:plan": "node scripts/migrate-articles-to-figma.mjs --phase=migrate",
+    "migrate:apply": "node scripts/migrate-articles-to-figma.mjs --phase=migrate --execute",
+    "migrate:cleanup-plan": "node scripts/migrate-articles-to-figma.mjs --phase=cleanup",
+    "migrate:cleanup-apply": "node scripts/migrate-articles-to-figma.mjs --phase=cleanup --execute"
   },
   "dependencies": {
     "@deck.gl/core": "^9.2.2",

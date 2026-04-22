@@ -155,6 +155,36 @@ export const blockContent = defineType({
       name: 'mapEmbed',
       title: 'Map Embed',
       type: 'mapEmbed',
-    })
+    }),
+    // Pull quote (Figma article module)
+    defineArrayMember({
+      name: 'pullQuote',
+      title: 'Pull Quote',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'quote',
+          title: 'Quote',
+          type: 'text',
+          rows: 3,
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: 'attribution',
+          title: 'Attribution',
+          type: 'string',
+        }),
+      ],
+      preview: {
+        select: {title: 'quote', subtitle: 'attribution'},
+        prepare({title, subtitle}: {title?: string; subtitle?: string}) {
+          const preview = title && title.length > 60 ? `${title.slice(0, 60)}…` : title
+          return {
+            title: preview || 'Pull Quote',
+            subtitle: subtitle || undefined,
+          }
+        },
+      },
+    }),
   ]
 })

@@ -27,13 +27,36 @@ const imgItemBadge = "https://www.figma.com/api/mcp/asset/39ced4f3-b3a9-4c67-bbe
 const imgEventRegistration = "https://www.figma.com/api/mcp/asset/39ced4f3-b3a9-4c67-bbe0-f0c3517c6f3a";
 const imgCoffee = "https://www.figma.com/api/mcp/asset/b9f91e7a-8deb-4f88-b389-2fbb17186e26";
 
+// Projection used for every dereferenced homepage entry.
+// Coalesces article/projectProfile/figmaArticle field names into
+// the shape expected by the homepage render code:
+//   title    <- title (article/projectProfile) OR headline (figmaArticle)
+//   category <- category (article) OR articleTag (figmaArticle) OR section (figmaArticle)
+const ENTRY_PROJECTION = `
+  _id,
+  _type,
+  "title": coalesce(title, headline),
+  dek,
+  slug,
+  publishedAt,
+  readingTime,
+  "category": coalesce(category, articleTag, section),
+  projectType,
+  projectName,
+  section,
+  headerImage{asset->{_ref,url},alt},
+  heroImage{asset->{_ref,url},alt},
+  homepageImage{asset->{_ref,url},alt},
+  introImage{asset->{_ref,url},alt}
+`;
+
 const HOMEPAGE_QUERY = `*[_type == "updatedHomepage"] | order(_updatedAt desc)[0]{
-  heroArticle->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
-  secondaryFeature->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
-  tertiaryFeature->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
-  issueHighlight->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
-  gridTwo[]->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
-  gridThree[]->{_id,_type,title,dek,slug,publishedAt,readingTime,category,projectType,projectName,headerImage{asset->{_ref,url},alt},heroImage{asset->{_ref,url},alt},homepageImage{asset->{_ref,url},alt}},
+  heroArticle->{${ENTRY_PROJECTION}},
+  secondaryFeature->{${ENTRY_PROJECTION}},
+  tertiaryFeature->{${ENTRY_PROJECTION}},
+  issueHighlight->{${ENTRY_PROJECTION}},
+  gridTwo[]->{${ENTRY_PROJECTION}},
+  gridThree[]->{${ENTRY_PROJECTION}},
   announcementMessage,
   announcementLinkLabel,
   announcementLinkUrl
@@ -50,9 +73,11 @@ type HomepageEntry = {
   category?: string;
   projectType?: string;
   projectName?: string;
+  section?: string;
   headerImage?: SanityImageLike;
   heroImage?: SanityImageLike;
   homepageImage?: SanityImageLike;
+  introImage?: SanityImageLike;
 };
 
 type HomepageDoc = {
@@ -103,6 +128,8 @@ const pickImage = (entry?: HomepageEntry | null) =>
     ? entry?.headerImage
     : hasAsset(entry?.heroImage)
     ? entry?.heroImage
+    : hasAsset(entry?.introImage)
+    ? entry?.introImage
     : null;
 
 const entryImageUrl = (entry?: HomepageEntry | null, width = 1200, height = 800) => {

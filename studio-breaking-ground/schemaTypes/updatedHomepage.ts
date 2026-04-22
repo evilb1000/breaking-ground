@@ -2,7 +2,7 @@ import {defineField, defineType} from 'sanity'
 
 const entryReference = {
   type: 'reference',
-  to: [{type: 'article'}, {type: 'projectProfile'}],
+  to: [{type: 'projectProfile'}, {type: 'figmaArticle'}],
 }
 
 export const updatedHomepage = defineType({
@@ -21,7 +21,7 @@ export const updatedHomepage = defineType({
       name: 'heroArticle',
       title: 'Hero Article',
       type: 'reference',
-      to: [{type: 'article'}, {type: 'projectProfile'}],
+      to: [{type: 'projectProfile'}, {type: 'figmaArticle'}],
       description: 'Main hero feature (left image + right text block).',
       group: 'hero',
       validation: (Rule) => Rule.required(),
@@ -51,7 +51,7 @@ export const updatedHomepage = defineType({
       name: 'secondaryFeature',
       title: 'Mid Ad Feature',
       type: 'reference',
-      to: [{type: 'article'}, {type: 'projectProfile'}],
+      to: [{type: 'projectProfile'}, {type: 'figmaArticle'}],
       description: 'Used in the mid-page ad/content block.',
       group: 'midAd',
       validation: (Rule) => Rule.required(),
@@ -61,7 +61,7 @@ export const updatedHomepage = defineType({
       name: 'tertiaryFeature',
       title: 'Event Banner Feature',
       type: 'reference',
-      to: [{type: 'article'}, {type: 'projectProfile'}],
+      to: [{type: 'projectProfile'}, {type: 'figmaArticle'}],
       description: 'Primary source for event banner title/date/image.',
       group: 'eventBanner',
     }),
@@ -70,7 +70,7 @@ export const updatedHomepage = defineType({
       name: 'issueHighlight',
       title: 'Event Banner Fallback Feature',
       type: 'reference',
-      to: [{type: 'article'}, {type: 'projectProfile'}],
+      to: [{type: 'projectProfile'}, {type: 'figmaArticle'}],
       description: 'Fallback event source if Tertiary Feature is not set.',
       group: 'eventBanner',
     }),
