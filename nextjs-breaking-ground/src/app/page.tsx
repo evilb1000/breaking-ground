@@ -23,7 +23,6 @@ const imgScreenshot20260402At34147Pm1 = "https://www.figma.com/api/mcp/asset/d1c
 const imgScreenshot20260402At34120Pm1 = "https://www.figma.com/api/mcp/asset/ca867f23-f84e-49a9-989e-67f94a8a88c3";
 const imgScreenshot20260402At34131Pm1 = "https://www.figma.com/api/mcp/asset/2b98f650-e0b6-4325-9a19-0f1dcfe223cb";
 const imgScreenshot20260319At103148Am2 = "https://www.figma.com/api/mcp/asset/ac3eed3d-50fe-44e9-bea9-4339f21bde42";
-const imgItemBadge = "https://www.figma.com/api/mcp/asset/39ced4f3-b3a9-4c67-bbe0-f0c3517c6f3a";
 const imgEventRegistration = "https://www.figma.com/api/mcp/asset/39ced4f3-b3a9-4c67-bbe0-f0c3517c6f3a";
 const imgCoffee = "https://www.figma.com/api/mcp/asset/b9f91e7a-8deb-4f88-b389-2fbb17186e26";
 
@@ -52,6 +51,8 @@ const ENTRY_PROJECTION = `
 
 const HOMEPAGE_QUERY = `*[_type == "updatedHomepage"] | order(_updatedAt desc)[0]{
   heroArticle->{${ENTRY_PROJECTION}},
+  heroBadgeLabel,
+  heroBadgeIcon{asset->{_ref,url},alt},
   secondaryFeature->{${ENTRY_PROJECTION}},
   tertiaryFeature->{${ENTRY_PROJECTION}},
   issueHighlight->{${ENTRY_PROJECTION}},
@@ -82,6 +83,8 @@ type HomepageEntry = {
 
 type HomepageDoc = {
   heroArticle?: HomepageEntry | null;
+  heroBadgeLabel?: string;
+  heroBadgeIcon?: SanityImageLike;
   secondaryFeature?: HomepageEntry | null;
   tertiaryFeature?: HomepageEntry | null;
   issueHighlight?: HomepageEntry | null;
@@ -136,6 +139,18 @@ const entryImageUrl = (entry?: HomepageEntry | null, width = 1200, height = 800)
   const image = pickImage(entry);
   if (!image) return null;
   if (image?.asset?._ref) return urlFor(image as SanityImageSource)?.width(width).height(height).fit("crop").url() ?? null;
+  return image?.asset?.url ?? null;
+};
+
+const sanityImageUrl = (image?: SanityImageLike | null, width?: number, height?: number) => {
+  if (!hasAsset(image)) return null;
+  if (image?.asset?._ref) {
+    let b = urlFor(image as SanityImageSource);
+    if (!b) return null;
+    if (width) b = b.width(width);
+    if (height) b = b.height(height);
+    return b.fit("max").url() ?? null;
+  }
   return image?.asset?.url ?? null;
 };
 
@@ -250,9 +265,13 @@ function TopRibbon() {
 }
 
 function LatestNews({ news }: { news: NewsFeedItem[] }) {
-  const cards = news.length > 0 ? news.slice(0, 3) : [];
+  // Figma frame 211:2251 — 4 plain-text tiles stacked vertically, subtle beige panel.
+  // Title on top (Roboto Condensed 20/26, up to 2 lines), meta below. No per-item borders.
+  const cards = news.length > 0 ? news.slice(0, 4) : [];
+  const fallback: NewsFeedItem[] = [{}, {}, {}, {}];
+  const items = cards.length ? cards : fallback;
   return (
-    <div className="absolute left-[26px] top-[611px] h-[501px] w-[776px] border-b border-[rgba(55,54,50,0.65)] pb-[40px] pt-[20px]">
+    <div className="absolute left-[965px] top-[631px] h-[634px] w-[451px] bg-[#f5f3f0] px-[24px] pt-[23px]">
       <div className="flex items-center gap-[8px]">
         <div className="relative h-[20px] w-[20px] overflow-hidden">
           <div className="absolute inset-[4.17%_4.17%_12.5%_8.33%]">
@@ -263,21 +282,19 @@ function LatestNews({ news }: { news: NewsFeedItem[] }) {
         </div>
         <h2 className="bg-type-h2 text-[#312e28]">Latest news</h2>
       </div>
-      <div className="mt-[20px] grid grid-cols-3 gap-[17px]">
-        {(cards.length ? cards : [{}, {}, {}] as NewsFeedItem[]).map((entry, i) => (
+      <div className="mt-[28px] flex flex-col gap-[28px]">
+        {items.map((entry, i) => (
           <a
             key={`${entry.link || "latest"}-${i}`}
             href={entry.link || "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="group block w-[250px]"
+            className="group block"
           >
-            <img
-              src={imgRectangle10}
-              alt={entry?.headline || entry?.title || ""}
-              className="h-[133px] w-[250px] rounded-[4px] object-cover"
-            />
-            <div className="mt-[6px] flex items-center gap-[12px]">
+            <h3 className="bg-font-roboto-condensed text-[20px] leading-[26px] font-medium text-[#312e28] group-hover:underline line-clamp-2">
+              {entry?.headline || entry?.title || "Iran Conflict Fuels Economic Concerns: Key Indicators to Watch This Week"}
+            </h3>
+            <div className="mt-[5px] flex items-center gap-[12px]">
               <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">
                 {displayDate(entry?.pubDate || entry?.publicationAddedAt)}
               </p>
@@ -287,28 +304,35 @@ function LatestNews({ news }: { news: NewsFeedItem[] }) {
               </div>
               <img src={imgReply} alt="" className="h-[14px] w-[14px]" />
             </div>
-            <h3 className="bg-font-roboto-condensed text-[20px] leading-[26px] font-medium text-[#312e28] group-hover:underline">
-              {entry?.headline || entry?.title || "Iran Conflict Fuels Economic Concerns: Key Indicators to Watch This Week"}
-            </h3>
           </a>
         ))}
       </div>
-      <Link href="/news" className="mt-[20px] inline-flex rounded-[4px] bg-[#113251] px-[12px] py-[12px] bg-font-roboto text-[12px] font-bold text-white">
+      <Link href="/news" className="mt-[28px] inline-flex rounded-[4px] bg-[#113251] px-[12px] py-[12px] bg-font-roboto text-[12px] font-bold text-white">
         View all news
       </Link>
     </div>
   );
 }
 
-function HeroFeature({ entry }: { entry?: HomepageEntry | null }) {
+function HeroFeature({
+  entry,
+  badgeLabel,
+  badgeIcon,
+}: {
+  entry?: HomepageEntry | null;
+  badgeLabel?: string;
+  badgeIcon?: SanityImageLike;
+}) {
   const heroImage = entryImageUrl(entry, 1800, 900) || imgScreenshot20260319At103148Am2;
   const heroTitle = entry?.title || "Profile article headline text content area placeholder";
   const heroDek = entry?.dek;
   const tag = entry?.category || entry?.projectType || "ARTICLE TAG";
+  const badgeText = badgeLabel?.trim();
+  const badgeIconUrl = sanityImageUrl(badgeIcon, 28, 28);
   return (
     <div className="absolute left-[26px] top-[156px] flex h-[428px] w-[1392px] gap-[20px]">
       <img src={heroImage} alt={heroTitle} className="h-[428px] w-[686px] rounded-[4px] object-cover" />
-      <div className="relative flex h-[428px] w-[686px] flex-col justify-center bg-[#f5f3f0] px-[24px] pb-[42px]">
+      <div className="flex h-[428px] w-[686px] flex-col justify-center px-[24px] pb-[42px]">
         <p className="bg-type-tag text-[#ff611d]">{tag}</p>
         <h1 className="bg-type-h1 mt-[8px] w-[654px] text-[#312e28]">
           {heroTitle}
@@ -329,19 +353,33 @@ function HeroFeature({ entry }: { entry?: HomepageEntry | null }) {
         <Link href={entryHref(entry)} className="mt-[20px] inline-flex w-[156px] items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white">
           Read article
         </Link>
-        <div className="absolute left-[264px] top-0 flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
-          <img src={imgItemBadge} alt="" className="h-[14px] w-[14px]" />
-          <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px] text-white">ITEM BADGE</p>
-        </div>
       </div>
+      {badgeText ? (
+        <div className="absolute left-[290px] top-0 flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
+          {badgeIconUrl ? (
+            <img src={badgeIconUrl} alt={badgeIcon?.alt || ""} className="h-[14px] w-[14px]" />
+          ) : null}
+          <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px] text-white">
+            {badgeText.toUpperCase()}
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }
 
 function TabbedPanel({ entries }: { entries: HomepageEntry[] }) {
-  const rows = entries.length > 0 ? entries.slice(0, 4) : [];
+  // Figma frame 211:2263 — 3 tall tiles horizontally (287×346 each).
+  // Per tile: image on top, then meta row, then title. No per-tile borders.
+  const rows = entries.length > 0 ? entries.slice(0, 3) : [];
+  const fallback = [
+    { _id: "tab-fallback-1" },
+    { _id: "tab-fallback-2" },
+    { _id: "tab-fallback-3" },
+  ] as HomepageEntry[];
+  const items = rows.length ? rows : fallback;
   return (
-    <div className="absolute left-[850px] top-[631px] h-[717px] w-[566px] bg-[#f5f3f0] px-[28px] pt-[32px]">
+    <div className="absolute left-[27px] top-[631px] h-[591px] w-[916px] pt-[32px]">
       <div className="flex items-center gap-[12px]">
         <button className="rounded-[4px] bg-[#ff611d] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-white">Profiles</button>
         <a
@@ -354,19 +392,39 @@ function TabbedPanel({ entries }: { entries: HomepageEntry[] }) {
         </a>
         <button className="rounded-[4px] bg-[rgba(161,161,161,0.1)] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-[#595959]">Perspectives</button>
       </div>
-      <h2 className="bg-type-h2 mt-[24px] text-[#312e28]">Breaking Ground Profiles</h2>
-      <div className="mt-[16px] space-y-[16px]">
-        {(rows.length ? rows : [{ _id: "tab-fallback-1" }, { _id: "tab-fallback-2" }, { _id: "tab-fallback-3" }, { _id: "tab-fallback-4" }] as HomepageEntry[]).map((entry, r) => (
-          <Link key={entry._id || r} href={entryHref(entry)} className="flex w-[508px] items-center gap-[13px] group">
-            <img src={entryImageUrl(entry, 420, 300) || imgRectangle10} alt="" className="h-[100px] w-[140px] rounded-[4px] object-cover" />
-            <div className="w-[355px]">
-              <p className="bg-type-h3 text-[#312e28] group-hover:underline">{entry?.title || "Profile title"}</p>
-              <p className="bg-type-body text-[#312e28]">{entry?.dek || "Produced six times a year, Breaking Ground is the first comprehensive source ..."}</p>
+      <h2 className="mt-[32px] bg-type-h2 text-[#312e28]">Breaking Ground Profiles</h2>
+      <div className="mt-[20px] flex gap-[17px]">
+        {items.map((entry, r) => (
+          <Link key={entry._id || r} href={entryHref(entry)} className="group block w-[287px]">
+            <img
+              src={entryImageUrl(entry, 580, 380) || imgRectangle10}
+              alt=""
+              className="h-[190px] w-[287px] rounded-[4px] object-cover"
+            />
+            <div className="mt-[13px] flex flex-col gap-[5px]">
+              <div className="flex items-center gap-[12px]">
+                <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">
+                  {displayDate(entry?.publishedAt)}
+                </p>
+                <div className="flex items-center gap-[4px]">
+                  <img src={imgIcon2} alt="" className="h-[12px] w-[12px]" />
+                  <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">
+                    {entry?.readingTime ? `${entry.readingTime} MIN READ` : "3 MIN READ"}
+                  </p>
+                </div>
+                <img src={imgReply} alt="" className="h-[14px] w-[14px]" />
+              </div>
+              <p className="bg-font-roboto-condensed text-[20px] leading-[26px] font-medium text-[#312e28] group-hover:underline line-clamp-3">
+                {entry?.title || "Profile title placeholder"}
+              </p>
             </div>
           </Link>
         ))}
       </div>
-      <Link href="/sections/project-profiles" className="mt-[24px] inline-flex w-[156px] items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white">
+      <Link
+        href="/sections/project-profiles"
+        className="mt-[32px] inline-flex w-[156px] items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white"
+      >
         View all profiles
       </Link>
     </div>
@@ -500,7 +558,11 @@ export default async function IndexPage() {
     <main className="figma-homepage min-h-screen bg-[#e8e8e8] overflow-x-auto">
       <div className="relative mx-auto h-[2644px] w-[1440px] bg-white">
         <TopRibbon />
-        <HeroFeature entry={hero} />
+        <HeroFeature
+          entry={hero}
+          badgeLabel={homepage?.heroBadgeLabel}
+          badgeIcon={homepage?.heroBadgeIcon}
+        />
         <LatestNews news={latest} />
         <TabbedPanel entries={tabbed} />
         <MidAd entry={midAd} />

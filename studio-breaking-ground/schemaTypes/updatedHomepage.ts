@@ -26,6 +26,24 @@ export const updatedHomepage = defineType({
       group: 'hero',
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'heroBadgeLabel',
+      title: 'Hero Badge Label',
+      type: 'string',
+      description:
+        'Optional short label shown as an orange badge in the top-left of the hero image (ex: "COVER STORY", "EVENT COVERAGE"). Leave blank to hide the badge.',
+      group: 'hero',
+      validation: (Rule) => Rule.max(40),
+    }),
+    defineField({
+      name: 'heroBadgeIcon',
+      title: 'Hero Badge Icon',
+      type: 'image',
+      description:
+        'Optional small icon (ideally 14×14 PNG/SVG with transparent background) shown left of the badge label.',
+      group: 'hero',
+      options: {accept: 'image/svg+xml,image/png'},
+    }),
 
     defineField({
       name: 'gridTwo',
