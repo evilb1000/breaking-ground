@@ -192,11 +192,6 @@
   color: var(--bg-disabled);
 }
 
-/* Hide global layout footer on the Figma homepage route */
-.figma-homepage + footer {
-  display: none;
-}
-
 /* Force a white, magazine-style base regardless of system theme */
 body {
   background: #ffffff;

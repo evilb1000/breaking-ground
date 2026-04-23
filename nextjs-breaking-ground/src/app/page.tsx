@@ -4,10 +4,12 @@ import path from "node:path";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
+import HomepageTabbedPanel, {
+  type TabItem,
+} from "@/components/homepage/HomepageTabbedPanel";
 
 // Figma-sourced assets. Downloaded from the Figma MCP asset CDN (which expires
 // after 7 days) and committed locally at public/figma-assets/ for permanence.
-const imgRectangle10 = "/figma-assets/rectangle-10.png";
 const imgIcon = "/figma-assets/tab-icon.svg";
 const imgBg2 = "/figma-assets/bg-logo.png";
 const imgIcon2 = "/figma-assets/clock-dark.svg";
@@ -107,6 +109,27 @@ type NewsFeedManifest = {
 
 export const revalidate = 0;
 const options = { next: { revalidate: 0 } };
+
+// Feeds the homepage Profiles/Perspectives tabbed panel. Profiles pulls both
+// project and member profile sections so members surface alongside project
+// write-ups as a single "Profiles" tab.
+const TAB_PROJECTION = `{
+  _id,
+  _type,
+  "title": coalesce(headline, title),
+  "slug": slug,
+  publishedAt,
+  readingTime,
+  section,
+  homepageImage,
+  headerImage,
+  heroImage,
+  introImage
+}`;
+
+const PROFILES_TAB_QUERY = `*[_type == "figmaArticle" && section in ["project-profiles", "member-profiles"]] | order(coalesce(publishedAt, _createdAt) desc)[0...6]${TAB_PROJECTION}`;
+
+const PERSPECTIVES_TAB_QUERY = `*[_type == "figmaArticle" && section == "perspectives"] | order(coalesce(publishedAt, _createdAt) desc)[0...6]${TAB_PROJECTION}`;
 
 type SanityImageLike = {
   asset?: {
@@ -232,11 +255,17 @@ async function loadLatestNewsItems(): Promise<NewsFeedItem[]> {
 }
 
 function TopRibbon() {
-  const nav: { label: string; hasChevron: boolean; href?: string }[] = [
+  const nav: { label: string; hasChevron: boolean; href?: string; external?: boolean }[] = [
     { label: "Region", hasChevron: true, href: "/sections/local" },
     { label: "Profiles", hasChevron: true, href: "/sections/project-profiles" },
     { label: "Features", hasChevron: false, href: "/sections/features" },
     { label: "Perspectives", hasChevron: false, href: "/sections/perspectives" },
+    {
+      label: "Issues",
+      hasChevron: false,
+      href: "https://www.mbawpa.org/news/breaking-ground-magazine/",
+      external: true,
+    },
     { label: "Insights", hasChevron: true, href: "/sections/data-insights" },
     { label: "About", hasChevron: true, href: "/about" },
     { label: "News", hasChevron: false, href: "/news" },
@@ -251,9 +280,20 @@ function TopRibbon() {
           {nav.map((item) => (
             <div key={item.label} className="flex items-center gap-[2px]">
               {item.href ? (
-                <Link href={item.href} className="bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity">
-                  {item.label}
-                </Link>
+                item.external ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link href={item.href} className="bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity">
+                    {item.label}
+                  </Link>
+                )
               ) : (
                 <p className="bg-type-nav whitespace-nowrap text-[#312e28]">{item.label}</p>
               )}
@@ -437,69 +477,6 @@ function HeroFeature({
   );
 }
 
-function TabbedPanel({ entries }: { entries: HomepageEntry[] }) {
-  // Figma frame 211:2263 — 3 tall tiles horizontally (287×346 each).
-  // Per tile: image on top, then meta row, then title. No per-tile borders.
-  const rows = entries.length > 0 ? entries.slice(0, 3) : [];
-  const fallback = [
-    { _id: "tab-fallback-1" },
-    { _id: "tab-fallback-2" },
-    { _id: "tab-fallback-3" },
-  ] as HomepageEntry[];
-  const items = rows.length ? rows : fallback;
-  return (
-    <div className="absolute left-[27px] top-[652px] h-[591px] w-[916px] pt-[32px]">
-      <div className="flex items-center gap-[12px]">
-        <button className="rounded-[4px] bg-[#ff611d] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-white">Profiles</button>
-        <a
-          href="https://www.mbawpa.org/news/breaking-ground-magazine/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-[4px] bg-[rgba(161,161,161,0.1)] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-[#595959]"
-        >
-          Issues
-        </a>
-        <button className="rounded-[4px] bg-[rgba(161,161,161,0.1)] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-[#595959]">Perspectives</button>
-      </div>
-      <h2 className="mt-[32px] bg-type-h2 text-[#312e28]">Breaking Ground Profiles</h2>
-      <div className="mt-[20px] flex gap-[17px]">
-        {items.map((entry, r) => (
-          <Link key={entry._id || r} href={entryHref(entry)} className="group block w-[287px]">
-            <img
-              src={entryImageUrl(entry, 580, 380) || imgRectangle10}
-              alt=""
-              className="h-[190px] w-[287px] rounded-[4px] object-cover"
-            />
-            <div className="mt-[13px] flex flex-col gap-[5px]">
-              <div className="flex items-center gap-[12px]">
-                <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">
-                  {displayDate(entry?.publishedAt)}
-                </p>
-                <div className="flex items-center gap-[4px]">
-                  <img src={imgIcon2} alt="" className="h-[12px] w-[12px]" />
-                  <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">
-                    {entry?.readingTime ? `${entry.readingTime} MIN READ` : "3 MIN READ"}
-                  </p>
-                </div>
-                <img src={imgReply} alt="" className="h-[14px] w-[14px]" />
-              </div>
-              <p className="bg-font-roboto-condensed text-[20px] leading-[26px] font-medium text-[#312e28] group-hover:underline line-clamp-3">
-                {entry?.title || "Profile title placeholder"}
-              </p>
-            </div>
-          </Link>
-        ))}
-      </div>
-      <Link
-        href="/sections/project-profiles"
-        className="mt-[32px] inline-flex w-[156px] items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white"
-      >
-        View all profiles
-      </Link>
-    </div>
-  );
-}
-
 function EventBanner({ entry, ctaLabel, ctaHref, body }: { entry?: HomepageEntry | null; ctaLabel?: string; ctaHref?: string; body?: string }) {
   const title = entry?.title || "Come Join Us At the 2025 Evening of Excellence";
   const subtitle = `Event starts 8:00 pm on ${entry?.publishedAt ? new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".") : "04.13.2026"}`;
@@ -567,11 +544,25 @@ function SponsorsAndAd() {
 }
 
 export default async function IndexPage() {
-  const homepage = await client.fetch<HomepageDoc>(HOMEPAGE_QUERY, {}, options);
+  const [homepage, profilesRaw, perspectivesRaw, latest] = await Promise.all([
+    client.fetch<HomepageDoc>(HOMEPAGE_QUERY, {}, options),
+    client.fetch<HomepageEntry[]>(PROFILES_TAB_QUERY, {}, options),
+    client.fetch<HomepageEntry[]>(PERSPECTIVES_TAB_QUERY, {}, options),
+    loadLatestNewsItems(),
+  ]);
   const hero = homepage?.heroArticle ?? null;
-  const latest = await loadLatestNewsItems();
-  const tabbed = homepage?.gridTwo?.length ? homepage.gridTwo : homepage?.gridThree ?? [];
   const event = homepage?.tertiaryFeature ?? homepage?.issueHighlight ?? null;
+
+  const toTabItem = (entry: HomepageEntry): TabItem => ({
+    id: entry._id || entry.slug?.current || Math.random().toString(36),
+    href: entryHref(entry),
+    imageUrl: entryImageUrl(entry, 580, 380),
+    title: entry.title || "Untitled",
+    publishedAt: entry.publishedAt,
+    readingTime: entry.readingTime,
+  });
+  const profiles = (profilesRaw || []).map(toTabItem);
+  const perspectives = (perspectivesRaw || []).map(toTabItem);
 
   return (
     <main className="figma-homepage min-h-screen bg-[#e8e8e8] overflow-x-auto">
@@ -583,7 +574,7 @@ export default async function IndexPage() {
           badgeIcon={homepage?.heroBadgeIcon}
         />
         <LatestNews news={latest} />
-        <TabbedPanel entries={tabbed} />
+        <HomepageTabbedPanel profiles={profiles} perspectives={perspectives} />
         <EventBanner
           entry={event}
           ctaLabel={homepage?.announcementLinkLabel}
