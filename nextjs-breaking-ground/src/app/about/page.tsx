@@ -1,32 +1,56 @@
-import Masthead from "@/components/Masthead";
+import Link from "next/link";
+import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
+import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 
 export default function AboutPage() {
   return (
-    <>
-      <Masthead homeHref="/" />
-      <main className="min-h-screen bg-white text-black px-4 md:px-12 lg:px-24 py-12">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="font-serif text-5xl md:text-6xl font-bold tracking-tight text-center">
-            About Breaking Ground
-          </h1>
+    <main className="min-h-screen bg-white text-[#312e28]">
+      <HomepageTopRibbon />
 
-          <div className="mt-12 space-y-6 text-lg md:text-xl leading-relaxed text-gray-800">
-            <p>
-              BreakingGround is the premiere source for construction and development news in
-              Pittsburgh and Western Pennsylvania. Operated by the Master Builders&rsquo;
-              Association of Western Pennsylvania, we provide reporting, market insight, and
-              economic data for professionals across the construction and real estate industries.
-            </p>
-
-            <p>
-              The platform covers major projects, infrastructure investment, development
-              activity, and economic trends shaping Western Pennsylvania. Our readers include
-              developers, architects, engineers, contractors, suppliers, and public officials
-              involved in all facets of building.
+      <section className="relative border-b border-[#2d567b] bg-[#285a8a]">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.2))]" />
+        <div className="relative mx-auto flex h-[148px] w-full max-w-[1440px] items-end px-6 pb-6 text-white">
+          <div className="mx-auto w-[922px] text-right">
+            <p className="bg-font-roboto text-[14px] leading-[18px]">
+              <Link href="/" className="underline">
+                Home
+              </Link>{" "}
+              / <span className="text-white/70">About</span>
             </p>
           </div>
         </div>
-      </main>
-    </>
+      </section>
+
+      <section className="mx-auto w-full max-w-[922px] px-4 pb-[72px] pt-[40px] md:px-0">
+        <h1 className="bg-type-h1 text-[#312e28]">About Breaking Ground</h1>
+
+        <div className="mt-[32px] flex flex-col gap-[20px]">
+          <p className="bg-type-body text-[#312e28]">
+            BreakingGround is the premiere source for construction and development
+            news in Pittsburgh and Western Pennsylvania. Operated by the Master
+            Builders&rsquo; Association of Western Pennsylvania, we provide
+            reporting, market insight, and economic data for professionals across
+            the construction and real estate industries.
+          </p>
+          <p className="bg-type-body text-[#312e28]">
+            The platform covers major projects, infrastructure investment,
+            development activity, and economic trends shaping Western
+            Pennsylvania. Our readers include developers, architects, engineers,
+            contractors, suppliers, and public officials involved in all facets of
+            building.
+          </p>
+        </div>
+      </section>
+
+      <div className="mx-auto w-full max-w-[1440px] px-4 md:px-[26px]">
+        <HomepageEventBanner
+          title="Come Join Us At the 2025 Evening of Excellence"
+          subtitle="Event starts 8:00 pm on 04.13.2026"
+          body="Join us for an unforgettable evening of celebration, inspiration, and impact."
+          ctaLabel="Register here"
+          ctaHref="https://www.mbawpa.org/events/mba-young-constructors-leadership-development-seminar/"
+        />
+      </div>
+    </main>
   );
 }

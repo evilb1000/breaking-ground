@@ -23,6 +23,23 @@ const roboto = Roboto({
 const robotoFlex = Roboto_Flex({
   variable: "--font-roboto-flex",
   subsets: ["latin"],
+  // Enable Roboto Flex's parametric axes. Without these, fontVariationSettings
+  // values from the Figma design (GRAD, XOPQ, XTRA, YOPQ, YTAS, YTDE, YTFI,
+  // YTLC, YTUC, wdth, opsz) are silently dropped by the browser and the
+  // headline renders with default metrics instead of the Figma spec.
+  axes: [
+    "opsz",
+    "wdth",
+    "GRAD",
+    "XOPQ",
+    "XTRA",
+    "YOPQ",
+    "YTAS",
+    "YTDE",
+    "YTFI",
+    "YTLC",
+    "YTUC",
+  ],
 });
 
 const robotoCondensed = Roboto_Condensed({

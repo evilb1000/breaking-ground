@@ -256,19 +256,19 @@ async function loadLatestNewsItems(): Promise<NewsFeedItem[]> {
 
 function TopRibbon() {
   const nav: { label: string; hasChevron: boolean; href?: string; external?: boolean }[] = [
-    { label: "Region", hasChevron: true, href: "/sections/local" },
-    { label: "Profiles", hasChevron: true, href: "/sections/project-profiles" },
     { label: "Features", hasChevron: false, href: "/sections/features" },
+    { label: "Profiles", hasChevron: true, href: "/sections/project-profiles" },
+    { label: "News", hasChevron: false, href: "/news" },
     { label: "Perspectives", hasChevron: false, href: "/sections/perspectives" },
+    { label: "Region", hasChevron: true, href: "/sections/local" },
+    { label: "Insights", hasChevron: true, href: "/sections/data-insights" },
     {
       label: "Issues",
       hasChevron: false,
       href: "https://www.mbawpa.org/news/breaking-ground-magazine/",
       external: true,
     },
-    { label: "Insights", hasChevron: true, href: "/sections/data-insights" },
     { label: "About", hasChevron: true, href: "/about" },
-    { label: "News", hasChevron: false, href: "/news" },
   ];
   return (
     <div className="absolute left-0 top-0 flex w-[1440px] items-center justify-between bg-[#f5f3f0] px-[26px] pb-[28px] pt-[36px]">
@@ -383,8 +383,8 @@ function HeroFeature({
   badgeLabel?: string;
   badgeIcon?: SanityImageLike;
 }) {
-  // Figma node 253:3208 — "Desktop Hero"
-  // 1390×475 at (25, 153). Image left (803×475) + dark textured panel right (587×475).
+  // Figma node 253:3207 — "Desktop Hero" (updated from 211:1218)
+  // 1390×475 at (25, 153). Image left (568×475) + dark textured panel right (822×475).
   // Content overlay is right-aligned on the dark side: headline (white, 56/48 Roboto Flex),
   // meta row, "Read full profile" CTA (white bg, dark-blue text), and "View all profiles →" link.
   const heroImage = entryImageUrl(entry, 1800, 950) || imgScreenshot20260319At103148Am2;
@@ -395,8 +395,8 @@ function HeroFeature({
   return (
     <div className="absolute left-[25px] top-[153px] h-[475px] w-[1390px]">
       <div className="absolute inset-0 flex overflow-hidden rounded-[4px]">
-        <img src={heroImage} alt={heroTitle} className="h-[475px] w-[803px] shrink-0 object-cover" />
-        <div className="relative h-[475px] w-[587px] shrink-0 bg-[#373632]">
+        <img src={heroImage} alt={heroTitle} className="h-[475px] w-[568px] shrink-0 object-cover" />
+        <div className="relative h-[475px] w-[822px] shrink-0 bg-[#373632]">
           <img
             src={imgHeroMapTexture}
             alt=""
@@ -407,7 +407,7 @@ function HeroFeature({
       </div>
 
       {badgeText ? (
-        <div className="absolute left-[721px] top-0 z-10 flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
+        <div className="absolute left-[484px] top-0 z-10 flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
           <img
             src={badgeIconUrl || imgHeroBadgeDefaultIcon}
             alt={badgeIcon?.alt || ""}
@@ -419,14 +419,14 @@ function HeroFeature({
         </div>
       ) : null}
 
-      <div className="absolute right-[23px] bottom-[28px] flex w-[650px] flex-col items-end gap-[55px]">
-        <div className="flex w-full flex-col items-end gap-[16px]">
+      <div className="absolute right-[23px] bottom-[28px] flex w-[848px] flex-col items-start gap-[55px]">
+        <div className="flex w-full flex-col items-start gap-[16px]">
           <div
-            className="flex h-[169px] w-full items-center pr-[24px] py-[12px]"
+            className="flex h-[169px] w-full flex-col items-start justify-center pr-[24px] py-[12px]"
             style={{ filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.25))" }}
           >
             <h1
-              className="w-[654px] bg-font-roboto-flex text-[56px] font-extralight leading-[48px] text-white"
+              className="w-[810px] bg-font-roboto-flex text-[56px] font-extralight leading-[48px] text-white"
               style={{
                 fontVariationSettings:
                   "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
@@ -437,7 +437,7 @@ function HeroFeature({
             </h1>
           </div>
 
-          <div className="flex w-[523px] flex-col gap-[20px]">
+          <div className="flex w-[523px] flex-col items-start gap-[20px] px-[82px]">
             <div className="flex w-[177px] items-start justify-between">
               <p className="bg-font-roboto text-[10px] font-normal leading-[24px] text-white">
                 {(displayDate(entry?.publishedAt) || "").toUpperCase()}
@@ -450,28 +450,27 @@ function HeroFeature({
               </div>
               <img src={imgReplyWhite} alt="" className="h-[14px] w-[14px]" />
             </div>
-            {entry?.dek ? (
-              <p className="bg-font-roboto text-[14px] leading-[20px] text-white/90 w-full">
-                {entry.dek}
-              </p>
-            ) : null}
-            <Link
-              href={entryHref(entry)}
-              className="flex min-w-[156px] items-center justify-center rounded-[4px] bg-white px-[16px] py-[12px] bg-font-roboto text-[12px] font-bold text-[#113251] whitespace-nowrap"
-            >
-              Read full {singular}
-            </Link>
+            <div className="flex w-full flex-col items-start gap-[20px]">
+              <Link
+                href={entryHref(entry)}
+                className="flex min-w-[156px] items-center justify-center rounded-[4px] bg-white p-[12px] bg-font-roboto text-[12px] font-bold text-[#113251] whitespace-nowrap"
+              >
+                Read full {singular}
+              </Link>
+            </div>
           </div>
         </div>
 
-        <Link
-          href={indexHref}
-          className="flex items-center gap-[5px] text-[14px] text-white underline"
-          style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
-        >
-          <span>View all {plural}</span>
-          <img src={imgArrowForwardWhite} alt="" className="h-[24px] w-[24px]" />
-        </Link>
+        <div className="flex w-full items-center justify-end">
+          <Link
+            href={indexHref}
+            className="flex items-center gap-[5px] text-[14px] text-white underline"
+            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+          >
+            <span>View all {plural}</span>
+            <img src={imgArrowForwardWhite} alt="" className="h-[24px] w-[24px]" />
+          </Link>
+        </div>
       </div>
     </div>
   );

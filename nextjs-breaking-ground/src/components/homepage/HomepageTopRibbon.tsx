@@ -10,16 +10,17 @@ type NavItem = {
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Region", href: "/sections/local", chevron: true },
-  { label: "Profiles", href: "/sections/project-profiles", chevron: true },
   { label: "Features", href: "/sections/features", chevron: false },
+  { label: "Profiles", href: "/sections/project-profiles", chevron: true },
+  { label: "News", href: "/news", chevron: false },
   { label: "Perspectives", href: "/sections/perspectives", chevron: false },
+  { label: "Region", href: "/sections/local", chevron: true },
+  { label: "Insights", href: "/sections/data-insights", chevron: true },
   {
     label: "Issues",
     href: "https://www.mbawpa.org/news/breaking-ground-magazine/",
     external: true,
   },
-  { label: "Insights", href: "/sections/data-insights", chevron: true },
   { label: "About", href: "/about", chevron: true },
 ];
 
@@ -57,9 +58,6 @@ export default function HomepageTopRibbon() {
               ) : null}
             </span>
           ))}
-          <Link href="/news" className="bg-type-nav hover:opacity-70 transition-opacity whitespace-nowrap">
-            News
-          </Link>
           <span className="text-[18px] leading-none ml-1" aria-hidden="true">⌕</span>
         </nav>
       </div>
