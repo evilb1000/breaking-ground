@@ -3,10 +3,8 @@ import type { ReactNode } from "react";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 
-const FALLBACK_TILE_IMAGE =
-  "https://www.figma.com/api/mcp/asset/af02818a-070c-415b-a4fa-499e77541459";
-const FILTER_ICON =
-  "https://www.figma.com/api/mcp/asset/4660684a-1127-4919-ae50-1d2d49616244";
+const FALLBACK_TILE_IMAGE = "/figma-assets/landing-asset-1.png";
+const FILTER_ICON = "/figma-assets/landing-asset-2.svg";
 
 export type LandingItem = {
   id: string;

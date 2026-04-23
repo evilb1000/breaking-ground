@@ -5,26 +5,28 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
 
-const imgRectangle10 = "https://www.figma.com/api/mcp/asset/6c59e688-e35f-4e4f-bbc2-ab33435c85c4";
-const imgIcon = "https://www.figma.com/api/mcp/asset/41630572-64c1-457a-904a-0c86bee9151f";
-const imgInstagramWhite = "https://www.figma.com/api/mcp/asset/65a7b66a-686d-4b22-91e9-3308c2d30d21";
-const imgYoutubeWhite = "https://www.figma.com/api/mcp/asset/7dde89aa-1ea9-4ac7-84f6-fce6c9a025b5";
-const imgLinkedInWhite = "https://www.figma.com/api/mcp/asset/33903285-e910-4f19-b151-3f464cad87a0";
-const imgFacebookWhite = "https://www.figma.com/api/mcp/asset/cf25c62d-6db9-42f5-9fd3-94b41207389f";
-const imgBg2 = "https://www.figma.com/api/mcp/asset/961e793c-d56e-4301-a43b-7c3d4b349e0e";
-const imgIcon2 = "https://www.figma.com/api/mcp/asset/50ddeba7-3fb9-4535-a668-e537f61673ae";
-const imgReply = "https://www.figma.com/api/mcp/asset/d8cc6c62-d443-48c3-a550-c38f9624107e";
-const imgImage3 = "https://www.figma.com/api/mcp/asset/9f80ebc1-2a79-40f3-9974-4b3c4de209ad";
-const imgRectangle15 = "https://www.figma.com/api/mcp/asset/4b8a2fbc-1bfb-483a-9cbd-417cf38d2823";
-const imgScreenshot20260402At34113Pm1 = "https://www.figma.com/api/mcp/asset/d3db63ed-3893-4df2-9ce6-ae8d2a93560b";
-const imgScreenshot20260402At34116Pm1 = "https://www.figma.com/api/mcp/asset/6cbb7f6d-92ef-4360-a3de-4640ba736f7a";
-const imgScreenshot20260402At34125Pm1 = "https://www.figma.com/api/mcp/asset/9b296214-2c89-47de-b670-5479c3b66e27";
-const imgScreenshot20260402At34147Pm1 = "https://www.figma.com/api/mcp/asset/d1cd9949-fc16-4efc-8ecb-ad3cea0984f1";
-const imgScreenshot20260402At34120Pm1 = "https://www.figma.com/api/mcp/asset/ca867f23-f84e-49a9-989e-67f94a8a88c3";
-const imgScreenshot20260402At34131Pm1 = "https://www.figma.com/api/mcp/asset/2b98f650-e0b6-4325-9a19-0f1dcfe223cb";
-const imgScreenshot20260319At103148Am2 = "https://www.figma.com/api/mcp/asset/ac3eed3d-50fe-44e9-bea9-4339f21bde42";
-const imgEventRegistration = "https://www.figma.com/api/mcp/asset/39ced4f3-b3a9-4c67-bbe0-f0c3517c6f3a";
-const imgCoffee = "https://www.figma.com/api/mcp/asset/b9f91e7a-8deb-4f88-b389-2fbb17186e26";
+// Figma-sourced assets. Downloaded from the Figma MCP asset CDN (which expires
+// after 7 days) and committed locally at public/figma-assets/ for permanence.
+const imgRectangle10 = "/figma-assets/rectangle-10.png";
+const imgIcon = "/figma-assets/tab-icon.svg";
+const imgBg2 = "/figma-assets/bg-logo.png";
+const imgIcon2 = "/figma-assets/clock-dark.svg";
+const imgReply = "/figma-assets/reply-dark.svg";
+const imgRectangle15 = "/figma-assets/event-banner-bg.png";
+const imgScreenshot20260402At34113Pm1 = "/figma-assets/sponsor-1.png";
+const imgScreenshot20260402At34116Pm1 = "/figma-assets/sponsor-2.png";
+const imgScreenshot20260402At34125Pm1 = "/figma-assets/sponsor-3.png";
+const imgScreenshot20260402At34147Pm1 = "/figma-assets/sponsor-4.png";
+const imgScreenshot20260402At34120Pm1 = "/figma-assets/sponsor-5.png";
+const imgScreenshot20260402At34131Pm1 = "/figma-assets/sponsor-6.png";
+const imgScreenshot20260319At103148Am2 = "/figma-assets/hero-placeholder.png";
+const imgEventRegistration = "/figma-assets/event-registration-icon.svg";
+const imgCoffee = "/figma-assets/coffee-icon.svg";
+const imgHeroMapTexture = "/figma-assets/hero-map-texture.png";
+const imgHeroBadgeDefaultIcon = "/figma-assets/hero-badge-default-icon.svg";
+const imgClockWhite = "/figma-assets/clock-white.svg";
+const imgReplyWhite = "/figma-assets/reply-white.svg";
+const imgArrowForwardWhite = "/figma-assets/arrow-forward-white.svg";
 
 // Projection used for every dereferenced homepage entry.
 // Normalizes figmaArticle field names into the shape expected by the
@@ -166,6 +168,28 @@ const displayDate = (date?: string) => {
   }).toUpperCase();
 };
 
+// Maps a figmaArticle section slug to display nouns and an index URL.
+// Used by the homepage hero to render section-aware CTAs like
+// "Read full <singular>" / "View all <plural>".
+const sectionLabels = (section?: string): { singular: string; plural: string; indexHref: string } => {
+  switch (section) {
+    case "features":
+      return { singular: "feature", plural: "features", indexHref: "/sections/features" };
+    case "project-profiles":
+      return { singular: "profile", plural: "profiles", indexHref: "/sections/project-profiles" };
+    case "member-profiles":
+      return { singular: "profile", plural: "profiles", indexHref: "/sections/member-profiles" };
+    case "news":
+      return { singular: "story", plural: "news", indexHref: "/news" };
+    case "perspectives":
+      return { singular: "perspective", plural: "perspectives", indexHref: "/sections/perspectives" };
+    case "opinion":
+      return { singular: "opinion", plural: "opinions", indexHref: "/sections/opinion" };
+    default:
+      return { singular: "article", plural: "articles", indexHref: "/sections/features" };
+  }
+};
+
 function newsItemDateValue(item: NewsFeedItem): number {
   const raw = item.pubDate || item.publicationAddedAt;
   if (!raw) return 0;
@@ -267,7 +291,7 @@ function LatestNews({ news }: { news: NewsFeedItem[] }) {
   const fallback: NewsFeedItem[] = [{}, {}, {}, {}];
   const items = cards.length ? cards : fallback;
   return (
-    <div className="absolute left-[965px] top-[631px] h-[634px] w-[451px] bg-[#f5f3f0] px-[24px] pt-[23px]">
+    <div className="absolute left-[965px] top-[652px] h-[634px] w-[451px] bg-[#f5f3f0] px-[24px] pt-[23px]">
       <div className="flex items-center gap-[8px]">
         <div className="relative h-[20px] w-[20px] overflow-hidden">
           <div className="absolute inset-[4.17%_4.17%_12.5%_8.33%]">
@@ -319,47 +343,91 @@ function HeroFeature({
   badgeLabel?: string;
   badgeIcon?: SanityImageLike;
 }) {
-  const heroImage = entryImageUrl(entry, 1800, 900) || imgScreenshot20260319At103148Am2;
-  const heroTitle = entry?.title || "Profile article headline text content area placeholder";
-  const heroDek = entry?.dek;
-  const tag = entry?.category || "ARTICLE TAG";
+  // Figma node 253:3208 — "Desktop Hero"
+  // 1390×475 at (25, 153). Image left (803×475) + dark textured panel right (587×475).
+  // Content overlay is right-aligned on the dark side: headline (white, 56/48 Roboto Flex),
+  // meta row, "Read full profile" CTA (white bg, dark-blue text), and "View all profiles →" link.
+  const heroImage = entryImageUrl(entry, 1800, 950) || imgScreenshot20260319At103148Am2;
+  const heroTitle = entry?.title || "Profile article hero headline text styling area placeholder";
   const badgeText = badgeLabel?.trim();
   const badgeIconUrl = sanityImageUrl(badgeIcon, 28, 28);
+  const { singular, plural, indexHref } = sectionLabels(entry?.section);
   return (
-    <div className="absolute left-[26px] top-[156px] flex h-[428px] w-[1392px] gap-[20px]">
-      <img src={heroImage} alt={heroTitle} className="h-[428px] w-[686px] rounded-[4px] object-cover" />
-      <div className="flex h-[428px] w-[686px] flex-col justify-center px-[24px] pb-[42px]">
-        <p className="bg-type-tag text-[#ff611d]">{tag}</p>
-        <h1 className="bg-type-h1 mt-[8px] w-[654px] text-[#312e28]">
-          {heroTitle}
-        </h1>
-        <div className="mt-[10px] flex items-center gap-[12px]">
-          <p className="bg-type-meta text-[#312e28]">{displayDate(entry?.publishedAt)}</p>
-          <div className="flex items-center gap-[4px]">
-            <img src={imgIcon2} alt="" className="h-[12px] w-[12px]" />
-            <p className="bg-type-meta text-[#312e28]">{entry?.readingTime ? `${entry.readingTime} MIN READ` : "3 MIN READ"}</p>
-          </div>
-          <img src={imgReply} alt="" className="h-[14px] w-[14px]" />
+    <div className="absolute left-[25px] top-[153px] h-[475px] w-[1390px]">
+      <div className="absolute inset-0 flex overflow-hidden rounded-[4px]">
+        <img src={heroImage} alt={heroTitle} className="h-[475px] w-[803px] shrink-0 object-cover" />
+        <div className="relative h-[475px] w-[587px] shrink-0 bg-[#373632]">
+          <img
+            src={imgHeroMapTexture}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-multiply"
+          />
         </div>
-        {heroDek ? (
-          <p className="bg-type-body mt-[20px] w-[654px] text-[#312e28]">
-            {heroDek}
-          </p>
-        ) : null}
-        <Link href={entryHref(entry)} className="mt-[20px] inline-flex w-[156px] items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white">
-          Read article
-        </Link>
       </div>
+
       {badgeText ? (
-        <div className="absolute left-[290px] top-0 flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
-          {badgeIconUrl ? (
-            <img src={badgeIconUrl} alt={badgeIcon?.alt || ""} className="h-[14px] w-[14px]" />
-          ) : null}
-          <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px] text-white">
+        <div className="absolute left-[721px] top-0 z-10 flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
+          <img
+            src={badgeIconUrl || imgHeroBadgeDefaultIcon}
+            alt={badgeIcon?.alt || ""}
+            className="h-[14px] w-[14px]"
+          />
+          <p className="bg-font-roboto text-[12px] font-bold leading-[10px] tracking-[0.24px] text-white">
             {badgeText.toUpperCase()}
           </p>
         </div>
       ) : null}
+
+      <div className="absolute right-[23px] bottom-[28px] flex w-[650px] flex-col items-end gap-[55px]">
+        <div className="flex w-full flex-col items-end gap-[16px]">
+          <div
+            className="flex h-[169px] w-full items-center pr-[24px] py-[12px]"
+            style={{ filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.25))" }}
+          >
+            <h1
+              className="w-[654px] bg-font-roboto-flex text-[56px] font-extralight leading-[48px] text-white"
+              style={{
+                fontVariationSettings:
+                  "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+                fontWeight: 838,
+              }}
+            >
+              {heroTitle}
+            </h1>
+          </div>
+
+          <div className="flex w-[523px] flex-col gap-[20px]">
+            <div className="flex w-[177px] items-start justify-between">
+              <p className="bg-font-roboto text-[10px] font-normal leading-[24px] text-white">
+                {(displayDate(entry?.publishedAt) || "").toUpperCase()}
+              </p>
+              <div className="flex items-center gap-[4px]">
+                <img src={imgClockWhite} alt="" className="h-[12px] w-[12px]" />
+                <p className="bg-font-roboto text-[10px] font-normal leading-[24px] text-white">
+                  {entry?.readingTime ? `${entry.readingTime} MIN READ` : "3 MIN READ"}
+                </p>
+              </div>
+              <img src={imgReplyWhite} alt="" className="h-[14px] w-[14px]" />
+            </div>
+            <Link
+              href={entryHref(entry)}
+              className="flex min-w-[156px] items-center justify-center rounded-[4px] bg-white px-[16px] py-[12px] bg-font-roboto text-[12px] font-bold text-[#113251] whitespace-nowrap"
+            >
+              Read full {singular}
+            </Link>
+          </div>
+        </div>
+
+        <Link
+          href={indexHref}
+          className="flex items-center gap-[5px] text-[14px] text-white underline"
+          style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+        >
+          <span>View all {plural}</span>
+          <img src={imgArrowForwardWhite} alt="" className="h-[24px] w-[24px]" />
+        </Link>
+      </div>
     </div>
   );
 }
@@ -375,7 +443,7 @@ function TabbedPanel({ entries }: { entries: HomepageEntry[] }) {
   ] as HomepageEntry[];
   const items = rows.length ? rows : fallback;
   return (
-    <div className="absolute left-[27px] top-[631px] h-[591px] w-[916px] pt-[32px]">
+    <div className="absolute left-[27px] top-[652px] h-[591px] w-[916px] pt-[32px]">
       <div className="flex items-center gap-[12px]">
         <button className="rounded-[4px] bg-[#ff611d] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold text-white">Profiles</button>
         <a
@@ -427,30 +495,11 @@ function TabbedPanel({ entries }: { entries: HomepageEntry[] }) {
   );
 }
 
-function MidAd({ entry }: { entry?: HomepageEntry | null }) {
-  return (
-    <div className="absolute left-0 top-[1163px] flex h-[145px] w-[684px] items-center gap-[28px]">
-      <img src={entryImageUrl(entry, 500, 500) || imgImage3} alt="" className="ml-[24px] h-[145px] w-[160px] rounded-[4px] object-cover" />
-      <div className="w-[480px]">
-        <h2 className="bg-type-h2 text-[#312e28]">{entry?.title || "The IBEW Union Hall"}</h2>
-        {entry?.dek ? (
-          <p className="bg-type-body mt-[6px] text-[#312e28]">
-            {entry.dek}
-          </p>
-        ) : null}
-        <Link href={entryHref(entry)} className="mt-[6px] inline-block bg-font-roboto text-[14px] text-[#c85006] underline">
-          Call to action link
-        </Link>
-      </div>
-    </div>
-  );
-}
-
 function EventBanner({ entry, ctaLabel, ctaHref, body }: { entry?: HomepageEntry | null; ctaLabel?: string; ctaHref?: string; body?: string }) {
   const title = entry?.title || "Come Join Us At the 2025 Evening of Excellence";
   const subtitle = `Event starts 8:00 pm on ${entry?.publishedAt ? new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".") : "04.13.2026"}`;
   return (
-    <div className="absolute left-0 top-[1372px] h-[336px] w-[1440px] overflow-hidden">
+    <div className="absolute left-0 top-[1286px] h-[336px] w-[1440px] overflow-hidden">
       <img src={entryImageUrl(entry, 1800, 600) || imgRectangle15} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-[#113251]/70" />
       <div className="absolute left-0 top-0 h-[336px] w-[1440px] text-center text-white">
@@ -492,7 +541,7 @@ function SponsorsAndAd() {
   ];
   return (
     <>
-      <div className="absolute left-[26px] top-[1732px] h-[361px] w-[684px]">
+      <div className="absolute left-[26px] top-[1669px] h-[361px] w-[684px]">
         <div className="mt-[68px] flex h-[89px] w-[684px] items-center justify-center gap-[10px] opacity-80">
           {logos.map((src, i) => (
             <img key={i} src={src} alt="" className="h-[75px] w-[82px] object-contain" />
@@ -505,40 +554,10 @@ function SponsorsAndAd() {
           </p>
         </div>
       </div>
-      <div className="absolute left-[730px] top-[1740px] flex h-[361px] w-[686px] items-center justify-center bg-[#d9d9d9]">
+      <div className="absolute left-[730px] top-[1677px] flex h-[361px] w-[686px] items-center justify-center bg-[#d9d9d9]">
         <h2 className="bg-type-h1 text-[#adadad]">Ad space</h2>
       </div>
     </>
-  );
-}
-
-function FigmaFooter() {
-  const links1 = ["Local", "National", "Project profiles", "Member profiles"];
-  const links2 = ["Feature", "Perspectives", "Data insights", "AI in construction"];
-  const links3 = ["About Breaking Ground", "Sponsors", "Contact"];
-  return (
-    <footer className="absolute left-0 top-[2160px] h-[236px] w-[1440px] bg-[#312e28] px-[48px] py-[48px] text-white">
-      <div className="flex items-start gap-[48px]">
-        <div className="w-[373px]">
-          <img src={imgBg2} alt="Breaking Ground" className="h-[58px] w-[240px] object-cover" />
-          <p className="bg-font-roboto mt-[15px] text-[10px]">CONSTRUCTION • INDUSTRY • POWER • WESTERN PA</p>
-        </div>
-        <div className="flex w-[606px] gap-[58px] bg-font-roboto text-[14px]">
-          <div className="space-y-[12px]">{links1.map((x) => <p key={x}>{x}</p>)}</div>
-          <div className="space-y-[12px]">{links2.map((x) => <p key={x}>{x}</p>)}</div>
-          <div className="space-y-[12px]">{links3.map((x) => <p key={x}>{x}</p>)}</div>
-        </div>
-        <div className="ml-auto">
-          <div className="flex items-center gap-[19px]">
-            <img src={imgFacebookWhite} alt="" className="h-[36px] w-[36px]" />
-            <img src={imgLinkedInWhite} alt="" className="h-[36px] w-[36px]" />
-            <img src={imgYoutubeWhite} alt="" className="h-[36px] w-[36px]" />
-            <img src={imgInstagramWhite} alt="" className="h-[36px] w-[36px]" />
-          </div>
-          <p className="bg-font-helvetica mt-[14px] text-[12px]">© 2026 Breaking Ground    Privacy    Terms</p>
-        </div>
-      </div>
-    </footer>
   );
 }
 
@@ -547,12 +566,11 @@ export default async function IndexPage() {
   const hero = homepage?.heroArticle ?? null;
   const latest = await loadLatestNewsItems();
   const tabbed = homepage?.gridTwo?.length ? homepage.gridTwo : homepage?.gridThree ?? [];
-  const midAd = homepage?.secondaryFeature ?? null;
   const event = homepage?.tertiaryFeature ?? homepage?.issueHighlight ?? null;
 
   return (
     <main className="figma-homepage min-h-screen bg-[#e8e8e8] overflow-x-auto">
-      <div className="relative mx-auto h-[2644px] w-[1440px] bg-white">
+      <div className="relative mx-auto h-[2097px] w-[1440px] bg-white">
         <TopRibbon />
         <HeroFeature
           entry={hero}
@@ -561,7 +579,6 @@ export default async function IndexPage() {
         />
         <LatestNews news={latest} />
         <TabbedPanel entries={tabbed} />
-        <MidAd entry={midAd} />
         <EventBanner
           entry={event}
           ctaLabel={homepage?.announcementLinkLabel}
@@ -569,7 +586,6 @@ export default async function IndexPage() {
           body={homepage?.announcementMessage}
         />
         <SponsorsAndAd />
-        <FigmaFooter />
       </div>
     </main>
   );

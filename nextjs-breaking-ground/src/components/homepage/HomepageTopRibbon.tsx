@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-const FIGMA_HEADER_LOGO =
-  "https://www.figma.com/api/mcp/asset/961e793c-d56e-4301-a43b-7c3d4b349e0e";
+const FIGMA_HEADER_LOGO = "/figma-assets/bg-logo.png";
 
 const NAV_ITEMS = [
   { label: "Region", href: "/sections/local", chevron: true },

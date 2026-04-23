@@ -1,14 +1,25 @@
 import Link from "next/link";
 
-const sectionLinks = [
+// Site-wide footer, Figma-designed (dark #312e28 panel with logo, link
+// columns, and social icons). Mounted globally in `src/app/layout.tsx`, so
+// every page gets it automatically.
+//
+// This replaced the legacy pre-Figma footer in the same file on 2026-04-23.
+// The prior version lived in this same module with a black bg and plain
+// link grid; it was retired as part of the homepage-hero-v2 rollout.
+
+const sectionLinksLeft = [
   { label: "Local", href: "/sections/local" },
   { label: "National", href: "/sections/national" },
-  { label: "Project Profiles", href: "/sections/project-profiles" },
-  { label: "Member Profiles", href: "/sections/member-profiles" },
+  { label: "Project profiles", href: "/sections/project-profiles" },
+  { label: "Member profiles", href: "/sections/member-profiles" },
+];
+
+const sectionLinksRight = [
   { label: "Features", href: "/sections/features" },
   { label: "Perspectives", href: "/sections/perspectives" },
-  { label: "Data Insights", href: "/sections/data-insights" },
-  { label: "AI In Construction", href: "/sections/ai-in-construction" },
+  { label: "Data insights", href: "/sections/data-insights" },
+  { label: "AI in construction", href: "/sections/ai-in-construction" },
 ];
 
 const aboutLinks = [
@@ -17,55 +28,83 @@ const aboutLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
+const socialLinks = [
+  { href: "https://www.facebook.com/", icon: "/figma-assets/facebook-white.svg", label: "Facebook" },
+  { href: "https://www.linkedin.com/", icon: "/figma-assets/linkedin-white.svg", label: "LinkedIn" },
+  { href: "https://www.youtube.com/", icon: "/figma-assets/youtube-white.svg", label: "YouTube" },
+  { href: "https://www.instagram.com/", icon: "/figma-assets/instagram-white.svg", label: "Instagram" },
+];
+
 export default function Footer() {
   return (
-    <footer className="w-full bg-black text-white mt-10 md:mt-20">
-      <div className="w-full px-4 md:px-12 lg:px-24 py-12 lg:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-12">
-          <div>
-            <h2 className="bg-type-h1 text-white">Breaking Ground</h2>
-            <p className="bg-font-roboto mt-4 text-[10px] uppercase tracking-[0.08em] text-white/80">
-              Construction • Industry • Power • Western PA
+    <footer className="w-full bg-[#312e28] text-white">
+      <div className="mx-auto w-full max-w-[1440px] px-[48px] py-[48px]">
+        <div className="flex flex-wrap items-start gap-[48px]">
+          <div className="w-[373px]">
+            <img
+              src="/figma-assets/bg-logo.png"
+              alt="Breaking Ground"
+              className="h-[58px] w-[240px] object-contain"
+            />
+            <p className="bg-font-roboto mt-[15px] text-[10px]">
+              CONSTRUCTION • INDUSTRY • POWER • WESTERN PA
             </p>
           </div>
 
-          <div>
-            <h3 className="bg-font-roboto text-xl font-semibold">Sections</h3>
-            <ul className="mt-5 space-y-3">
-              {sectionLinks.map((item) => (
-                <li key={item.label}>
-                  <Link href={item.href} className="bg-font-roboto text-[14px] tracking-wide hover:opacity-70 transition-opacity">
+          <nav
+            aria-label="Site sections"
+            className="flex w-[606px] gap-[58px] bg-font-roboto text-[14px]"
+          >
+            <ul className="space-y-[12px]">
+              {sectionLinksLeft.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="transition-opacity hover:opacity-70">
                     {item.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div>
-            <h3 className="bg-font-roboto text-xl font-semibold">About</h3>
-            <ul className="mt-5 space-y-3">
+            <ul className="space-y-[12px]">
+              {sectionLinksRight.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="transition-opacity hover:opacity-70">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ul className="space-y-[12px]">
               {aboutLinks.map((item) => (
-                <li key={item.label}>
-                  <Link href={item.href} className="bg-font-roboto text-[14px] tracking-wide hover:opacity-70 transition-opacity">
+                <li key={item.href}>
+                  <Link href={item.href} className="transition-opacity hover:opacity-70">
                     {item.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
+          </nav>
 
-        <div className="bg-font-helvetica mt-12 pt-6 border-t border-white/20 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[12px] tracking-wide text-white/80">
-          <p>© 2026 Breaking Ground</p>
-          <div className="flex items-center gap-3">
-            <Link href="#" className="hover:opacity-70 transition-opacity">
-              Privacy Policy
-            </Link>
-            <span aria-hidden="true">|</span>
-            <Link href="#" className="hover:opacity-70 transition-opacity">
-              Terms
-            </Link>
+          <div className="ml-auto">
+            <div className="flex items-center gap-[19px]">
+              {socialLinks.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="transition-opacity hover:opacity-70"
+                >
+                  <img src={s.icon} alt="" className="h-[36px] w-[36px]" />
+                </a>
+              ))}
+            </div>
+            <p className="bg-font-helvetica mt-[14px] text-[12px]">
+              © 2026 Breaking Ground &nbsp;&nbsp;&nbsp;
+              <Link href="#" className="hover:opacity-70">Privacy</Link>
+              &nbsp;&nbsp;&nbsp;
+              <Link href="#" className="hover:opacity-70">Terms</Link>
+            </p>
           </div>
         </div>
       </div>
