@@ -156,7 +156,7 @@ export const figmaArticle = defineType({
       of: [
         {
           type: 'reference',
-          to: [{type: 'projectProfile'}, {type: 'figmaArticle'}],
+          to: [{type: 'figmaArticle'}],
         },
       ],
       validation: (Rule) => Rule.required().min(2).max(6),
@@ -177,7 +177,7 @@ export const figmaArticle = defineType({
       title: 'Next Article',
       type: 'reference',
       group: 'navigation',
-      to: [{type: 'projectProfile'}, {type: 'figmaArticle'}],
+      to: [{type: 'figmaArticle'}],
       validation: (Rule) => Rule.required(),
     }),
   ],

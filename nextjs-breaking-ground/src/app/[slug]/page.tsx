@@ -1,10 +1,8 @@
 import { client } from "@/sanity/client";
-import ProjectProfilePage from "@/components/ProjectProfilePage";
 import FigmaArticlePage from "@/components/FigmaArticlePage";
-import Masthead from "@/components/Masthead";
 import Link from "next/link";
 
-const ENTRY_QUERY = `*[_type in ["projectProfile", "figmaArticle"] && slug.current == $slug][0]{
+const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   _type,
   title,
   headline,
@@ -47,33 +45,6 @@ const ENTRY_QUERY = `*[_type in ["projectProfile", "figmaArticle"] && slug.curre
     headline,
     section,
     category
-  },
-  // Project Profile fields
-  projectName,
-  architect,
-  generalContractor,
-  owner,
-  completionDate,
-  projectSize,
-  projectCost,
-  location,
-  projectType,
-  pageContent[]{
-    ...,
-    image{..., asset->{url}},
-    imageLeft{..., asset->{url}},
-    imageRight{..., asset->{url}},
-    images[]{..., image{..., asset->{url}}},
-    body[]{
-      ...,
-      mapFile{asset->{url}},
-      dataFile{asset->{url}}
-    },
-    text[]{
-      ...,
-      mapFile{asset->{url}},
-      dataFile{asset->{url}}
-    }
   }
 }`;
 
@@ -85,8 +56,8 @@ export default async function PostPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  // The ENTRY_QUERY returns either a projectProfile or figmaArticle; each
-  // receiving component owns its own typing so we keep this union-y on purpose.
+  // FigmaArticlePage owns its own typing; keep this loose so the GROQ shape
+  // can evolve without dragging this route along.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const article = await client.fetch<any | null>(ENTRY_QUERY, await params, options);
 
@@ -101,27 +72,5 @@ export default async function PostPage({
     );
   }
 
-  if (article._type === "projectProfile") {
-    return (
-      <div className="pp-profile-layout">
-        <Masthead homeHref="/" />
-        <main className="min-h-screen bg-white text-black">
-          <ProjectProfilePage project={article} />
-        </main>
-      </div>
-    );
-  }
-
-  if (article._type === "figmaArticle") {
-    return <FigmaArticlePage article={article} />;
-  }
-
-  return (
-    <main className="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4">
-      <Link href="/" className="hover:underline">
-        ← Back to posts
-      </Link>
-      <h1 className="text-2xl font-semibold">Unsupported content type</h1>
-    </main>
-  );
+  return <FigmaArticlePage article={article} />;
 }

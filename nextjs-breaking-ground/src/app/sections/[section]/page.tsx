@@ -33,23 +33,22 @@ const ARTICLES_BY_SERIES_QUERY = `*[_type == "figmaArticle" && series->slug.curr
     series->{title, seriesImage{asset->{url,_ref,_type}, alt}}
   }`;
 
-const PROJECT_PROFILES_QUERY = `*[_type == "projectProfile" && defined(slug.current)]
+const PROJECT_PROFILES_QUERY = `*[_type == "figmaArticle" && section == "project-profiles" && defined(slug.current)]
   | order(publishedAt desc){
     _id,
     _type,
-    title,
+    "title": coalesce(headline, title),
     dek,
     slug,
     publishedAt,
-    category,
+    "category": coalesce(articleTag, category, section),
     readingTime,
+    introImage{asset->{url,_ref,_type}, alt},
+    headerImage{asset->{url,_ref,_type}, alt},
     heroImage{asset->{url,_ref,_type}, alt},
     homepageImage{asset->{url,_ref,_type}, alt},
-    projectName,
-    projectType,
-    location,
-    headerImage{asset->{url,_ref,_type}, alt},
-    author->{name}
+    author->{name},
+    series->{title, seriesImage{asset->{url,_ref,_type}, alt}}
   }`;
 
 export const revalidate = 0;
@@ -75,8 +74,6 @@ type LandingSourceItem = {
   publishedAt?: string;
   category?: string;
   readingTime?: number;
-  projectName?: string;
-  projectType?: string;
   introImage?: ImageAssetRef | null;
   headerImage?: ImageAssetRef | null;
   heroImage?: ImageAssetRef | null;

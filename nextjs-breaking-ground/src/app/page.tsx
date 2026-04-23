@@ -27,10 +27,10 @@ const imgEventRegistration = "https://www.figma.com/api/mcp/asset/39ced4f3-b3a9-
 const imgCoffee = "https://www.figma.com/api/mcp/asset/b9f91e7a-8deb-4f88-b389-2fbb17186e26";
 
 // Projection used for every dereferenced homepage entry.
-// Coalesces article/projectProfile/figmaArticle field names into
-// the shape expected by the homepage render code:
-//   title    <- title (article/projectProfile) OR headline (figmaArticle)
-//   category <- category (article) OR articleTag (figmaArticle) OR section (figmaArticle)
+// Normalizes figmaArticle field names into the shape expected by the
+// homepage render code:
+//   title    <- headline OR title
+//   category <- category OR articleTag OR section
 const ENTRY_PROJECTION = `
   _id,
   _type,
@@ -40,8 +40,6 @@ const ENTRY_PROJECTION = `
   publishedAt,
   readingTime,
   "category": coalesce(category, articleTag, section),
-  projectType,
-  projectName,
   section,
   headerImage{asset->{_ref,url},alt},
   heroImage{asset->{_ref,url},alt},
@@ -72,8 +70,6 @@ type HomepageEntry = {
   publishedAt?: string;
   readingTime?: number;
   category?: string;
-  projectType?: string;
-  projectName?: string;
   section?: string;
   headerImage?: SanityImageLike;
   heroImage?: SanityImageLike;
@@ -326,7 +322,7 @@ function HeroFeature({
   const heroImage = entryImageUrl(entry, 1800, 900) || imgScreenshot20260319At103148Am2;
   const heroTitle = entry?.title || "Profile article headline text content area placeholder";
   const heroDek = entry?.dek;
-  const tag = entry?.category || entry?.projectType || "ARTICLE TAG";
+  const tag = entry?.category || "ARTICLE TAG";
   const badgeText = badgeLabel?.trim();
   const badgeIconUrl = sanityImageUrl(badgeIcon, 28, 28);
   return (
