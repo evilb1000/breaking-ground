@@ -410,6 +410,11 @@ function HeroFeature({
               </div>
               <img src={imgReplyWhite} alt="" className="h-[14px] w-[14px]" />
             </div>
+            {entry?.dek ? (
+              <p className="bg-font-roboto text-[14px] leading-[20px] text-white/90 w-full">
+                {entry.dek}
+              </p>
+            ) : null}
             <Link
               href={entryHref(entry)}
               className="flex min-w-[156px] items-center justify-center rounded-[4px] bg-white px-[16px] py-[12px] bg-font-roboto text-[12px] font-bold text-[#113251] whitespace-nowrap"

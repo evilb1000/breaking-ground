@@ -545,6 +545,11 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
                 <h1 className="bg-type-h1 text-[color:var(--bg-on-surface)]">
                   {headline}
                 </h1>
+                {article.dek ? (
+                  <p className="bg-type-body text-[color:var(--bg-on-surface)] opacity-80">
+                    {article.dek}
+                  </p>
+                ) : null}
               </header>
 
               <div className="bg-article-body">
