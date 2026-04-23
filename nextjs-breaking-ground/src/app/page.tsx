@@ -276,7 +276,7 @@ function LatestNews({ news }: { news: NewsFeedItem[] }) {
             </div>
           </div>
         </div>
-        <h2 className="bg-type-h2 text-[#312e28]">Latest news</h2>
+        <h2 className="bg-type-h2 text-[#312e28]">News Feed</h2>
       </div>
       <div className="mt-[28px] flex flex-col gap-[28px]">
         {items.map((entry, i) => (
