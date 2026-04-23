@@ -57,6 +57,8 @@ type FigmaArticleDoc = {
   _type: "figmaArticle";
   slug?: { current: string } | string;
   headline?: string;
+  title?: string;
+  dek?: string;
   publishedAt?: string;
   readingTime?: number;
   section?: string;
