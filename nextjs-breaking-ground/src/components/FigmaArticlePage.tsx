@@ -542,7 +542,15 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
 
               <header className="flex flex-col gap-[16px]">
                 <p className="bg-type-tag text-[color:var(--bg-on-surface)]">
-                  {(article.articleTag || sectionLabel(section)).toUpperCase()}
+                  {(() => {
+                    // Treat the schema's default placeholder "ARTICLE TAG" as
+                    // unset so the section name is shown instead of the literal
+                    // placeholder text.
+                    const raw = (article.articleTag || "").trim();
+                    const fallback = sectionLabel(section);
+                    const tag = !raw || raw.toUpperCase() === "ARTICLE TAG" ? fallback : raw;
+                    return tag.toUpperCase();
+                  })()}
                 </p>
                 <h1 className="bg-type-h1 text-[color:var(--bg-on-surface)]">
                   {headline}

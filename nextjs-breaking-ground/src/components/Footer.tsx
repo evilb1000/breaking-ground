@@ -19,7 +19,6 @@ const sectionLinksRight = [
   { label: "Features", href: "/sections/features" },
   { label: "Perspectives", href: "/sections/perspectives" },
   { label: "Data insights", href: "/sections/data-insights" },
-  { label: "AI in construction", href: "/sections/ai-in-construction" },
 ];
 
 const aboutLinks = [
@@ -47,7 +46,7 @@ export default function Footer() {
               className="h-[58px] w-[240px] object-contain"
             />
             <p className="bg-font-roboto mt-[15px] text-[10px]">
-              CONSTRUCTION • INDUSTRY • POWER • WESTERN PA
+              WESTERN PA • CONSTRUCTION • INDUSTRY • INFRASTRUCTURE
             </p>
           </div>
 

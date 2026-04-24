@@ -145,6 +145,13 @@ export default async function SectionPage({
       ? urlFor(img as SanityImageSource)?.width(900).height(600).fit("crop").url()
       : null;
 
+    // Prefer the article's own tag (articleTag → category → section).
+    // Treat the schema's default placeholder "ARTICLE TAG" as if it were
+    // unset so we don't render the literal placeholder on the landing page.
+    const rawTag = (article.category || "").trim();
+    const isPlaceholder = rawTag.toUpperCase() === "ARTICLE TAG";
+    const tagLabel = !rawTag || isPlaceholder ? config.title : rawTag;
+
     return {
       id: article._id,
       title: article.title || "Untitled",
@@ -154,6 +161,7 @@ export default async function SectionPage({
       imageAlt: img?.alt || article.title || "Article image",
       dateLabel: formatDisplayDate(article.publishedAt),
       readTimeLabel: article.readingTime ? `${article.readingTime} MIN READ` : "3 MIN READ",
+      tagLabel,
       external: false,
     };
   });

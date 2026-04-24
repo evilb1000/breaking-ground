@@ -16,6 +16,7 @@ export type LandingItem = {
   imageAlt?: string;
   dateLabel?: string;
   readTimeLabel?: string;
+  tagLabel?: string;
   external?: boolean;
 };
 
@@ -137,7 +138,9 @@ export default function FigmaLandingTemplate({
               />
             </div>
             <div className="flex h-[298px] flex-col justify-center bg-[#f5f3f0] px-[24px] pb-[42px] pt-[20px]">
-              <p className="bg-type-tag text-[#ff611d]">ARTICLE TAG</p>
+              {featuredItem.tagLabel ? (
+                <p className="bg-type-tag text-[#ff611d]">{featuredItem.tagLabel.toUpperCase()}</p>
+              ) : null}
               <p className="bg-type-h2 mt-[12px] text-[#312e28]">{featuredItem.title}</p>
               <div className="mt-[12px] flex items-center gap-[12px]">
                 <p className="bg-type-meta text-[#312e28]">{featuredItem.dateLabel || "APRIL 15, 2026"}</p>
