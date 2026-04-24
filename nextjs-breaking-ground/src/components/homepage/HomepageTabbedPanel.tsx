@@ -53,7 +53,7 @@ export default function HomepageTabbedPanel({
     {
       key: "profiles",
       label: "Profiles",
-      heading: "Breaking Ground Profiles",
+      heading: "Construction Profiles",
       items: profiles,
       viewAllLabel: "View all profiles",
       viewAllHref: "/sections/project-profiles",
@@ -62,7 +62,7 @@ export default function HomepageTabbedPanel({
     {
       key: "perspectives",
       label: "Perspectives",
-      heading: "Breaking Ground Perspectives",
+      heading: "Expert Perspectives",
       items: perspectives,
       viewAllLabel: "View all perspectives",
       viewAllHref: "/sections/perspectives",

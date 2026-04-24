@@ -109,7 +109,7 @@ export default function FigmaLandingTemplate({
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.2))]" />
         <div className="relative mx-auto flex h-[148px] w-full max-w-[1440px] items-end px-6 pb-6 text-white">
           <div className="mx-auto w-[922px] text-right">
-            {variant === "default" ? (
+            {breadcrumbCurrent ? (
               <p className="bg-font-roboto text-[14px] leading-[18px]">
                 <Link href="/" className="underline">
                   Home
