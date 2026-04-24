@@ -86,7 +86,6 @@ export default function HomepageTopRibbon() {
               </span>
             );
           })}
-          <span className="text-[18px] leading-none ml-1" aria-hidden="true">⌕</span>
         </nav>
       </div>
     </header>

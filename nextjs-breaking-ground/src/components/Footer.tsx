@@ -43,7 +43,7 @@ export default function Footer() {
             <img
               src="/figma-assets/bg-logo.png"
               alt="Breaking Ground"
-              className="h-[58px] w-[240px] object-contain"
+              className="h-[58px] w-[240px] object-contain [filter:brightness(0)_invert(1)]"
             />
             <p className="bg-font-roboto mt-[15px] text-[10px]">
               WESTERN PA • CONSTRUCTION • INDUSTRY • INFRASTRUCTURE

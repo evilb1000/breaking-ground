@@ -11,7 +11,6 @@ import NavDropdown from "@/components/homepage/NavDropdown";
 
 // Figma-sourced assets. Downloaded from the Figma MCP asset CDN (which expires
 // after 7 days) and committed locally at public/figma-assets/ for permanence.
-const imgIcon = "/figma-assets/tab-icon.svg";
 const imgBg2 = "/figma-assets/bg-logo.png";
 const imgIcon2 = "/figma-assets/clock-dark.svg";
 const imgReply = "/figma-assets/reply-dark.svg";
@@ -349,11 +348,6 @@ function TopRibbon() {
             );
           })}
         </div>
-        <div className="relative h-[36px] w-[36px]">
-          <div className="absolute inset-[12.5%]">
-            <img src={imgIcon} alt="Search" className="absolute inset-0 h-full w-full" />
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -366,7 +360,7 @@ function LatestNews({ news }: { news: NewsFeedItem[] }) {
   const fallback: NewsFeedItem[] = [{}, {}, {}, {}];
   const items = cards.length ? cards : fallback;
   return (
-    <div className="absolute left-[965px] top-[652px] h-[634px] w-[451px] bg-[#f5f3f0] px-[24px] pt-[23px]">
+    <div className="absolute left-[965px] top-[652px] h-[634px] w-[451px] border-l border-[#ebebeb] px-[24px] pt-[23px]">
       <div className="flex items-center gap-[8px]">
         <div className="relative h-[20px] w-[20px] overflow-hidden">
           <div className="absolute inset-[4.17%_4.17%_12.5%_8.33%]">
