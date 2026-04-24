@@ -65,7 +65,7 @@ export default function NavDropdown({
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className={`inline-flex items-center gap-[2px] ${buttonClassName}`}
+        className={`inline-flex cursor-pointer items-center gap-[2px] ${buttonClassName}`}
       >
         <span>{label}</span>
         <span
