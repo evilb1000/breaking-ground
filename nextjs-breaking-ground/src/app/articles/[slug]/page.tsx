@@ -9,6 +9,7 @@ import { articleUrl } from "@/lib/urls";
 
 const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   _type,
+  "slug": slug.current,
   title,
   headline,
   dek,
