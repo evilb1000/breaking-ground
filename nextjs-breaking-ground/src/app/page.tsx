@@ -39,6 +39,7 @@ const ENTRY_PROJECTION = `
   _id,
   _type,
   "title": coalesce(title, headline),
+  homepageHeadline,
   dek,
   slug,
   publishedAt,
@@ -69,6 +70,7 @@ type HomepageEntry = {
   _id: string;
   _type: string;
   title?: string;
+  homepageHeadline?: string;
   dek?: string;
   slug?: { current?: string };
   publishedAt?: string;
@@ -388,7 +390,13 @@ function HeroFeature({
   // Content overlay is right-aligned on the dark side: headline (white, 56/48 Roboto Flex),
   // meta row, "Read full profile" CTA (white bg, dark-blue text), and "View all profiles →" link.
   const heroImage = entryImageUrl(entry, 1800, 950) || imgScreenshot20260319At103148Am2;
-  const heroTitle = entry?.title || "Profile article hero headline text styling area placeholder";
+  // Prefer the article's optional homepage-only headline; fall back to the
+  // standard article headline (which the GROQ projection already coalesces
+  // into `title`) so older articles render exactly as they do today.
+  const heroTitle =
+    entry?.homepageHeadline?.trim() ||
+    entry?.title ||
+    "Profile article hero headline text styling area placeholder";
   const badgeText = badgeLabel?.trim();
   const badgeIconUrl = sanityImageUrl(badgeIcon, 28, 28);
   const { singular, plural, indexHref } = sectionLabels(entry?.section);

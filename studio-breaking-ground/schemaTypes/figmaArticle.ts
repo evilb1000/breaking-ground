@@ -113,6 +113,15 @@ export const figmaArticle = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'homepageHeadline',
+      title: 'Homepage Headline',
+      type: 'string',
+      group: 'intro',
+      description:
+        'Optional alternate headline shown ONLY on the homepage hero. Use a punchier or shorter variant tuned for the large hero typography. Falls back to Article Headline if blank.',
+      validation: (Rule) => Rule.max(120),
+    }),
+    defineField({
       name: 'dek',
       title: 'Summary (Dek)',
       type: 'text',
