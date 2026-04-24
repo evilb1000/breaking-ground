@@ -156,6 +156,44 @@ export const blockContent = defineType({
       title: 'Map Embed',
       type: 'mapEmbed',
     }),
+    // Ad slot (686 × 361 — matches the homepage ad rectangle)
+    defineArrayMember({
+      name: 'adSlot',
+      title: 'Ad Slot',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'image',
+          title: 'Ad Image (686×361)',
+          type: 'image',
+          options: {hotspot: true},
+          description:
+            'Ad creative displayed in the body. If no image is provided, a grey "Ad space" placeholder renders at the correct size.',
+        }),
+        defineField({
+          name: 'linkUrl',
+          title: 'Click-through URL',
+          type: 'url',
+        }),
+        defineField({
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string',
+        }),
+        defineField({
+          name: 'label',
+          title: 'Internal Label',
+          type: 'string',
+          description: 'Optional label shown in the Studio preview only (e.g. "April sponsor").',
+        }),
+      ],
+      preview: {
+        select: {title: 'label', media: 'image'},
+        prepare({title, media}: {title?: string; media?: unknown}) {
+          return {title: title || 'Ad Slot (686×361)', media: media as any}
+        },
+      },
+    }),
     // Pull quote (Figma article module)
     defineArrayMember({
       name: 'pullQuote',

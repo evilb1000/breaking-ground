@@ -181,6 +181,49 @@ export const articleComponents = {
     },
   },
   types: {
+    adSlot: ({
+      value,
+    }: {
+      value?: {
+        image?: SanityImage;
+        linkUrl?: string;
+        alt?: string;
+      };
+    }) => {
+      const src = value?.image ? imageSrc(value.image, 1400) : null;
+      const inner = src ? (
+        <img
+          src={src}
+          alt={value?.alt || ""}
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-[#d9d9d9]">
+          <h2 className="bg-type-h1 text-[#adadad]">Ad space</h2>
+        </div>
+      );
+      const box = (
+        <div className="mx-auto h-[361px] w-full max-w-[686px] overflow-hidden">
+          {inner}
+        </div>
+      );
+      return (
+        <div className="my-8">
+          {value?.linkUrl ? (
+            <a
+              href={value.linkUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+            >
+              {box}
+            </a>
+          ) : (
+            box
+          )}
+        </div>
+      );
+    },
     pullQuote: ({ value }: { value?: { quote?: string; attribution?: string } }) => {
       if (!value?.quote) return null;
       return (
