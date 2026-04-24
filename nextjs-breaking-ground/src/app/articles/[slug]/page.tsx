@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import imageUrlBuilder from "@sanity/image-url";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
 import FigmaArticlePage from "@/components/FigmaArticlePage";
 import FigmaProfileArticlePage from "@/components/FigmaProfileArticlePage";
 import Link from "next/link";
+
+const SITE_URL = "https://www.breakinggroundpittsburgh.com";
 
 const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   _type,
@@ -58,21 +62,50 @@ const META_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   title,
   headline,
   dek,
-  "bodyText": pt::text(body)
+  publishedAt,
+  section,
+  "authorName": author->name,
+  "bodyText": pt::text(body),
+  introImage{alt, asset->{_id, url}},
+  heroImage{alt, asset->{_id, url}},
+  headerImage{alt, asset->{_id, url}}
 }`;
 
 export const revalidate = 0;
 const options = { next: { revalidate: 0 } };
+
+type MetaImage = {
+  alt?: string;
+  asset?: {
+    _id?: string;
+    url?: string;
+  };
+};
 
 type MetaDoc = {
   title?: string;
   headline?: string;
   dek?: string;
   bodyText?: string;
+  publishedAt?: string;
+  section?: string;
+  authorName?: string;
+  introImage?: MetaImage;
+  heroImage?: MetaImage;
+  headerImage?: MetaImage;
 };
 
 const TITLE_MAX = 70;
 const DESCRIPTION_MAX = 160;
+// LinkedIn/Facebook/Twitter all render 1.91:1 crops best around 1200x630.
+const OG_WIDTH = 1200;
+const OG_HEIGHT = 630;
+
+const { projectId, dataset } = client.config();
+const urlFor = (source: SanityImageSource) =>
+  projectId && dataset
+    ? imageUrlBuilder({ projectId, dataset }).image(source)
+    : null;
 
 function truncate(input: string, max: number): string {
   const trimmed = input.replace(/\s+/g, " ").trim();
@@ -97,14 +130,41 @@ function buildDescription(meta: MetaDoc | null): string | undefined {
   return paragraph ? truncate(paragraph, DESCRIPTION_MAX) : undefined;
 }
 
+// Picks the first image we can actually use for a social card. Order mirrors
+// what the visible page templates do: introImage is the "hero" of the article
+// layout, heroImage is the homepage card variant, headerImage is a fallback
+// from older authoring patterns.
+function pickSocialImage(
+  meta: MetaDoc,
+): { url: string; alt: string } | null {
+  const candidates = [meta.introImage, meta.heroImage, meta.headerImage];
+  for (const img of candidates) {
+    if (!img?.asset) continue;
+    if (img.asset._id) {
+      const built = urlFor(img as SanityImageSource)
+        ?.width(OG_WIDTH)
+        .height(OG_HEIGHT)
+        .fit("crop")
+        .auto("format")
+        .url();
+      if (built) return { url: built, alt: img.alt || "" };
+    }
+    if (img.asset.url) {
+      return { url: img.asset.url, alt: img.alt || "" };
+    }
+  }
+  return null;
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const resolved = await params;
   const meta = await client.fetch<MetaDoc | null>(
     META_QUERY,
-    await params,
+    resolved,
     options,
   );
 
@@ -120,10 +180,41 @@ export async function generateMetadata({
     ? `${truncate(rawTitle, TITLE_MAX)} | Breaking Ground`
     : "Breaking Ground";
   const description = buildDescription(meta);
+  const canonical = `${SITE_URL}/articles/${resolved.slug}`;
+  const social = pickSocialImage(meta);
+
+  const ogImages = social
+    ? [
+        {
+          url: social.url,
+          width: OG_WIDTH,
+          height: OG_HEIGHT,
+          alt: social.alt || rawTitle || "Breaking Ground",
+        },
+      ]
+    : undefined;
 
   return {
     title,
     description,
+    alternates: { canonical },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url: canonical,
+      siteName: "Breaking Ground",
+      ...(ogImages ? { images: ogImages } : {}),
+      ...(meta.publishedAt ? { publishedTime: meta.publishedAt } : {}),
+      ...(meta.authorName ? { authors: [meta.authorName] } : {}),
+      ...(meta.section ? { section: meta.section } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(ogImages ? { images: ogImages.map((i) => i.url) } : {}),
+    },
   };
 }
 
