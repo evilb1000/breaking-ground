@@ -6,6 +6,7 @@ import { client } from "@/sanity/client";
 import ChartFromRefClient from "@/components/ChartFromRefClient";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
+import { articleHref } from "@/lib/urls";
 
 /* ------------------------------------------------------------------ */
 /*  Image URL builder                                                  */
@@ -108,7 +109,7 @@ export function formatMetaDate(iso?: string): string {
 }
 
 export function relatedSlug(ref: RelatedRef | NextRef): string {
-  return ref.slug ? `/${ref.slug}` : "/";
+  return ref.slug ? articleHref(ref.slug) : "/";
 }
 
 export function relatedTitle(ref: RelatedRef | NextRef): string {
@@ -548,7 +549,7 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
     typeof article.slug === "string"
       ? article.slug
       : article.slug?.current || "";
-  const shareUrl = `https://breakingground.pub/${slugValue}`;
+  const shareUrl = `https://breakingground.pub${articleHref(slugValue)}`;
 
   return (
     <>

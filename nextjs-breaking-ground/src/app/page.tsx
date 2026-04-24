@@ -8,6 +8,7 @@ import HomepageTabbedPanel, {
   type TabItem,
 } from "@/components/homepage/HomepageTabbedPanel";
 import NavDropdown from "@/components/homepage/NavDropdown";
+import { articleHref } from "@/lib/urls";
 
 // Figma-sourced assets. Downloaded from the Figma MCP asset CDN (which expires
 // after 7 days) and committed locally at public/figma-assets/ for permanence.
@@ -177,10 +178,7 @@ const sanityImageUrl = (image?: SanityImageLike | null, width?: number, height?:
   return image?.asset?.url ?? null;
 };
 
-const entryHref = (entry?: HomepageEntry | null) => {
-  const slug = entry?.slug?.current;
-  return slug ? `/${slug}` : "#";
-};
+const entryHref = (entry?: HomepageEntry | null) => articleHref(entry?.slug?.current);
 
 const displayDate = (date?: string) => {
   if (!date) return "APRIL 15, 2026";

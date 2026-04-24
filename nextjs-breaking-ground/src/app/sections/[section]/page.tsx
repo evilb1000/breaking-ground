@@ -4,6 +4,7 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
 import FigmaLandingTemplate, { type LandingItem } from "@/components/landing/FigmaLandingTemplate";
 import Masthead from "@/components/Masthead";
+import { articleHref } from "@/lib/urls";
 
 const SECTIONS: Record<string, { title: string; seriesSlug: string }> = {
   local: { title: "Local", seriesSlug: "regional-market-update" },
@@ -156,7 +157,7 @@ export default async function SectionPage({
       id: article._id,
       title: article.title || "Untitled",
       summary: article.dek || undefined,
-      href: article.slug?.current ? `/${article.slug.current}` : "#",
+      href: articleHref(article.slug?.current),
       imageSrc,
       imageAlt: img?.alt || article.title || "Article image",
       dateLabel: formatDisplayDate(article.publishedAt),

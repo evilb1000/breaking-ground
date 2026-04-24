@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/export-article-slugs.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "export:article-slugs": "node scripts/export-article-slugs.mjs",
     "migrate:audit": "node scripts/migrate-articles-to-figma.mjs --phase=audit",
     "migrate:plan": "node scripts/migrate-articles-to-figma.mjs --phase=migrate",
     "migrate:apply": "node scripts/migrate-articles-to-figma.mjs --phase=migrate --execute",

@@ -52,7 +52,7 @@ const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
 export const revalidate = 0;
 const options = { next: { revalidate: 0 } };
 
-export default async function PostPage({
+export default async function ArticlePage({
   params,
 }: {
   params: Promise<{ slug: string }>;

@@ -2,6 +2,7 @@ import { PortableText } from "next-sanity";
 import Link from "next/link";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
+import { articleHref } from "@/lib/urls";
 import {
   articleComponents,
   formatMetaDate,
@@ -308,7 +309,7 @@ export default function FigmaProfileArticlePage({ article }: { article: FigmaArt
     article.heroImage || article.introImage || article.headerImage || undefined;
   const slugValue =
     typeof article.slug === "string" ? article.slug : article.slug?.current || "";
-  const shareUrl = `https://breakingground.pub/${slugValue}`;
+  const shareUrl = `https://breakingground.pub${articleHref(slugValue)}`;
 
   return (
     <>
