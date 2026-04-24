@@ -448,7 +448,7 @@ function HeroFeature({
       </div>
 
       {badgeText ? (
-        <div className="absolute left-[484px] top-0 z-10 flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
+        <div className="absolute left-[482px] top-0 z-10 flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
           <img
             src={badgeIconUrl || imgHeroBadgeDefaultIcon}
             alt={badgeIcon?.alt || ""}
