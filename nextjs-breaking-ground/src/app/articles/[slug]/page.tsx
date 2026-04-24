@@ -5,8 +5,7 @@ import { client } from "@/sanity/client";
 import FigmaArticlePage from "@/components/FigmaArticlePage";
 import FigmaProfileArticlePage from "@/components/FigmaProfileArticlePage";
 import Link from "next/link";
-
-const SITE_URL = "https://www.breakinggroundpittsburgh.com";
+import { articleUrl } from "@/lib/urls";
 
 const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   _type,
@@ -180,7 +179,7 @@ export async function generateMetadata({
     ? `${truncate(rawTitle, TITLE_MAX)} | Breaking Ground`
     : "Breaking Ground";
   const description = buildDescription(meta);
-  const canonical = `${SITE_URL}/articles/${resolved.slug}`;
+  const canonical = articleUrl(resolved.slug);
   const social = pickSocialImage(meta);
 
   const ogImages = social
