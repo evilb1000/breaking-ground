@@ -318,12 +318,10 @@ export default function FigmaProfileArticlePage({ article }: { article: FigmaArt
         <ProfileHero headline={headline} image={heroImg} />
 
         <div className="mx-auto w-full max-w-[1440px] px-[24px] lg:px-0">
-          {/* Breadcrumb — centered in the main column, below the hero. */}
-          <div
-            className="grid gap-x-[28px] pt-[40px]"
-            style={{ gridTemplateColumns: "143px 206px 28px 686px 1fr" }}
-          >
-            <div className="col-start-4 col-end-5">
+          {/* Breadcrumb — horizontally centered directly under the rectangle
+              (rectangle: left-[356px] w-[727px]). */}
+          <div className="pt-0">
+            <div className="ml-[356px] flex w-[727px] justify-center">
               <ProfileBreadcrumb section={section} />
             </div>
           </div>
