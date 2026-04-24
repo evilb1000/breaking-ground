@@ -308,40 +308,47 @@ function TopRibbon() {
                 />
               );
             }
+            const chevronNode = item.hasChevron ? (
+              <span
+                className="inline-flex h-[24px] w-[24px] items-center justify-center translate-y-[1px]"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 24 24" className="h-[24px] w-[24px] text-[#312e28] opacity-80">
+                  <path
+                    d="M7 10l5 5 5-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            ) : null;
+            const linkClass =
+              "inline-flex items-center gap-[2px] bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity";
             return (
-              <div key={item.label} className="flex items-center gap-[2px]">
+              <div key={item.label} className="flex items-center">
                 {item.href ? (
                   item.external ? (
                     <a
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity"
+                      className={linkClass}
                     >
-                      {item.label}
+                      <span>{item.label}</span>
+                      {chevronNode}
                     </a>
                   ) : (
-                    <Link href={item.href} className="bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity">
-                      {item.label}
+                    <Link href={item.href} className={linkClass}>
+                      <span>{item.label}</span>
+                      {chevronNode}
                     </Link>
                   )
                 ) : (
                   <p className="bg-type-nav whitespace-nowrap text-[#312e28]">{item.label}</p>
                 )}
-                {item.hasChevron ? (
-                  <span className="inline-flex h-[24px] w-[24px] items-center justify-center translate-y-[1px]" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" className="h-[24px] w-[24px] text-[#312e28] opacity-80">
-                      <path
-                        d="M7 10l5 5 5-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                ) : null}
               </div>
             );
           })}

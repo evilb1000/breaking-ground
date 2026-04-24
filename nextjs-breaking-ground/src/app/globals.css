@@ -1,6 +1,19 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Tailwind v4's Preflight reset sets `cursor: default` on buttons and drops
+   the traditional native pointer cursor on other interactive elements. Restore
+   the expected "hand on hover" behavior across the whole site so every link,
+   button, and role=button element feels clickable. */
+@layer base {
+  a[href],
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

@@ -60,29 +60,38 @@ export default function HomepageTopRibbon() {
                   key={item.label}
                   label={item.label}
                   items={item.children}
-                  buttonClassName="bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-70 transition-opacity"
+                  buttonClassName="cursor-pointer bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-70 transition-opacity"
                 />
               );
             }
+            const chevronNode = item.chevron ? (
+              <span
+                className="bg-type-nav leading-none opacity-80 -mt-[1px]"
+                aria-hidden="true"
+              >
+                ▾
+              </span>
+            ) : null;
+            const linkClass =
+              "inline-flex items-center gap-[2px] bg-type-nav hover:opacity-70 transition-opacity whitespace-nowrap";
             return (
-              <span key={item.href ?? item.label} className="inline-flex items-center gap-[2px]">
+              <span key={item.href ?? item.label} className="inline-flex items-center">
                 {item.external ? (
                   <a
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-type-nav hover:opacity-70 transition-opacity whitespace-nowrap"
+                    className={linkClass}
                   >
-                    {item.label}
+                    <span>{item.label}</span>
+                    {chevronNode}
                   </a>
                 ) : (
-                  <Link href={item.href ?? "#"} className="bg-type-nav hover:opacity-70 transition-opacity whitespace-nowrap">
-                    {item.label}
+                  <Link href={item.href ?? "#"} className={linkClass}>
+                    <span>{item.label}</span>
+                    {chevronNode}
                   </Link>
                 )}
-                {item.chevron ? (
-                  <span className="bg-type-nav leading-none opacity-80 -mt-[1px]" aria-hidden="true">▾</span>
-                ) : null}
               </span>
             );
           })}
