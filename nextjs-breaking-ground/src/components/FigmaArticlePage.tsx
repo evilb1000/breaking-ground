@@ -21,7 +21,7 @@ const urlFor = (source: SanityImageSource) =>
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-type SanityImage = {
+export type SanityImage = {
   asset?: { _ref?: string; url?: string };
   assetUrl?: string;
   alt?: string;
@@ -29,7 +29,7 @@ type SanityImage = {
   hotspot?: { x: number; y: number };
 };
 
-type RelatedRef = {
+export type RelatedRef = {
   _id: string;
   _type: string;
   slug?: string;
@@ -42,7 +42,7 @@ type RelatedRef = {
   introImage?: SanityImage;
 };
 
-type NextRef = {
+export type NextRef = {
   _id?: string;
   _type?: string;
   slug?: string;
@@ -52,7 +52,7 @@ type NextRef = {
   category?: string;
 };
 
-type FigmaArticleDoc = {
+export type FigmaArticleDoc = {
   _id?: string;
   _type: "figmaArticle";
   slug?: { current: string } | string;
@@ -64,6 +64,8 @@ type FigmaArticleDoc = {
   section?: string;
   articleTag?: string;
   introImage?: SanityImage;
+  heroImage?: SanityImage;
+  headerImage?: SanityImage;
   author?: { name?: string; image?: SanityImage; bio?: string };
   authorBio?: string;
   body?: Array<Record<string, unknown>>;
@@ -75,7 +77,7 @@ type FigmaArticleDoc = {
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-function sectionLabel(section?: string): string {
+export function sectionLabel(section?: string): string {
   if (!section) return "Section";
   const map: Record<string, string> = {
     features: "Features",
@@ -88,11 +90,11 @@ function sectionLabel(section?: string): string {
   return map[section] || section;
 }
 
-function sectionHref(section?: string): string {
+export function sectionHref(section?: string): string {
   return section ? `/sections/${section}` : "/";
 }
 
-function formatMetaDate(iso?: string): string {
+export function formatMetaDate(iso?: string): string {
   if (!iso) return "";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
@@ -105,15 +107,15 @@ function formatMetaDate(iso?: string): string {
     .toUpperCase();
 }
 
-function relatedSlug(ref: RelatedRef | NextRef): string {
+export function relatedSlug(ref: RelatedRef | NextRef): string {
   return ref.slug ? `/${ref.slug}` : "/";
 }
 
-function relatedTitle(ref: RelatedRef | NextRef): string {
+export function relatedTitle(ref: RelatedRef | NextRef): string {
   return ref.headline || ref.title || "Untitled";
 }
 
-function imageSrc(img?: SanityImage, width = 1200): string | null {
+export function imageSrc(img?: SanityImage, width = 1200): string | null {
   if (!img) return null;
   if (img.asset?._ref) {
     const built = urlFor(img as SanityImageSource)?.width(width).url();
@@ -122,7 +124,7 @@ function imageSrc(img?: SanityImage, width = 1200): string | null {
   return img.asset?.url || img.assetUrl || null;
 }
 
-function hotspotPosition(img?: SanityImage): string {
+export function hotspotPosition(img?: SanityImage): string {
   const h = img?.hotspot;
   if (!h) return "50% 50%";
   return `${(h.x * 100).toFixed(1)}% ${(h.y * 100).toFixed(1)}%`;
@@ -145,7 +147,7 @@ const alignClassMap = {
   center: "mx-auto my-6 block",
 } as const;
 
-const articleComponents = {
+export const articleComponents = {
   block: {
     h2: ({ children }: { children?: React.ReactNode }) => (
       <h2 className="bg-type-h2 mt-10 mb-4 text-[color:var(--bg-on-surface)]">{children}</h2>

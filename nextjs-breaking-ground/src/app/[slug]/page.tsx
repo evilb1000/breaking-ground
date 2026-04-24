@@ -1,5 +1,6 @@
 import { client } from "@/sanity/client";
 import FigmaArticlePage from "@/components/FigmaArticlePage";
+import FigmaProfileArticlePage from "@/components/FigmaProfileArticlePage";
 import Link from "next/link";
 
 const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
@@ -72,5 +73,12 @@ export default async function PostPage({
     );
   }
 
-  return <FigmaArticlePage article={article} />;
+  const isProfile =
+    article?.section === "project-profiles" || article?.section === "member-profiles";
+
+  return isProfile ? (
+    <FigmaProfileArticlePage article={article} />
+  ) : (
+    <FigmaArticlePage article={article} />
+  );
 }
