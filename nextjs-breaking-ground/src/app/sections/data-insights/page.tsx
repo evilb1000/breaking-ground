@@ -8,7 +8,7 @@ import type { SparklineJson } from "@/data/sparkline_types";
 export const revalidate = 3600; // re-fetch at most once per hour
 
 export const metadata = {
-  title: "Data Insights | Breaking Ground",
+  title: "Pricing Insights | Breaking Ground",
   description: "Construction industry economic indicators and market data.",
 };
 
@@ -43,7 +43,7 @@ export default async function DataInsightsPage() {
               <Link href="/" className="underline">
                 Home
               </Link>{" "}
-              / <span className="text-white/70">Data Insights</span>
+              / <span className="text-white/70">Pricing Insights</span>
             </p>
           </div>
         </div>
@@ -53,11 +53,7 @@ export default async function DataInsightsPage() {
       <section className="mx-auto w-full max-w-[1200px] px-4 pb-[72px] pt-[40px] md:px-[26px]">
         <div className="mb-[32px] flex flex-col gap-[8px] md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="bg-type-h1 text-[#312e28]">Data Insights</h1>
-            <p className="bg-font-roboto mt-[8px] text-[14px] text-[#312e28]/70">
-              Construction industry indicators · Latest period: {latestPeriod} ·{" "}
-              {data.series.length} series tracked
-            </p>
+            <h1 className="bg-type-h1 text-[#312e28]">Pricing Insights</h1>
           </div>
           <div className="flex items-center gap-[16px] bg-font-roboto text-[12px] text-[#312e28]/60">
             <span className="inline-flex items-center gap-[4px]">

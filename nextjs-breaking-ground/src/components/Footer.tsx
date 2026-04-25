@@ -18,7 +18,7 @@ const sectionLinksLeft = [
 const sectionLinksRight = [
   { label: "Features", href: "/sections/features" },
   { label: "Perspectives", href: "/sections/perspectives" },
-  { label: "Data insights", href: "/sections/data-insights" },
+  { label: "Pricing Insights", href: "/sections/data-insights" },
 ];
 
 const aboutLinks = [

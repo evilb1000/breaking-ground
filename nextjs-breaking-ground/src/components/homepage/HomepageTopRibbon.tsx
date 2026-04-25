@@ -31,7 +31,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "National", href: "/sections/national" },
     ],
   },
-  { label: "Insights", href: "/sections/data-insights", chevron: true },
+  { label: "Pricing Insights", href: "/sections/data-insights", chevron: true },
   {
     label: "Issues",
     href: "https://www.mbawpa.org/news/breaking-ground-magazine/",
