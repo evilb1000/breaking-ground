@@ -3,14 +3,49 @@
 
 /* Tailwind v4's Preflight reset sets `cursor: default` on buttons and drops
    the traditional native pointer cursor on other interactive elements. Restore
-   the expected "hand on hover" behavior across the whole site so every link,
-   button, and role=button element feels clickable. */
-@layer base {
+   the expected "hand on hover" behavior across the whole site so nested spans,
+   icons, and menu-item children do not cancel the pointer cursor. */
+@layer utilities {
   a[href],
+  label,
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
+  [role="menuitem"],
   summary {
-    cursor: pointer;
+    cursor: pointer !important;
+  }
+
+  a[href] *,
+  label *,
+  button:not(:disabled) *,
+  [role="button"]:not([aria-disabled="true"]) *,
+  [role="menuitem"] *,
+  summary * {
+    cursor: pointer !important;
+  }
+
+  .cursor-pointer,
+  .cursor-pointer * {
+    cursor: pointer !important;
+  }
+
+  @supports selector(html:has(a:hover)) {
+    html:has(a[href]:hover),
+    html:has(button:not(:disabled):hover),
+    html:has(label:hover),
+    html:has(summary:hover),
+    html:has([role="button"]:not([aria-disabled="true"]):hover),
+    html:has([role="menuitem"]:hover),
+    html:has(.cursor-pointer:hover),
+    html:has(a[href]:hover) *,
+    html:has(button:not(:disabled):hover) *,
+    html:has(label:hover) *,
+    html:has(summary:hover) *,
+    html:has([role="button"]:not([aria-disabled="true"]):hover) *,
+    html:has([role="menuitem"]:hover) *,
+    html:has(.cursor-pointer:hover) * {
+      cursor: pointer !important;
+    }
   }
 }
 

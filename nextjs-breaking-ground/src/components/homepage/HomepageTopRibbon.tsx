@@ -52,7 +52,7 @@ export default function HomepageTopRibbon() {
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-6 text-[#312e28]">
+        <nav className="hidden cursor-pointer lg:flex items-center gap-6 text-[#312e28]">
           {NAV_ITEMS.map((item) => {
             if (item.children && item.children.length > 0) {
               return (
@@ -60,7 +60,7 @@ export default function HomepageTopRibbon() {
                   key={item.label}
                   label={item.label}
                   items={item.children}
-                  buttonClassName="cursor-pointer bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-70 transition-opacity"
+                  buttonClassName="cursor-pointer bg-type-nav whitespace-nowrap text-[#312e28]"
                 />
               );
             }
@@ -73,9 +73,9 @@ export default function HomepageTopRibbon() {
               </span>
             ) : null;
             const linkClass =
-              "inline-flex items-center gap-[2px] bg-type-nav hover:opacity-70 transition-opacity whitespace-nowrap";
+              "inline-flex cursor-pointer items-center gap-[2px] bg-type-nav whitespace-nowrap";
             return (
-              <span key={item.href ?? item.label} className="inline-flex items-center">
+              <span key={item.href ?? item.label} className="inline-flex cursor-pointer items-center">
                 {item.external ? (
                   <a
                     href={item.href}

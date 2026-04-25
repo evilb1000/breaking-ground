@@ -7,12 +7,11 @@ import { client } from "@/sanity/client";
 import HomepageTabbedPanel, {
   type TabItem,
 } from "@/components/homepage/HomepageTabbedPanel";
-import NavDropdown from "@/components/homepage/NavDropdown";
+import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import { articleHref } from "@/lib/urls";
 
 // Figma-sourced assets. Downloaded from the Figma MCP asset CDN (which expires
 // after 7 days) and committed locally at public/figma-assets/ for permanence.
-const imgBg2 = "/figma-assets/bg-logo.png";
 const imgIcon2 = "/figma-assets/clock-dark.svg";
 const imgReply = "/figma-assets/reply-dark.svg";
 const imgRectangle15 = "/figma-assets/event-banner-bg.png";
@@ -254,110 +253,6 @@ async function loadLatestNewsItems(): Promise<NewsFeedItem[]> {
   }
 }
 
-function TopRibbon() {
-  const nav: {
-    label: string;
-    hasChevron: boolean;
-    href?: string;
-    external?: boolean;
-    children?: { label: string; href: string }[];
-  }[] = [
-    { label: "Features", hasChevron: false, href: "/sections/features" },
-    {
-      label: "Profiles",
-      hasChevron: true,
-      children: [
-        { label: "Project Profiles", href: "/sections/project-profiles" },
-        { label: "Member Profiles", href: "/sections/member-profiles" },
-      ],
-    },
-    { label: "News", hasChevron: false, href: "/news" },
-    { label: "Perspectives", hasChevron: false, href: "/sections/perspectives" },
-    {
-      label: "Trends",
-      hasChevron: true,
-      children: [
-        { label: "Local", href: "/sections/local" },
-        { label: "National", href: "/sections/national" },
-      ],
-    },
-    { label: "Insights", hasChevron: true, href: "/sections/data-insights" },
-    {
-      label: "Issues",
-      hasChevron: false,
-      href: "https://www.mbawpa.org/news/breaking-ground-magazine/",
-      external: true,
-    },
-    { label: "About", hasChevron: true, href: "/about" },
-  ];
-  return (
-    <div className="absolute left-0 top-0 flex w-[1440px] items-center justify-between bg-[#f5f3f0] px-[26px] pb-[28px] pt-[36px]">
-      <div className="relative h-[65px] w-[266px]">
-        <img src={imgBg2} alt="Breaking Ground" className="absolute inset-0 h-full w-full object-cover" />
-      </div>
-      <div className="flex items-center gap-[24px]">
-        <div className="flex items-center gap-[28px]">
-          {nav.map((item) => {
-            if (item.children && item.children.length > 0) {
-              return (
-                <NavDropdown
-                  key={item.label}
-                  label={item.label}
-                  items={item.children}
-                  buttonClassName="bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity"
-                />
-              );
-            }
-            const chevronNode = item.hasChevron ? (
-              <span
-                className="inline-flex h-[24px] w-[24px] items-center justify-center translate-y-[1px]"
-                aria-hidden="true"
-              >
-                <svg viewBox="0 0 24 24" className="h-[24px] w-[24px] text-[#312e28] opacity-80">
-                  <path
-                    d="M7 10l5 5 5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-            ) : null;
-            const linkClass =
-              "inline-flex items-center gap-[2px] bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity";
-            return (
-              <div key={item.label} className="flex items-center">
-                {item.href ? (
-                  item.external ? (
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={linkClass}
-                    >
-                      <span>{item.label}</span>
-                      {chevronNode}
-                    </a>
-                  ) : (
-                    <Link href={item.href} className={linkClass}>
-                      <span>{item.label}</span>
-                      {chevronNode}
-                    </Link>
-                  )
-                ) : (
-                  <p className="bg-type-nav whitespace-nowrap text-[#312e28]">{item.label}</p>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function LatestNews({ news }: { news: NewsFeedItem[] }) {
   // Figma frame 211:2251 — 4 plain-text tiles stacked vertically, subtle beige panel.
   // Title on top (Roboto Condensed 20/26, up to 2 lines), meta below. No per-item borders.
@@ -596,7 +491,7 @@ export default async function IndexPage() {
   return (
     <main className="figma-homepage min-h-screen bg-[#e8e8e8] overflow-x-auto">
       <div className="relative mx-auto h-[2097px] w-[1440px] bg-white">
-        <TopRibbon />
+        <HomepageTopRibbon />
         <HeroFeature
           entry={hero}
           badgeLabel={homepage?.heroBadgeLabel}

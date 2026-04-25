@@ -13,7 +13,7 @@ export type NavDropdownItem = { label: string; href: string };
 export default function NavDropdown({
   label,
   items,
-  buttonClassName = "bg-type-nav whitespace-nowrap text-[#312e28] hover:opacity-75 transition-opacity",
+  buttonClassName = "bg-type-nav whitespace-nowrap text-[#312e28]",
 }: {
   label: string;
   items: NavDropdownItem[];
@@ -53,7 +53,7 @@ export default function NavDropdown({
   return (
     <div
       ref={containerRef}
-      className="relative inline-flex items-center"
+      className="relative inline-flex cursor-pointer items-center"
       onMouseEnter={() => {
         cancelClose();
         setOpen(true);
@@ -69,7 +69,7 @@ export default function NavDropdown({
       >
         <span>{label}</span>
         <span
-          className="inline-flex h-[24px] w-[24px] items-center justify-center translate-y-[1px]"
+          className="inline-flex h-[24px] w-[24px] items-center justify-center"
           aria-hidden="true"
         >
           <svg viewBox="0 0 24 24" className="h-[24px] w-[24px] opacity-80">
@@ -96,7 +96,7 @@ export default function NavDropdown({
               href={item.href}
               role="menuitem"
               onClick={() => setOpen(false)}
-              className="block whitespace-nowrap bg-font-roboto px-[16px] py-[10px] text-[14px] text-[#312e28] hover:bg-[#f5f3f0]"
+              className="block cursor-pointer whitespace-nowrap bg-font-roboto px-[16px] py-[10px] text-[14px] text-[#312e28] hover:bg-[#f5f3f0]"
             >
               {item.label}
             </Link>

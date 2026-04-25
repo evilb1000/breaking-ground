@@ -1,101 +1,28 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 
-const SECTION_ITEMS = [
-  { label: "Local", slug: "local" },
-  { label: "National", slug: "national" },
-  { label: "Project Profiles", slug: "project-profiles" },
-  { label: "Member Profiles", slug: "member-profiles" },
-  { label: "Features", slug: "features" },
-  { label: "Perspectives", slug: "perspectives" },
-  { label: "Data Insights", slug: "data-insights" },
-  { label: "AI In Construction", slug: "ai-in-construction" },
-  { label: "News", slug: "news", href: "/news" },
-];
-
+// Canonical text masthead. This keeps the masthead visual available without
+// reintroducing the retired pre-Figma duplicate section navigation.
 export default function Masthead({ homeHref }: { homeHref?: string } = {}) {
-  const [isCompact, setIsCompact] = useState(false);
-
-  useEffect(() => {
-    // Prevent browser restoring prior scroll position on hard refresh.
-    const previous = window.history.scrollRestoration;
-    window.history.scrollRestoration = "manual";
-
-    const navEntry = performance.getEntriesByType("navigation")[0] as
-      | PerformanceNavigationTiming
-      | undefined;
-    if (navEntry?.type === "reload") {
-      requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
-    }
-
-    return () => {
-      window.history.scrollRestoration = previous;
-    };
-  }, []);
-
-  useEffect(() => {
-    const quickFoldPx = 14;
-
-    const onScroll = () => {
-      setIsCompact(window.scrollY > quickFoldPx);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
+  const title = (
+    <span className="font-serif text-4xl font-bold uppercase tracking-[0.06em] md:text-5xl">
+      Breaking Ground
+    </span>
+  );
 
   return (
-    <header className="sticky top-0 z-50 bg-white/75 backdrop-blur-md text-center px-6 py-4 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.45)] transition-all duration-300">
-      <h1
-        className={`font-serif font-bold uppercase tracking-[0.06em] transition-all duration-300 ${
-          isCompact ? "text-3xl md:text-4xl" : "text-4xl md:text-5xl"
-        }`}
-      >
+    <header className="sticky top-0 z-50 bg-white/75 px-6 py-4 text-center shadow-[0_10px_30px_-24px_rgba(0,0,0,0.45)] backdrop-blur-md">
+      <h1>
         {homeHref ? (
-          <Link href={homeHref} className="hover:opacity-70 transition-opacity">
-            Breaking Ground
+          <Link href={homeHref} className="cursor-pointer transition-opacity hover:opacity-70">
+            {title}
           </Link>
         ) : (
-          "Breaking Ground"
+          title
         )}
       </h1>
-
-      <div
-        className={`overflow-hidden transition-all duration-300 ${
-          isCompact ? "max-h-0 opacity-0 mt-0" : "max-h-16 opacity-100 mt-4"
-        }`}
-      >
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
-          Construction • Industry • Power • Western PA
-        </p>
-      </div>
-
-      <div
-        className={`overflow-hidden transition-all duration-300 ${
-          isCompact ? "max-h-16 opacity-100 mt-3" : "max-h-0 opacity-0 mt-0"
-        }`}
-      >
-        <nav
-          aria-label="Section navigation"
-          className="text-xs md:text-sm font-semibold uppercase tracking-wide text-gray-600 hidden md:flex items-center justify-center"
-        >
-          {SECTION_ITEMS.map((item, idx) => (
-            <span key={item.slug} className="inline-flex items-center whitespace-nowrap">
-              {idx > 0 ? <span className="mx-4 md:mx-5 text-gray-500" aria-hidden="true">•</span> : null}
-              <Link href={item.href || `/sections/${item.slug}`} className="hover:opacity-70 transition-opacity">
-                {item.label}
-              </Link>
-            </span>
-          ))}
-        </nav>
-      </div>
+      <p className="mt-4 text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+        Construction • Industry • Power • Western PA
+      </p>
     </header>
   );
 }
