@@ -2,6 +2,8 @@ import { PortableText } from "next-sanity";
 import Link from "next/link";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
+import ProfileAdUnit from "@/components/ads/ProfileAdUnit";
+import { threeAdChunks } from "@/lib/chunkBody";
 import { articleUrl } from "@/lib/urls";
 import {
   articleComponents,
@@ -351,14 +353,21 @@ export default function FigmaProfileArticlePage({ article }: { article: FigmaArt
                 </p>
               ) : null}
 
-              <div className="bg-article-body">
-                {Array.isArray(article.body) ? (
-                  <PortableText
-                    value={article.body as any}
-                    components={articleComponents as any}
-                  />
-                ) : null}
-              </div>
+              {Array.isArray(article.body) ? (() => {
+                // < 5 blocks → 1 ad at the end only.
+                // ≥ 5 blocks → 3 ads: after block 3, at midpoint, at the end.
+                const chunks = threeAdChunks(article.body);
+                return (
+                  <>
+                    {chunks.map((chunk, i) => (
+                      <div key={i} className="bg-article-body">
+                        <PortableText value={chunk as any} components={articleComponents as any} />
+                        <ProfileAdUnit />
+                      </div>
+                    ))}
+                  </>
+                );
+              })() : null}
 
               <NextArticleCTA next={article.nextArticle} />
             </article>

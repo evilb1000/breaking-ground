@@ -6,6 +6,8 @@ import { client } from "@/sanity/client";
 import ChartFromRefClient from "@/components/ChartFromRefClient";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
+import ArticleAdUnit from "@/components/ads/ArticleAdUnit";
+import { threeAdChunks } from "@/lib/chunkBody";
 import { articleHref, articleUrl } from "@/lib/urls";
 
 /* ------------------------------------------------------------------ */
@@ -608,11 +610,21 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
                 ) : null}
               </header>
 
-              <div className="bg-article-body">
-                {Array.isArray(article.body) ? (
-                  <PortableText value={article.body as any} components={articleComponents as any} />
-                ) : null}
-              </div>
+              {Array.isArray(article.body) ? (() => {
+                // < 5 blocks → 1 ad at the end only.
+                // ≥ 5 blocks → 3 ads: after block 3, at midpoint, at the end.
+                const chunks = threeAdChunks(article.body);
+                return (
+                  <>
+                    {chunks.map((chunk, i) => (
+                      <div key={i} className="bg-article-body">
+                        <PortableText value={chunk as any} components={articleComponents as any} />
+                        <ArticleAdUnit />
+                      </div>
+                    ))}
+                  </>
+                );
+              })() : null}
 
               <NextArticleCTA next={article.nextArticle} />
             </article>
