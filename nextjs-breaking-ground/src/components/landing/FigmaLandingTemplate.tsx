@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Fragment } from "react";
 import type { ReactNode } from "react";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
+import InsightsAdUnit from "@/components/insights/InsightsAdUnit";
 
 const FALLBACK_TILE_IMAGE = "/figma-assets/landing-asset-1.png";
 const FILTER_ICON = "/figma-assets/landing-asset-2.svg";
@@ -168,27 +170,31 @@ export default function FigmaLandingTemplate({
           {variant === "newsFeed" ? (
             <>
               <div className="mt-[24px] flex flex-col divide-y divide-[#312e28]/25 border-y-2 border-[#312e28]/25">
-                {tiles.map((item) => (
-                  <article key={item.id} className="py-[34px]">
-                    <ItemLink
-                      href={item.href}
-                      external={item.external}
-                      className="group inline-block"
-                    >
-                      <h3 className="bg-font-roboto-condensed text-[30px] leading-[36px] font-medium text-[#113251] no-underline group-hover:underline underline-offset-[8px] decoration-[#113251] transition-colors">
-                        {item.title}
-                      </h3>
-                    </ItemLink>
-                    <p className="mt-[14px] bg-font-roboto text-[20px] leading-[28px] font-semibold text-[#312e28]">
-                      {item.sourceLabel ? `${item.sourceLabel} • ` : ""}
-                      {item.dateLabel || "APRIL 15, 2026"}
-                    </p>
-                    {item.summary ? (
-                      <p className="mt-[16px] bg-font-crimson text-[18px] leading-[28px] text-[#312e28]">
-                        {item.summary}
+                {tiles.map((item, i) => (
+                  <Fragment key={item.id}>
+                    <article className="py-[34px]">
+                      <ItemLink
+                        href={item.href}
+                        external={item.external}
+                        className="group inline-block"
+                      >
+                        <h3 className="bg-font-roboto-condensed text-[30px] leading-[36px] font-medium text-[#113251] no-underline group-hover:underline underline-offset-[8px] decoration-[#113251] transition-colors">
+                          {item.title}
+                        </h3>
+                      </ItemLink>
+                      <p className="mt-[14px] bg-font-roboto text-[20px] leading-[28px] font-semibold text-[#312e28]">
+                        {item.sourceLabel ? `${item.sourceLabel} • ` : ""}
+                        {item.dateLabel || "APRIL 15, 2026"}
                       </p>
-                    ) : null}
-                  </article>
+                      {item.summary ? (
+                        <p className="mt-[16px] bg-font-crimson text-[18px] leading-[28px] text-[#312e28]">
+                          {item.summary}
+                        </p>
+                      ) : null}
+                    </article>
+                    {/* Ad after article 1 (index 0), then every other: 0, 2, 4, 6... */}
+                    {i % 2 === 0 ? <InsightsAdUnit /> : null}
+                  </Fragment>
                 ))}
               </div>
               {pagination && pagination.totalPages > 1 ? (
