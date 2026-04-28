@@ -119,6 +119,7 @@ const TAB_PROJECTION = `{
   _id,
   _type,
   "title": coalesce(headline, title),
+  dek,
   "slug": slug,
   publishedAt,
   readingTime,
@@ -467,6 +468,227 @@ function SponsorsAndAd() {
   );
 }
 
+function MobileHeroFeature({
+  entry,
+  badgeLabel,
+  badgeIcon,
+}: {
+  entry?: HomepageEntry | null;
+  badgeLabel?: string;
+  badgeIcon?: SanityImageLike;
+}) {
+  const heroImage = entryImageUrl(entry, 900, 650) || imgScreenshot20260319At103148Am2;
+  const heroTitle =
+    entry?.homepageHeadline?.trim() ||
+    entry?.title ||
+    "Profile article headline text content area";
+  const badgeText = badgeLabel?.trim();
+  const badgeIconUrl = sanityImageUrl(badgeIcon, 28, 28);
+  const { singular } = sectionLabels(entry?.section);
+
+  return (
+    <section className="relative h-[578px] overflow-hidden bg-[#373632]">
+      <img
+        src={imgHeroMapTexture}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-multiply"
+      />
+      <div className="relative h-[271px] w-full overflow-hidden">
+        <img
+          src={heroImage}
+          alt={heroTitle}
+          className="h-full w-full object-cover"
+        />
+        {badgeText ? (
+          <div className="absolute bottom-0 left-1/2 flex h-[32px] -translate-x-1/2 items-center justify-center gap-[4px] bg-[#ff611d] p-[8px]">
+            <img
+              src={badgeIconUrl || imgHeroBadgeDefaultIcon}
+              alt={badgeIcon?.alt || ""}
+              className="h-[14px] w-[14px]"
+            />
+            <p className="bg-font-roboto text-[12px] font-bold leading-[10px] tracking-[0.24px] text-white">
+              {badgeText.toUpperCase()}
+            </p>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="relative mx-auto mt-[32px] flex w-[350px] max-w-[calc(100%-40px)] flex-col gap-[32px]">
+        <div className="flex flex-col gap-[12px]">
+          <h1
+            className="bg-font-roboto-flex text-[46px] leading-[48px] text-white"
+            style={{
+              fontVariationSettings:
+                "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+              fontWeight: 838,
+            }}
+          >
+            {heroTitle}
+          </h1>
+          <div className="flex items-center gap-[12px]">
+            <p className="bg-font-roboto text-[10px] font-normal leading-[24px] text-white">
+              {(displayDate(entry?.publishedAt) || "").toUpperCase()}
+            </p>
+            <div className="flex items-center gap-[4px]">
+              <img src={imgClockWhite} alt="" className="h-[12px] w-[12px]" />
+              <p className="bg-font-roboto text-[10px] font-normal leading-[24px] text-white">
+                {entry?.readingTime ? `${entry.readingTime} MIN READ` : "3 MIN READ"}
+              </p>
+            </div>
+            <img src={imgReplyWhite} alt="" className="h-[14px] w-[14px]" />
+          </div>
+        </div>
+
+        <Link
+          href={entryHref(entry)}
+          className="flex w-full items-center justify-center rounded-[4px] bg-white p-[12px] bg-font-roboto text-[12px] font-bold text-[#113251]"
+        >
+          Read full {singular}
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function MobileLatestNews({ news }: { news: NewsFeedItem[] }) {
+  const cards = news.length > 0 ? news.slice(0, 4) : [];
+  const fallback: NewsFeedItem[] = [{}, {}, {}, {}];
+  const items = cards.length ? cards : fallback;
+
+  return (
+    <section className="border-t border-[#ebebeb] px-[24px] pb-[36px] pt-[48px]">
+      <div className="flex flex-col gap-[37px]">
+        <div className="flex items-center gap-[8px]">
+          <img src={imgCoffee} alt="" className="h-[20px] w-[20px]" />
+          <h2 className="bg-font-helvetica text-[24px] font-bold leading-[18px] text-[#312e28]">
+            Latest news
+          </h2>
+        </div>
+
+        <div className="flex flex-col gap-[20px]">
+          {items.map((entry, i) => (
+            <a
+              key={`${entry.link || "mobile-latest"}-${i}`}
+              href={entry.link || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <h3 className="bg-font-roboto-condensed text-[16px] font-medium leading-[22px] text-[#312e28]">
+                {entry?.headline || entry?.title || "Iran Conflict Fuels Economic Concerns: Key Indicators to Watch This Week"}
+              </h3>
+              <div className="mt-[5px] flex items-center gap-[12px]">
+                <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">
+                  {displayDate(entry?.pubDate || entry?.publicationAddedAt)}
+                </p>
+                <div className="flex items-center gap-[4px]">
+                  <img src={imgIcon2} alt="" className="h-[12px] w-[12px]" />
+                  <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">3 MIN READ</p>
+                </div>
+                <img src={imgReply} alt="" className="h-[14px] w-[14px]" />
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <Link
+        href="/news"
+        className="mt-[37px] flex w-full items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white"
+      >
+        View all news
+      </Link>
+    </section>
+  );
+}
+
+function MobileEventBanner({ entry, ctaHref, body }: { entry?: HomepageEntry | null; ctaHref?: string; body?: string }) {
+  const title = entry?.title || "Event Title 03.25.26";
+  const subtitle = `Event starts ${entry?.publishedAt ? new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".") : "03.25.26"}`;
+
+  return (
+    <section className="relative h-[243px] overflow-hidden">
+      <img src={entryImageUrl(entry, 900, 500) || imgRectangle15} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-[#1d486c]/80" />
+      <div className="absolute left-[31px] top-0 z-10 flex h-[32px] items-center justify-center gap-[4px] bg-[#ff611d] p-[8px]">
+        <img src={imgEventRegistration} alt="" className="h-[14px] w-[14px]" />
+        <p className="bg-font-roboto text-[12px] font-bold leading-[10px] tracking-[0.24px] text-white">
+          EVENT REGISTRATION
+        </p>
+      </div>
+      <div className="absolute left-[29px] top-[67px] flex w-[272px] flex-col gap-[9px] text-white">
+        <div className="flex flex-col gap-[10px]">
+          <div className="flex w-[205px] flex-col gap-px">
+            <h2
+              className="bg-font-roboto-flex text-[22px] leading-[26px]"
+              style={{
+                fontVariationSettings:
+                  "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+                fontWeight: 838,
+              }}
+            >
+              {title}
+            </h2>
+            <h3 className="bg-font-roboto-condensed text-[16px] font-medium leading-[22px]">
+              {subtitle}
+            </h3>
+          </div>
+          <p className="bg-font-roboto text-[12px] leading-[20px]">
+            {body || "Join us for an unforgettable evening of celebration, inspiration, and impact."}
+          </p>
+        </div>
+        <Link href={ctaHref || entryHref(entry)} className="flex items-center gap-[5px] bg-font-helvetica text-[14px]">
+          <span>Register here</span>
+          <img src={imgArrowForwardWhite} alt="" className="h-[24px] w-[24px]" />
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function MobileSponsorsAndAd() {
+  const logos = [
+    imgScreenshot20260402At34113Pm1,
+    imgScreenshot20260402At34116Pm1,
+    imgScreenshot20260402At34125Pm1,
+    imgScreenshot20260402At34147Pm1,
+    imgScreenshot20260402At34120Pm1,
+    imgScreenshot20260402At34131Pm1,
+  ];
+
+  return (
+    <section className="overflow-hidden px-[20px] pb-[41px] pt-[59px]">
+      <div className="-mx-[20px] overflow-x-auto px-[20px]">
+        <div className="flex w-max items-center gap-[10px] opacity-80">
+          {logos.map((src, i) => (
+            <img key={i} src={src} alt="" className="h-[75px] w-[82px] shrink-0 object-contain" />
+          ))}
+        </div>
+      </div>
+      <div className="mt-[16px] flex w-[348px] max-w-full flex-col gap-[12px] text-[#312e28]">
+        <h2
+          className="bg-font-roboto-flex text-[22px] leading-[26px]"
+          style={{
+            fontVariationSettings:
+              "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+            fontWeight: 838,
+          }}
+        >
+          Our sponsors
+        </h2>
+        <p className="bg-font-crimson text-[14px] leading-[20px]">
+          Text about how to become a sponsor or who to contact to learn more about it, <span className="underline">click here.</span>
+        </p>
+      </div>
+
+      <div className="mt-[60px] flex h-[314px] w-[346px] max-w-full items-center justify-center bg-[#d9d9d9]">
+        <h2 className="bg-type-h1 text-[#adadad]">Ad space</h2>
+      </div>
+    </section>
+  );
+}
+
 export default async function IndexPage() {
   const [homepage, profilesRaw, perspectivesRaw, latest] = await Promise.all([
     client.fetch<HomepageDoc>(HOMEPAGE_QUERY, {}, options),
@@ -478,10 +700,11 @@ export default async function IndexPage() {
   const event = homepage?.tertiaryFeature ?? homepage?.issueHighlight ?? null;
 
   const toTabItem = (entry: HomepageEntry): TabItem => ({
-    id: entry._id || entry.slug?.current || Math.random().toString(36),
+    id: entry._id || entry.slug?.current || entry.title || "untitled",
     href: entryHref(entry),
     imageUrl: entryImageUrl(entry, 580, 380),
     title: entry.title || "Untitled",
+    dek: entry.dek,
     publishedAt: entry.publishedAt,
     readingTime: entry.readingTime,
   });
@@ -489,9 +712,26 @@ export default async function IndexPage() {
   const perspectives = (perspectivesRaw || []).map(toTabItem);
 
   return (
-    <main className="figma-homepage min-h-screen bg-[#e8e8e8] overflow-x-auto">
+    <main className="figma-homepage min-h-screen bg-white lg:bg-[#e8e8e8] lg:overflow-x-auto">
       <HomepageTopRibbon />
-      <div className="relative mx-auto h-[1971px] w-[1440px] bg-white">
+
+      <div className="lg:hidden">
+        <MobileHeroFeature
+          entry={hero}
+          badgeLabel={homepage?.heroBadgeLabel}
+          badgeIcon={homepage?.heroBadgeIcon}
+        />
+        <HomepageTabbedPanel profiles={profiles} perspectives={perspectives} />
+        <MobileLatestNews news={latest} />
+        <MobileEventBanner
+          entry={event}
+          ctaHref={homepage?.announcementLinkUrl}
+          body={homepage?.announcementMessage}
+        />
+        <MobileSponsorsAndAd />
+      </div>
+
+      <div className="relative mx-auto hidden h-[1971px] w-[1440px] bg-white lg:block">
         <HeroFeature
           entry={hero}
           badgeLabel={homepage?.heroBadgeLabel}

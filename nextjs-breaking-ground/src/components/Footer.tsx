@@ -35,15 +35,17 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const mobileSectionLinks = [...sectionLinksLeft, ...sectionLinksRight];
+
   return (
     <footer className="w-full bg-[#312e28] text-white">
-      <div className="mx-auto w-full max-w-[1440px] px-[48px] py-[48px]">
-        <div className="flex flex-wrap items-start gap-[48px]">
-          <div className="w-[373px]">
+      <div className="mx-auto w-full max-w-[1440px] px-[24px] py-[48px] md:px-[48px]">
+        <div className="flex flex-col items-start gap-[45px] md:flex-row md:flex-wrap md:gap-[48px]">
+          <div className="w-[240px] md:w-[373px]">
             <img
               src="/figma-assets/bg-logo.png"
               alt="Breaking Ground"
-              className="h-[58px] w-[240px] object-contain [filter:brightness(0)_invert(1)]"
+              className="h-[48px] w-[198px] object-contain [filter:brightness(0)_invert(1)] md:h-[58px] md:w-[240px]"
             />
             <p className="bg-font-roboto mt-[15px] text-[10px]">
               WESTERN PA • CONSTRUCTION • INDUSTRY • INFRASTRUCTURE
@@ -52,7 +54,31 @@ export default function Footer() {
 
           <nav
             aria-label="Site sections"
-            className="flex w-[606px] gap-[58px] bg-font-roboto text-[14px]"
+            className="flex gap-[58px] bg-font-roboto text-[14px] md:hidden"
+          >
+            <ul className="w-[110px] space-y-[12px]">
+              {mobileSectionLinks.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ul className="w-[145px] space-y-[12px]">
+              {aboutLinks.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav
+            aria-label="Site sections"
+            className="hidden w-[606px] gap-[58px] bg-font-roboto text-[14px] md:flex"
           >
             <ul className="space-y-[12px]">
               {sectionLinksLeft.map((item) => (
@@ -83,7 +109,7 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <div className="ml-auto">
+          <div className="md:ml-auto">
             <div className="flex items-center gap-[19px]">
               {socialLinks.map((s) => (
                 <a
@@ -98,7 +124,7 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-            <p className="bg-font-helvetica mt-[14px] text-[12px]">
+            <p className="bg-font-helvetica mt-[18px] text-[12px] md:mt-[14px]">
               © 2026 Breaking Ground &nbsp;&nbsp;&nbsp;
               <Link href="#" className="hover:opacity-70">Privacy</Link>
               &nbsp;&nbsp;&nbsp;
