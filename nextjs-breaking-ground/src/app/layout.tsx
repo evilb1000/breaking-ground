@@ -3,6 +3,7 @@ import { Crimson_Text, Geist, Geist_Mono, Roboto, Roboto_Condensed, Roboto_Flex 
 import Script from "next/script";
 import "./globals.css";
 import Footer from "@/components/Footer";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

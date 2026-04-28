@@ -11,7 +11,6 @@ export type TabItem = {
   href: string;
   imageUrl: string | null;
   title: string;
-  dek?: string;
   publishedAt?: string;
   readingTime?: number;
 };
@@ -75,91 +74,7 @@ export default function HomepageTabbedPanel({
   const items = current.items.slice(0, 3);
 
   return (
-    <>
-    <section className="lg:hidden overflow-hidden px-[23px] pb-[36px] pt-[44px]">
-      <div className="flex items-center gap-[12px] overflow-x-auto pb-[2px]">
-        {tabs.map((t) => {
-          const isActive = t.key === active;
-          return (
-            <button
-              key={t.key}
-              type="button"
-              onClick={() => setActive(t.key)}
-              className={`shrink-0 rounded-[4px] px-[12px] py-[8px] bg-font-roboto text-[12px] font-bold ${
-                isActive
-                  ? "bg-[#ff611d] text-white"
-                  : "bg-[rgba(161,161,161,0.1)] text-[#595959]"
-              }`}
-            >
-              {t.label}
-            </button>
-          );
-        })}
-      </div>
-
-      <h2
-        className="mt-[22px] bg-font-roboto-flex text-[22px] leading-[26px] font-extralight text-[#312e28]"
-        style={{
-          fontVariationSettings:
-            "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
-          fontWeight: 838,
-        }}
-      >
-        {current.heading}
-      </h2>
-
-      {items.length > 0 ? (
-        <div className="-mx-[23px] mt-[22px] flex gap-[17px] overflow-x-auto px-[23px] pb-[2px]">
-          {items.map((entry) => (
-            <Link
-              key={entry.id}
-              href={entry.href}
-              className="group block h-[333px] w-[311px] shrink-0"
-            >
-              <img
-                src={entry.imageUrl || FALLBACK_IMG}
-                alt=""
-                className="h-[190px] w-[311px] rounded-[4px] object-cover"
-              />
-              <div className="mt-[13px] flex flex-col gap-[5px]">
-                <div className="flex items-center gap-[12px]">
-                  <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">
-                    {formatDate(entry.publishedAt)}
-                  </p>
-                  <div className="flex items-center gap-[4px]">
-                    <img src={CLOCK_ICON} alt="" className="h-[12px] w-[12px]" />
-                    <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28]">
-                      {entry.readingTime ? `${entry.readingTime} MIN READ` : "3 MIN READ"}
-                    </p>
-                  </div>
-                </div>
-                <p className="bg-font-roboto-condensed text-[16px] leading-[22px] font-medium text-[#312e28] group-hover:underline line-clamp-2">
-                  {entry.title}
-                </p>
-                {entry.dek ? (
-                  <p className="bg-font-crimson text-[14px] leading-[20px] text-[#312e28] line-clamp-3">
-                    {entry.dek}
-                  </p>
-                ) : null}
-              </div>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <p className="mt-[20px] bg-font-roboto text-[14px] text-[#595959] italic">
-          {current.emptyMessage}
-        </p>
-      )}
-
-      <Link
-        href={current.viewAllHref}
-        className="mt-[22px] flex w-full items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white"
-      >
-        {current.viewAllLabel}
-      </Link>
-    </section>
-
-    <div className="absolute left-[27px] top-[526px] hidden h-[591px] w-[916px] pt-[32px] lg:block">
+    <div className="absolute left-[27px] top-[652px] h-[591px] w-[916px] pt-[32px]">
       <div className="flex items-center gap-[12px]">
         {tabs.map((t) => {
           const isActive = t.key === active;
@@ -228,6 +143,5 @@ export default function HomepageTabbedPanel({
         {current.viewAllLabel}
       </Link>
     </div>
-    </>
   );
 }
