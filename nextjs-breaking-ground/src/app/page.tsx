@@ -411,25 +411,57 @@ function HeroFeature({
   );
 }
 
-function EventBanner({ entry, ctaHref, body }: { entry?: HomepageEntry | null; ctaHref?: string; body?: string }) {
-  const title = entry?.title || "Come Join Us At the 2025 Evening of Excellence";
-  const subtitle = `Event starts 8:00 pm on ${entry?.publishedAt ? new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".") : "04.13.2026"}`;
+function EventBanner({
+  entry,
+  ctaHref,
+  ctaLabel,
+  body,
+}: {
+  entry?: HomepageEntry | null;
+  ctaHref?: string;
+  ctaLabel?: string;
+  body?: string;
+}) {
+  const title = entry?.title;
+  const subtitle = entry?.publishedAt
+    ? `Event date ${new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".")}`
+    : null;
+  const resolvedCtaHref = ctaHref?.trim();
+  const resolvedCtaLabel = ctaLabel?.trim();
+
+  if (!title && !subtitle && !body && !resolvedCtaLabel && !resolvedCtaHref) return null;
+
   return (
     <div className="absolute left-0 top-[1286px] h-[336px] w-[1440px] overflow-hidden">
       <img src={entryImageUrl(entry, 1800, 600) || imgRectangle15} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-[#113251]/70" />
       <div className="absolute left-0 top-0 h-[336px] w-[1440px] text-center text-white">
         <div className="mt-[80px]">
-          <div className="mx-auto inline-flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
-            <img src={imgEventRegistration} alt="" className="h-[14px] w-[14px]" />
-            <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px]">EVENT REGISTRATION</p>
-          </div>
-          <h2 className="bg-type-h1 mt-[16px] text-white">{title}</h2>
-          <h3 className="bg-type-h2 mt-[12px] text-white">{subtitle}</h3>
-          <p className="bg-type-h3 mt-[14px] text-white">{body || "Join us for an unforgettable evening of celebration, inspiration, and impact."}</p>
-          <Link href={ctaHref || entryHref(entry)} className="mt-[18px] inline-flex items-center bg-font-helvetica text-[14px] underline">
-            <span>Register Here</span>
-          </Link>
+          {resolvedCtaLabel ? (
+            <div className="mx-auto inline-flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
+              <img src={imgEventRegistration} alt="" className="h-[14px] w-[14px]" />
+              <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px]">
+                {resolvedCtaLabel.toUpperCase()}
+              </p>
+            </div>
+          ) : null}
+          {title ? <h2 className="bg-type-h1 mt-[16px] text-white">{title}</h2> : null}
+          {subtitle ? <h3 className="bg-type-h2 mt-[12px] text-white">{subtitle}</h3> : null}
+          {body ? (
+            <p className="mt-[14px] bg-font-crimson text-[34px] leading-[40px] text-white">
+              {body}
+            </p>
+          ) : null}
+          {resolvedCtaHref ? (
+            <Link
+              href={resolvedCtaHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-[18px] inline-flex items-center bg-font-helvetica text-[14px] underline"
+            >
+              <span>Register Here</span>
+            </Link>
+          ) : null}
         </div>
       </div>
     </div>
@@ -637,27 +669,52 @@ function MobileArticleSection({
   );
 }
 
-function MobileEventBanner({ entry, ctaHref, body }: { entry?: HomepageEntry | null; ctaHref?: string; body?: string }) {
-  const title = entry?.title || "Come Join Us At the 2025 Evening of Excellence";
-  const subtitle = `Event starts ${entry?.publishedAt ? new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".") : "04.13.2026"}`;
+function MobileEventBanner({
+  entry,
+  ctaHref,
+  ctaLabel,
+  body,
+}: {
+  entry?: HomepageEntry | null;
+  ctaHref?: string;
+  ctaLabel?: string;
+  body?: string;
+}) {
+  const title = entry?.title;
+  const subtitle = entry?.publishedAt
+    ? `Event date ${new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".")}`
+    : null;
+  const resolvedCtaHref = ctaHref?.trim();
+  const resolvedCtaLabel = ctaLabel?.trim();
+
+  if (!title && !subtitle && !body && !resolvedCtaLabel && !resolvedCtaHref) return null;
 
   return (
     <section className="relative overflow-hidden px-[20px] py-[42px] text-center text-white">
       <img src={entryImageUrl(entry, 900, 500) || imgRectangle15} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-[#113251]/75" />
       <div className="relative">
-        <div className="mx-auto inline-flex h-[32px] items-center gap-[4px] bg-[#ff611d] px-[8px]">
-          <img src={imgEventRegistration} alt="" className="h-[14px] w-[14px]" />
-          <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px]">EVENT REGISTRATION</p>
-        </div>
-        <h2 className="mt-[16px] bg-font-roboto-flex text-[32px] leading-[36px]">{title}</h2>
-        <p className="mt-[10px] bg-font-roboto-condensed text-[18px] leading-[24px]">{subtitle}</p>
-        <p className="mt-[12px] bg-font-crimson text-[17px] leading-[24px]">
-          {body || "Join us for an unforgettable evening of celebration, inspiration, and impact."}
-        </p>
-        <Link href={ctaHref || entryHref(entry)} className="mt-[18px] inline-flex bg-font-helvetica text-[14px] underline">
-          Register Here
-        </Link>
+        {resolvedCtaLabel ? (
+          <div className="mx-auto inline-flex h-[32px] items-center gap-[4px] bg-[#ff611d] px-[8px]">
+            <img src={imgEventRegistration} alt="" className="h-[14px] w-[14px]" />
+            <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px]">
+              {resolvedCtaLabel.toUpperCase()}
+            </p>
+          </div>
+        ) : null}
+        {title ? <h2 className="mt-[16px] bg-font-roboto-flex text-[32px] leading-[36px]">{title}</h2> : null}
+        {subtitle ? <p className="mt-[10px] bg-font-roboto-condensed text-[18px] leading-[24px]">{subtitle}</p> : null}
+        {body ? <p className="mt-[12px] bg-font-crimson text-[20px] leading-[27px]">{body}</p> : null}
+        {resolvedCtaHref ? (
+          <Link
+            href={resolvedCtaHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-[18px] inline-flex bg-font-helvetica text-[14px] underline"
+          >
+            Register Here
+          </Link>
+        ) : null}
       </div>
     </section>
   );
@@ -738,6 +795,7 @@ export default async function IndexPage() {
         <MobileEventBanner
           entry={event}
           ctaHref={homepage?.announcementLinkUrl}
+          ctaLabel={homepage?.announcementLinkLabel}
           body={homepage?.announcementMessage}
         />
         <MobileSponsorsAndAd />
@@ -756,6 +814,7 @@ export default async function IndexPage() {
         <EventBanner
           entry={event}
           ctaHref={homepage?.announcementLinkUrl}
+          ctaLabel={homepage?.announcementLinkLabel}
           body={homepage?.announcementMessage}
         />
         <SponsorsAndAd />

@@ -53,23 +53,6 @@ export default function HomepageTopRibbon() {
         </Link>
 
         <div className="flex items-center gap-[12px] text-[#312e28]">
-          <button
-            type="button"
-            aria-label="Search"
-            className="inline-flex h-[36px] w-[36px] items-center justify-center"
-          >
-            <svg viewBox="0 0 24 24" className="h-[24px] w-[24px]" aria-hidden="true">
-              <path
-                d="M10.5 18a7.5 7.5 0 1 1 5.303-12.803A7.5 7.5 0 0 1 10.5 18Zm5.25-2.25L21 21"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-
           <details className="relative">
             <summary
               aria-label="Open menu"
