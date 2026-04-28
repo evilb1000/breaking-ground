@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import type { ReactNode } from "react";
 import type { SparklineSeries } from "@/data/sparkline_types";
 import InsightsAdUnit from "./InsightsAdUnit";
 
@@ -44,9 +45,11 @@ function ChangeCell({ value }: { value: number }) {
 function Sparkline({
   points,
   isUp,
+  className = "",
 }: {
   points: [number, number][];
   isUp: boolean;
+  className?: string;
 }) {
   const pointsStr = points.map(([x, y]) => `${x},${y}`).join(" ");
   const color = isUp ? "#ff611d" : "#113251";
@@ -55,6 +58,8 @@ function Sparkline({
       width="100"
       height="24"
       viewBox="0 0 100 24"
+      preserveAspectRatio="none"
+      className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
@@ -71,10 +76,97 @@ function Sparkline({
   );
 }
 
+function MobileMetric({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="min-w-0 rounded-[4px] bg-white px-[10px] py-[8px]">
+      <p className="bg-font-roboto text-[10px] font-bold uppercase leading-[14px] tracking-[0.08em] text-[#312e28]/50">
+        {label}
+      </p>
+      <div className="mt-[2px] bg-font-roboto text-[13px] leading-[18px] text-[#312e28]">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function MobileSeriesCard({ s }: { s: SparklineSeries }) {
+  const latestPeriod = fmtPeriod(s.sparkline_24m.periods[s.sparkline_24m.periods.length - 1]);
+
+  return (
+    <article className="border-b border-[#e1e1e1] bg-[#f5f3f0] p-[14px]">
+      <div className="flex flex-col gap-[10px]">
+        <div>
+          <h3 className="bg-font-roboto-condensed text-[17px] font-medium leading-[22px] text-[#312e28]">
+            {s.material_name}
+          </h3>
+          <p className="mt-[2px] bg-font-roboto text-[11px] leading-[16px] text-[#312e28]/55">
+            Latest observation: {latestPeriod}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-[8px]">
+          <MobileMetric label="Latest">
+            <span className="tabular-nums">{fmtLarge(s.latest_value)}</span>
+          </MobileMetric>
+          <MobileMetric label="MoM">
+            <ChangeCell value={s.MoM_Change} />
+          </MobileMetric>
+          <MobileMetric label="YoY">
+            <ChangeCell value={s.YoY_Change} />
+          </MobileMetric>
+          <MobileMetric label="Since Mar 2020">
+            <ChangeCell value={s.change_since_mar2020} />
+          </MobileMetric>
+        </div>
+
+        <div className="rounded-[4px] bg-white px-[10px] py-[8px]">
+          <div className="flex items-center justify-between gap-[12px]">
+            <p className="bg-font-roboto text-[10px] font-bold uppercase leading-[14px] tracking-[0.08em] text-[#312e28]/50">
+              24M Trend
+            </p>
+            <p className="bg-font-roboto text-[10px] leading-[14px] text-[#312e28]/45">
+              {s.sparkline_24m.is_up_from_start ? "Up" : "Down"} over window
+            </p>
+          </div>
+          <div className="mt-[8px] h-[38px] w-full overflow-hidden">
+            <Sparkline
+              points={s.sparkline_24m.points}
+              isUp={s.sparkline_24m.is_up_from_start}
+              className="h-full w-full"
+            />
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function MobileClusterCards({ cluster, series }: { cluster: string; series: SparklineSeries[] }) {
+  const sorted = [...series].sort((a, b) => a.rank_in_cluster - b.rank_in_cluster);
+  return (
+    <section className="mb-[28px] overflow-hidden rounded-[4px] border border-[#d8d8d8] md:hidden">
+      <div className="bg-[#113251] px-[14px] py-[10px]">
+        <h2 className="bg-type-nav text-white">{cluster}</h2>
+      </div>
+      <div>
+        {sorted.map((s) => (
+          <MobileSeriesCard key={s.series_id} s={s} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ClusterTable({ cluster, series }: { cluster: string; series: SparklineSeries[] }) {
   const sorted = [...series].sort((a, b) => a.rank_in_cluster - b.rank_in_cluster);
   return (
-    <div className="mb-[40px]">
+    <div className="mb-[40px] hidden md:block">
       <div className="bg-[#113251] px-[16px] py-[10px]">
         <span className="bg-type-nav text-white">{cluster}</span>
       </div>
@@ -93,7 +185,7 @@ function ClusterTable({ cluster, series }: { cluster: string; series: SparklineS
             <th className="px-[16px] py-[10px] text-right bg-type-nav text-[#312e28]">Latest</th>
             <th className="px-[16px] py-[10px] text-right bg-type-nav text-[#312e28]">MoM</th>
             <th className="px-[16px] py-[10px] text-right bg-type-nav text-[#312e28]">YoY</th>
-            <th className="px-[16px] py-[10px] text-right bg-type-nav text-[#312e28]">Since Mar '20</th>
+            <th className="px-[16px] py-[10px] text-right bg-type-nav text-[#312e28]">Since Mar 2020</th>
             <th className="px-[16px] py-[10px] text-center bg-type-nav text-[#312e28]">24M Trend</th>
           </tr>
         </thead>
@@ -157,9 +249,10 @@ export default function InsightsDataTable({ series }: { series: SparklineSeries[
   );
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full">
       {allClusters.map((cluster, i) => (
         <Fragment key={cluster}>
+          <MobileClusterCards cluster={cluster} series={byCluster[cluster]} />
           <ClusterTable cluster={cluster} series={byCluster[cluster]} />
           {/* Ad after table 1 (index 0), then every other: index 0, 2, 4, 6 */}
           {i % 2 === 0 && i < allClusters.length - 1 ? (

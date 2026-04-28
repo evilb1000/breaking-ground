@@ -25,10 +25,6 @@ async function getInsightsData(): Promise<SparklineJson> {
 
 export default async function DataInsightsPage() {
   const data = await getInsightsData();
-  const latestPeriod = new Date(data.latest_period + "-01").toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
 
   return (
     <main className="min-h-screen bg-white text-[#312e28]">
@@ -37,8 +33,8 @@ export default async function DataInsightsPage() {
       {/* Page banner */}
       <section className="relative border-b border-[#2d567b] bg-[#285a8a]">
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.2))]" />
-        <div className="relative mx-auto flex h-[148px] w-full max-w-[1440px] items-end px-6 pb-6 text-white">
-          <div className="mx-auto w-[922px] text-right">
+        <div className="relative mx-auto flex h-[96px] w-full max-w-[1440px] items-end px-[20px] pb-[18px] text-white lg:h-[148px] lg:px-6 lg:pb-6">
+          <div className="mx-auto w-full max-w-[922px] text-left lg:text-right">
             <p className="bg-font-roboto text-[14px] leading-[18px]">
               <Link href="/" className="underline">
                 Home
@@ -50,12 +46,21 @@ export default async function DataInsightsPage() {
       </section>
 
       {/* Content */}
-      <section className="mx-auto w-full max-w-[1200px] px-4 pb-[72px] pt-[40px] md:px-[26px]">
-        <div className="mb-[32px] flex flex-col gap-[8px] md:flex-row md:items-end md:justify-between">
+      <section className="mx-auto w-full max-w-[1200px] px-[16px] pb-[56px] pt-[32px] md:px-[26px] md:pb-[72px] md:pt-[40px]">
+        <div className="mb-[24px] flex flex-col gap-[14px] md:mb-[32px] md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="bg-type-h1 text-[#312e28]">Pricing Insights</h1>
+            <h1
+              className="bg-font-roboto-flex text-[28px] leading-[34px] text-[#312e28] md:bg-type-h1"
+              style={{
+                fontVariationSettings:
+                  "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+                fontWeight: 838,
+              }}
+            >
+              Pricing Insights
+            </h1>
           </div>
-          <div className="flex items-center gap-[16px] bg-font-roboto text-[12px] text-[#312e28]/60">
+          <div className="flex flex-wrap items-center gap-x-[14px] gap-y-[8px] bg-font-roboto text-[12px] text-[#312e28]/60">
             <span className="inline-flex items-center gap-[4px]">
               <span className="text-[10px] text-[#1a7a4a]">▲</span> Increase
             </span>
@@ -80,7 +85,7 @@ export default async function DataInsightsPage() {
         <InsightsDataTable series={data.series} />
       </section>
 
-      <div className="mx-auto w-full max-w-[1440px] px-4 md:px-[26px]">
+      <div className="mx-auto w-full max-w-[1440px] px-[16px] md:px-[26px]">
         <HomepageEventBanner
           title="Come Join Us At the 2025 Evening of Excellence"
           subtitle="Event starts 8:00 pm on 04.13.2026"
