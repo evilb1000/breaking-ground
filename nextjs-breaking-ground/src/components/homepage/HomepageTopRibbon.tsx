@@ -31,13 +31,13 @@ const NAV_ITEMS: NavItem[] = [
       { label: "National", href: "/sections/national" },
     ],
   },
-  { label: "Pricing Insights", href: "/sections/data-insights", chevron: true },
+  { label: "Pricing Insights", href: "/sections/data-insights", chevron: false },
   {
     label: "Issues",
     href: "https://www.mbawpa.org/news/breaking-ground-magazine/",
     external: true,
   },
-  { label: "About", href: "/about", chevron: true },
+  { label: "About", href: "/about", chevron: false },
 ];
 
 export default function HomepageTopRibbon() {
