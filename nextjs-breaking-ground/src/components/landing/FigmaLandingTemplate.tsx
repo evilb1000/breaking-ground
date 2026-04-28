@@ -67,8 +67,8 @@ function ItemLink({
 
 function TileCard({ item }: { item: LandingItem }) {
   return (
-    <ItemLink href={item.href} external={item.external} className="group block w-[292px]">
-      <div className="h-[190px] w-[292px] overflow-hidden rounded-[4px] bg-gray-100">
+    <ItemLink href={item.href} external={item.external} className="group block w-full lg:w-[292px]">
+      <div className="h-[190px] w-full overflow-hidden rounded-[4px] bg-gray-100 lg:w-[292px]">
         <img
           src={item.imageSrc || FALLBACK_TILE_IMAGE}
           alt={item.imageAlt || item.title}
@@ -83,8 +83,8 @@ function TileCard({ item }: { item: LandingItem }) {
             <p className="bg-type-meta text-[#312e28]">{item.readTimeLabel || "3 MIN READ"}</p>
           </div>
         </div>
-        <p className="bg-type-h3 text-[#312e28] group-hover:underline">{item.title}</p>
-        {item.summary ? <p className="bg-type-body text-[#312e28]">{item.summary}</p> : null}
+        <p className="bg-font-roboto-condensed text-[16px] font-medium leading-[22px] text-[#312e28] group-hover:underline lg:text-[20px] lg:leading-[26px]">{item.title}</p>
+        {item.summary ? <p className="bg-font-crimson text-[14px] leading-[20px] text-[#312e28] lg:text-[16px] lg:leading-[22px]">{item.summary}</p> : null}
       </div>
     </ItemLink>
   );
@@ -109,8 +109,8 @@ export default function FigmaLandingTemplate({
 
       <section className="relative border-b border-[#2d567b] bg-[#285a8a]">
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15),rgba(0,0,0,0.2))]" />
-        <div className="relative mx-auto flex h-[148px] w-full max-w-[1440px] items-end px-6 pb-6 text-white">
-          <div className="mx-auto w-[922px] text-right">
+        <div className="relative mx-auto flex h-[96px] w-full max-w-[1440px] items-end px-[20px] pb-[18px] text-white lg:h-[148px] lg:px-6 lg:pb-6">
+          <div className="mx-auto w-full max-w-[922px] text-left lg:text-right">
             {breadcrumbCurrent ? (
               <p className="bg-font-roboto text-[14px] leading-[18px]">
                 <Link href="/" className="underline">
@@ -123,44 +123,77 @@ export default function FigmaLandingTemplate({
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[922px] px-4 pb-[72px] pt-[40px] md:px-0">
-        {pageTitle ? <h1 className="bg-type-h1 text-[#312e28]">{pageTitle}</h1> : null}
+      <section className="mx-auto w-full max-w-[922px] px-[20px] pb-[56px] pt-[32px] lg:px-0 lg:pb-[72px] lg:pt-[40px]">
+        {pageTitle ? (
+          <h1
+            className="bg-font-roboto-flex text-[28px] leading-[34px] text-[#312e28] lg:text-[36px] lg:leading-[44px]"
+            style={{
+              fontVariationSettings:
+                "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+              fontWeight: 838,
+            }}
+          >
+            {pageTitle}
+          </h1>
+        ) : null}
 
         {variant === "default" && featuredItem ? (
           <ItemLink
             href={featuredItem.href}
             external={featuredItem.external}
-            className="mt-[48px] grid grid-cols-[476px_1fr] gap-[20px] group"
+            className="group mt-[32px] flex flex-col gap-0 lg:mt-[48px] lg:grid lg:grid-cols-[476px_1fr] lg:gap-[20px]"
           >
-            <div className="h-[297px] overflow-hidden rounded-[4px] bg-gray-100">
+            <div className="h-[214px] overflow-hidden rounded-t-[4px] bg-gray-100 lg:h-[297px] lg:rounded-[4px]">
               <img
                 src={featuredItem.imageSrc || FALLBACK_TILE_IMAGE}
                 alt={featuredItem.imageAlt || featuredItem.title}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
               />
             </div>
-            <div className="flex h-[298px] flex-col justify-center bg-[#f5f3f0] px-[24px] pb-[42px] pt-[20px]">
+            <div className="flex flex-col justify-center rounded-b-[4px] bg-[#f5f3f0] px-[20px] py-[24px] lg:h-[298px] lg:rounded-none lg:px-[24px] lg:pb-[42px] lg:pt-[20px]">
               {featuredItem.tagLabel ? (
                 <p className="bg-type-tag text-[#ff611d]">{featuredItem.tagLabel.toUpperCase()}</p>
               ) : null}
-              <p className="bg-type-h2 mt-[12px] text-[#312e28]">{featuredItem.title}</p>
+              <p
+                className="mt-[12px] bg-font-roboto-flex text-[22px] leading-[26px] text-[#312e28] lg:text-[28px] lg:leading-[34px]"
+                style={{
+                  fontVariationSettings:
+                    "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+                  fontWeight: 838,
+                }}
+              >
+                {featuredItem.title}
+              </p>
               <div className="mt-[12px] flex items-center gap-[12px]">
                 <p className="bg-type-meta text-[#312e28]">{featuredItem.dateLabel || "APRIL 15, 2026"}</p>
                 <p className="bg-type-meta text-[#312e28]">{featuredItem.readTimeLabel || "3 MIN READ"}</p>
               </div>
-              {featuredItem.summary ? <p className="bg-type-body mt-[20px] text-[#312e28]">{featuredItem.summary}</p> : null}
-              <span className="mt-[20px] inline-flex w-[156px] items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white">
+              {featuredItem.summary ? (
+                <p className="mt-[20px] bg-font-crimson text-[14px] leading-[20px] text-[#312e28] lg:text-[16px] lg:leading-[22px]">
+                  {featuredItem.summary}
+                </p>
+              ) : null}
+              <span className="mt-[20px] inline-flex w-full items-center justify-center rounded-[4px] bg-[#113251] p-[12px] bg-font-roboto text-[12px] font-bold text-white lg:w-[156px]">
                 Read more
               </span>
             </div>
           </ItemLink>
         ) : null}
 
-        <div className="mt-[48px]">
-          <div className="flex items-end justify-between">
-            <h2 className="bg-type-h2 text-[#312e28]">{currentListLabel}</h2>
+        <div className="mt-[40px] lg:mt-[48px]">
+          <div className="flex items-end justify-between gap-[16px]">
+            <h2
+              className="bg-font-roboto-flex text-[22px] leading-[26px] text-[#312e28] lg:text-[28px] lg:leading-[34px]"
+              style={{
+                fontVariationSettings:
+                  "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+                fontWeight: 838,
+              }}
+            >
+              {currentListLabel}
+            </h2>
             {variant === "default" && showFilter ? (
-              <button type="button" className="inline-flex items-center gap-[4px] bg-font-roboto text-[16px] text-[#312e28]">
+              <button type="button" className="inline-flex shrink-0 items-center gap-[4px] bg-font-roboto text-[14px] text-[#312e28] lg:text-[16px]">
                 <span>Filter</span>
                 <img src={FILTER_ICON} alt="" className="h-[20px] w-[20px]" />
               </button>
@@ -172,28 +205,32 @@ export default function FigmaLandingTemplate({
               <div className="mt-[24px] flex flex-col divide-y divide-[#312e28]/25 border-y-2 border-[#312e28]/25">
                 {tiles.map((item, i) => (
                   <Fragment key={item.id}>
-                    <article className="py-[34px]">
+                    <article className="py-[26px] lg:py-[34px]">
                       <ItemLink
                         href={item.href}
                         external={item.external}
                         className="group inline-block"
                       >
-                        <h3 className="bg-font-roboto-condensed text-[30px] leading-[36px] font-medium text-[#113251] no-underline group-hover:underline underline-offset-[8px] decoration-[#113251] transition-colors">
+                        <h3 className="bg-font-roboto-condensed text-[22px] leading-[28px] font-medium text-[#113251] no-underline group-hover:underline underline-offset-[8px] decoration-[#113251] transition-colors lg:text-[30px] lg:leading-[36px]">
                           {item.title}
                         </h3>
                       </ItemLink>
-                      <p className="mt-[14px] bg-font-roboto text-[20px] leading-[28px] font-semibold text-[#312e28]">
+                      <p className="mt-[12px] bg-font-roboto text-[14px] leading-[22px] font-semibold text-[#312e28] lg:mt-[14px] lg:text-[20px] lg:leading-[28px]">
                         {item.sourceLabel ? `${item.sourceLabel} • ` : ""}
                         {item.dateLabel || "APRIL 15, 2026"}
                       </p>
                       {item.summary ? (
-                        <p className="mt-[16px] bg-font-crimson text-[18px] leading-[28px] text-[#312e28]">
+                        <p className="mt-[12px] bg-font-crimson text-[16px] leading-[24px] text-[#312e28] lg:mt-[16px] lg:text-[18px] lg:leading-[28px]">
                           {item.summary}
                         </p>
                       ) : null}
                     </article>
                     {/* Ad after article 1 (index 0), then every other: 0, 2, 4, 6... */}
-                    {i % 2 === 0 ? <InsightsAdUnit /> : null}
+                    {i % 2 === 0 ? (
+                      <div className="py-[8px] lg:py-0">
+                        <InsightsAdUnit />
+                      </div>
+                    ) : null}
                   </Fragment>
                 ))}
               </div>
@@ -220,7 +257,7 @@ export default function FigmaLandingTemplate({
               ) : null}
             </>
           ) : (
-            <div className="mt-[31px] grid grid-cols-3 gap-x-[23px] gap-y-[25px]">
+            <div className="mt-[24px] grid grid-cols-1 gap-y-[32px] sm:grid-cols-2 sm:gap-x-[20px] lg:mt-[31px] lg:grid-cols-3 lg:gap-x-[23px] lg:gap-y-[25px]">
               {tiles.slice(0, 6).map((item) => (
                 <TileCard key={item.id} item={item} />
               ))}
@@ -229,7 +266,7 @@ export default function FigmaLandingTemplate({
         </div>
 
         {loadMoreHref && variant === "default" ? (
-          <div className="mt-[48px] flex justify-center">
+          <div className="mt-[40px] flex justify-center lg:mt-[48px]">
             <ItemLink
               href={loadMoreHref}
               external={loadMoreExternal}
