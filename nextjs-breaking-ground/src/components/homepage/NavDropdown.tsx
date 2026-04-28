@@ -67,9 +67,9 @@ export default function NavDropdown({
         onClick={() => setOpen((v) => !v)}
         className={`inline-flex cursor-pointer items-center gap-[2px] ${buttonClassName}`}
       >
-        <span>{label}</span>
+        <span className="pointer-events-none">{label}</span>
         <span
-          className="inline-flex h-[24px] w-[24px] items-center justify-center"
+          className="pointer-events-none inline-flex h-[24px] w-[24px] items-center justify-center"
           aria-hidden="true"
         >
           <svg viewBox="0 0 24 24" className="h-[24px] w-[24px] opacity-80">
