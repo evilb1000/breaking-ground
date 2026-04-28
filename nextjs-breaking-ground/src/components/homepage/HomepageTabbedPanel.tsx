@@ -74,7 +74,7 @@ export default function HomepageTabbedPanel({
   const items = current.items.slice(0, 3);
 
   return (
-    <div className="absolute left-[27px] top-[652px] h-[591px] w-[916px] pt-[32px]">
+    <div className="absolute left-[27px] top-[526px] h-[591px] w-[916px] pt-[32px]">
       <div className="flex items-center gap-[12px]">
         {tabs.map((t) => {
           const isActive = t.key === active;

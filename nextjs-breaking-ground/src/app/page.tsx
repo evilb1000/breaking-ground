@@ -260,7 +260,7 @@ function LatestNews({ news }: { news: NewsFeedItem[] }) {
   const fallback: NewsFeedItem[] = [{}, {}, {}, {}];
   const items = cards.length ? cards : fallback;
   return (
-    <div className="absolute left-[965px] top-[652px] h-[634px] w-[451px] border-l border-[#ebebeb] px-[24px] pt-[23px]">
+    <div className="absolute left-[965px] top-[526px] h-[634px] w-[451px] border-l border-[#ebebeb] px-[24px] pt-[23px]">
       <div className="flex items-center gap-[8px]">
         <div className="relative h-[20px] w-[20px] overflow-hidden">
           <div className="absolute inset-[4.17%_4.17%_12.5%_8.33%]">
@@ -328,7 +328,7 @@ function HeroFeature({
   const badgeIconUrl = sanityImageUrl(badgeIcon, 28, 28);
   const { singular, plural, indexHref } = sectionLabels(entry?.section);
   return (
-    <div className="absolute left-[25px] top-[153px] h-[475px] w-[1390px]">
+    <div className="absolute left-[25px] top-[27px] h-[475px] w-[1390px]">
       <div className="absolute inset-0 flex overflow-hidden rounded-[4px]">
         <img src={heroImage} alt={heroTitle} className="h-[475px] w-[568px] shrink-0 object-cover" />
         <div className="relative h-[475px] w-[822px] shrink-0 bg-[#373632]">
@@ -415,7 +415,7 @@ function EventBanner({ entry, ctaHref, body }: { entry?: HomepageEntry | null; c
   const title = entry?.title || "Come Join Us At the 2025 Evening of Excellence";
   const subtitle = `Event starts 8:00 pm on ${entry?.publishedAt ? new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".") : "04.13.2026"}`;
   return (
-    <div className="absolute left-0 top-[1286px] h-[336px] w-[1440px] overflow-hidden">
+    <div className="absolute left-0 top-[1160px] h-[336px] w-[1440px] overflow-hidden">
       <img src={entryImageUrl(entry, 1800, 600) || imgRectangle15} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-[#113251]/70" />
       <div className="absolute left-0 top-0 h-[336px] w-[1440px] text-center text-white">
@@ -447,7 +447,7 @@ function SponsorsAndAd() {
   ];
   return (
     <>
-      <div className="absolute left-[26px] top-[1669px] h-[361px] w-[684px]">
+      <div className="absolute left-[26px] top-[1543px] h-[361px] w-[684px]">
         <div className="mt-[68px] flex h-[89px] w-[684px] items-center justify-center gap-[10px] opacity-80">
           {logos.map((src, i) => (
             <img key={i} src={src} alt="" className="h-[75px] w-[82px] object-contain" />
@@ -460,7 +460,7 @@ function SponsorsAndAd() {
           </p>
         </div>
       </div>
-      <div className="absolute left-[730px] top-[1677px] flex h-[361px] w-[686px] items-center justify-center bg-[#d9d9d9]">
+      <div className="absolute left-[730px] top-[1551px] flex h-[361px] w-[686px] items-center justify-center bg-[#d9d9d9]">
         <h2 className="bg-type-h1 text-[#adadad]">Ad space</h2>
       </div>
     </>
@@ -490,8 +490,8 @@ export default async function IndexPage() {
 
   return (
     <main className="figma-homepage min-h-screen bg-[#e8e8e8] overflow-x-auto">
-      <div className="relative mx-auto h-[2097px] w-[1440px] bg-white">
-        <HomepageTopRibbon />
+      <HomepageTopRibbon />
+      <div className="relative mx-auto h-[1971px] w-[1440px] bg-white">
         <HeroFeature
           entry={hero}
           badgeLabel={homepage?.heroBadgeLabel}

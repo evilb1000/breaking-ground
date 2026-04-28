@@ -66,10 +66,19 @@ export default function HomepageTopRibbon() {
             }
             const chevronNode = item.chevron ? (
               <span
-                className="bg-type-nav leading-none opacity-80 -mt-[1px]"
+                className="inline-flex h-[24px] w-[24px] items-center justify-center"
                 aria-hidden="true"
               >
-                ▾
+                <svg viewBox="0 0 24 24" className="h-[24px] w-[24px] opacity-80">
+                  <path
+                    d="M7 10l5 5 5-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </span>
             ) : null;
             const linkClass =
