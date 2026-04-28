@@ -34,7 +34,7 @@ const ARTICLES_BY_SERIES_QUERY = `*[_type == "figmaArticle" && series->slug.curr
     series->{title, seriesImage{asset->{url,_ref,_type}, alt}}
   }`;
 
-const PROJECT_PROFILES_QUERY = `*[_type == "figmaArticle" && section == "project-profiles" && defined(slug.current)]
+const PROFILES_BY_SECTION_QUERY = `*[_type == "figmaArticle" && section == $section && defined(slug.current)]
   | order(publishedAt desc){
     _id,
     _type,
@@ -131,10 +131,14 @@ export default async function SectionPage({
     );
   }
 
-  const isProjectProfiles = section === "project-profiles";
+  const isProfileSection = section === "project-profiles" || section === "member-profiles";
 
-  const items = isProjectProfiles
-    ? await client.fetch<LandingSourceItem[]>(PROJECT_PROFILES_QUERY, {}, options)
+  const items = isProfileSection
+    ? await client.fetch<LandingSourceItem[]>(
+        PROFILES_BY_SECTION_QUERY,
+        { section },
+        options
+      )
     : await client.fetch<LandingSourceItem[]>(
         ARTICLES_BY_SERIES_QUERY,
         { seriesSlug: config.seriesSlug },
