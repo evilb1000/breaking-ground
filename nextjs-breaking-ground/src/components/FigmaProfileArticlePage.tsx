@@ -40,7 +40,7 @@ function MetaInfo({ publishedAt, readingTime }: { publishedAt?: string; readingT
   const date = formatMetaDate(publishedAt) || "APRIL 15, 2026";
   const read = typeof readingTime === "number" ? `${readingTime} MIN READ` : "3 MIN READ";
   return (
-    <div className="flex items-center gap-[12px]">
+    <div className="flex flex-wrap items-center gap-x-[12px] gap-y-[4px]">
       <p className="bg-font-roboto text-[10px] leading-[24px] font-normal text-[#312e28] whitespace-nowrap">
         {date}
       </p>
@@ -153,8 +153,8 @@ function Sidebar({
 }) {
   const hasRelated = Array.isArray(relatedArticles) && relatedArticles.length > 0;
   return (
-    <aside className="flex w-[206px] flex-col gap-[32px]">
-      <div className="flex w-[192px] flex-col gap-[8px] border-b border-solid border-[#d9d9d9] pb-[36px]">
+    <aside className="flex w-full flex-col gap-[28px] border-t border-[#d9d9d9] pt-[24px] lg:w-[206px] lg:border-t-0 lg:pt-0">
+      <div className="flex w-full flex-col gap-[8px] border-b border-solid border-[#d9d9d9] pb-[28px] lg:w-[192px] lg:pb-[36px]">
         <MetaInfo publishedAt={publishedAt} readingTime={readingTime} />
         <AuthorBlock author={author} authorBio={authorBio} />
         <SocialRow shareUrl={shareUrl} headline={headline} />
@@ -203,7 +203,38 @@ function ProfileHero({ headline, image }: { headline: string; image?: SanityImag
   //   Headline top            498 →  369  (w 686,      left 377)
   return (
     <section className="relative w-full">
-      <div className="relative mx-auto h-[515px] w-full max-w-[1440px]">
+      <div className="lg:hidden">
+        <div className="h-[260px] w-full overflow-hidden bg-[#d9d9d9]">
+          {src ? (
+            <img
+              src={src}
+              alt={image?.alt || headline}
+              className="h-full w-full object-cover"
+              style={{ objectPosition }}
+            />
+          ) : null}
+        </div>
+        <div className="relative mx-[20px] -mt-[52px] overflow-hidden rounded-[4px] bg-[#373632] px-[20px] py-[28px] text-center">
+          <img
+            src={HERO_MAP_TEXTURE}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-multiply"
+          />
+          <h1
+            className="relative bg-font-roboto-flex text-[32px] leading-[38px] text-white"
+            style={{
+              fontVariationSettings:
+                "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+              fontWeight: 838,
+            }}
+          >
+            {headline}
+          </h1>
+        </div>
+      </div>
+
+      <div className="relative mx-auto hidden h-[515px] w-full max-w-[1440px] lg:block">
         {/* Hero image — visible content 922 x 447, left 259 / top 20 (Figma y=149) */}
         <div className="absolute left-[259px] top-[20px] h-[447px] w-[922px] overflow-hidden rounded-[4px] bg-[#d9d9d9]">
           {src ? (
@@ -270,7 +301,7 @@ function ProfileBreadcrumb({ section }: { section?: string }) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="flex items-center gap-[4px] bg-font-roboto text-[14px] leading-[18px] font-normal"
+      className="flex flex-wrap items-center gap-[4px] bg-font-roboto text-[14px] leading-[18px] font-normal"
     >
       <Link href="/" className="text-[#312e28] underline">
         Home
@@ -320,21 +351,21 @@ export default function FigmaProfileArticlePage({ article }: { article: FigmaArt
       <main className="bg-white text-[color:var(--bg-on-surface)]">
         <ProfileHero headline={headline} image={heroImg} />
 
-        <div className="mx-auto w-full max-w-[1440px] px-[24px] lg:px-0">
+        <div className="mx-auto w-full max-w-[1440px] px-[20px] lg:px-0">
           {/* Breadcrumb — horizontally centered directly under the rectangle
               (rectangle: left-[356px] w-[727px]). */}
-          <div className="pt-0">
-            <div className="ml-[356px] flex w-[727px] justify-center">
+          <div className="pt-[24px] lg:pt-0">
+            <div className="flex w-full justify-start lg:ml-[356px] lg:w-[727px] lg:justify-center">
               <ProfileBreadcrumb section={section} />
             </div>
           </div>
 
           {/* Two-column body — sidebar (col 2) + main content (col 4). */}
           <div
-            className="grid gap-x-[28px] pt-[20px] pb-[80px]"
+            className="flex flex-col gap-[32px] pb-[56px] pt-[24px] lg:grid lg:gap-x-[28px] lg:pb-[80px] lg:pt-[20px]"
             style={{ gridTemplateColumns: "143px 206px 28px 686px 1fr" }}
           >
-            <div className="col-start-2 col-end-3">
+            <div className="order-2 lg:order-none lg:col-start-2 lg:col-end-3">
               <Sidebar
                 publishedAt={article.publishedAt}
                 readingTime={article.readingTime}
@@ -346,9 +377,9 @@ export default function FigmaProfileArticlePage({ article }: { article: FigmaArt
               />
             </div>
 
-            <article className="col-start-4 col-end-5 flex flex-col gap-[43px]">
+            <article className="flex w-full flex-col gap-[32px] lg:col-start-4 lg:col-end-5 lg:w-auto lg:gap-[43px]">
               {article.dek ? (
-                <p className="bg-font-roboto-condensed text-[20px] leading-[26px] font-medium text-[#312e28]">
+                <p className="bg-font-roboto-condensed text-[18px] leading-[24px] font-medium text-[#312e28] lg:text-[20px] lg:leading-[26px]">
                   {article.dek}
                 </p>
               ) : null}
@@ -361,6 +392,7 @@ export default function FigmaProfileArticlePage({ article }: { article: FigmaArt
                   <>
                     {chunks.map((chunk, i) => (
                       <div key={i} className="bg-article-body">
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
                         <ProfileAdUnit />
                       </div>
@@ -374,7 +406,7 @@ export default function FigmaProfileArticlePage({ article }: { article: FigmaArt
           </div>
 
           {/* Event banner */}
-          <div className="px-[24px] pb-[80px]">
+          <div className="px-0 pb-[56px] lg:px-[24px] lg:pb-[80px]">
             <HomepageEventBanner
               title="Come Join Us At the 2025 Evening of Excellence"
               subtitle="Event starts 8:00 pm on 04.13.2026"

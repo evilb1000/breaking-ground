@@ -138,15 +138,15 @@ export function hotspotPosition(img?: SanityImage): string {
 /* ------------------------------------------------------------------ */
 
 const sizeClassMap = {
-  small: "max-w-[25%]",
-  medium: "max-w-[50%]",
-  large: "max-w-[75%]",
+  small: "max-w-full lg:max-w-[25%]",
+  medium: "max-w-full lg:max-w-[50%]",
+  large: "max-w-full lg:max-w-[75%]",
   full: "max-w-full",
 } as const;
 
 const alignClassMap = {
-  left: "float-left mr-6 mb-4",
-  right: "float-right ml-6 mb-4",
+  left: "lg:float-left lg:mr-6 mb-4",
+  right: "lg:float-right lg:ml-6 mb-4",
   center: "mx-auto my-6 block",
 } as const;
 
@@ -328,7 +328,7 @@ export const articleComponents = {
 
 function Breadcrumb({ section, headline }: { section?: string; headline?: string }) {
   return (
-    <nav aria-label="Breadcrumb" className="flex items-center gap-[8px] bg-type-breadcrumb text-[color:var(--bg-on-surface)]">
+    <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-[8px] bg-type-breadcrumb text-[color:var(--bg-on-surface)]">
       <Link href="/" className="hover:underline">
         Home
       </Link>
@@ -337,7 +337,7 @@ function Breadcrumb({ section, headline }: { section?: string; headline?: string
         {sectionLabel(section)}
       </Link>
       <span aria-hidden="true" className="text-[color:var(--bg-disabled)]">/</span>
-      <span className="text-[color:var(--bg-disabled)] truncate max-w-[420px]">
+      <span className="max-w-full truncate text-[color:var(--bg-disabled)] lg:max-w-[420px]">
         {headline}
       </span>
     </nav>
@@ -346,7 +346,7 @@ function Breadcrumb({ section, headline }: { section?: string; headline?: string
 
 function MetaRow({ publishedAt, readingTime }: { publishedAt?: string; readingTime?: number }) {
   return (
-    <div className="flex items-center gap-[16px] bg-type-meta text-[color:var(--bg-disabled)] uppercase tracking-[0.05em]">
+    <div className="flex flex-wrap items-center gap-x-[16px] gap-y-[4px] bg-type-meta text-[color:var(--bg-disabled)] uppercase tracking-[0.05em]">
       {publishedAt ? <span>{formatMetaDate(publishedAt)}</span> : null}
       {typeof readingTime === "number" ? (
         <span className="inline-flex items-center gap-[6px]">
@@ -447,7 +447,7 @@ function Sidebar({
 }) {
   const authorImg = author?.image ? imageSrc(author.image, 80) : null;
   return (
-    <aside className="flex flex-col gap-[32px] w-[206px]">
+    <aside className="flex w-full flex-col gap-[28px] border-t border-[color:var(--bg-disabled)] pt-[24px] lg:w-[206px] lg:border-t-0 lg:pt-0">
       {/* Meta block */}
       <div className="flex flex-col gap-[8px]">
         <p className="bg-type-tag text-[color:var(--bg-disabled)]">ARTICLE INFO</p>
@@ -559,23 +559,23 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
 
       {/* 1440-max container with strict Figma column geometry */}
       <main className="bg-white text-[color:var(--bg-on-surface)]">
-        <div className="mx-auto w-full max-w-[1440px] px-[24px] lg:px-0">
+        <div className="mx-auto w-full max-w-[1440px] px-[20px] lg:px-0">
           {/* Article body grid: sidebar on the left, main column on the right.
               Figma frame: sidebar x=143 w=206, main x=377 w=686. */}
           <div
-            className="relative grid pt-[160px] pb-[80px] gap-x-[28px]"
+            className="relative flex flex-col gap-[32px] pb-[56px] pt-[32px] lg:grid lg:gap-x-[28px] lg:pb-[80px] lg:pt-[160px]"
             style={{
               gridTemplateColumns: "143px 206px 28px 686px 1fr",
             }}
           >
             {/* Main column — intro image, breadcrumb, tag+headline, body */}
-            <article className="col-start-4 col-end-5 flex flex-col gap-[24px]">
+            <article className="flex w-full flex-col gap-[24px] lg:col-start-4 lg:col-end-5 lg:w-auto">
               {introSrc ? (
                 <figure className="w-full">
                   <img
                     src={introSrc}
                     alt={article.introImage?.alt || headline}
-                    className="h-[460px] w-full object-cover"
+                    className="h-[260px] w-full rounded-[4px] object-cover lg:h-[460px] lg:rounded-none"
                     style={{ objectPosition: introPos }}
                   />
                   {article.introImage?.caption ? (
@@ -600,11 +600,18 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
                     return tag.toUpperCase();
                   })()}
                 </p>
-                <h1 className="bg-type-h1 text-[color:var(--bg-on-surface)]">
+                <h1
+                  className="bg-font-roboto-flex text-[32px] leading-[38px] text-[color:var(--bg-on-surface)] lg:bg-type-h1"
+                  style={{
+                    fontVariationSettings:
+                      "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
+                    fontWeight: 838,
+                  }}
+                >
                   {headline}
                 </h1>
                 {article.dek ? (
-                  <p className="bg-type-body text-[color:var(--bg-on-surface)] opacity-80">
+                  <p className="bg-font-crimson text-[16px] leading-[22px] text-[color:var(--bg-on-surface)] opacity-80">
                     {article.dek}
                   </p>
                 ) : null}
@@ -618,6 +625,7 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
                   <>
                     {chunks.map((chunk, i) => (
                       <div key={i} className="bg-article-body">
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
                         <ArticleAdUnit />
                       </div>
@@ -630,7 +638,7 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
             </article>
 
             {/* Sidebar — left column, starts below intro image (y=623 in Figma) */}
-            <div className="col-start-2 col-end-3 row-start-1 mt-[463px]">
+            <div className="order-2 lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:mt-[463px]">
               <Sidebar
                 publishedAt={article.publishedAt}
                 readingTime={article.readingTime}
@@ -644,7 +652,7 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
           </div>
 
           {/* Event banner (frame 165:764) */}
-          <div className="px-[24px] pb-[80px]">
+          <div className="px-0 pb-[56px] lg:px-[24px] lg:pb-[80px]">
             <HomepageEventBanner
               title="2026 Breaking Ground Summit"
               subtitle="Industry leaders. Western PA. One room."
