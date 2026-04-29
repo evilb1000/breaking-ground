@@ -3,6 +3,7 @@ import { Crimson_Text, Geist, Geist_Mono, Roboto, Roboto_Condensed, Roboto_Flex 
 import Script from "next/script";
 import "./globals.css";
 import Footer from "@/components/Footer";
+import { SITE_URL } from "@/lib/urls";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,8 +56,35 @@ const crimsonText = Crimson_Text({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Breaking Ground",
   description: "Breaking Ground – Western Pennsylvania construction news, project profiles, market analysis, and industry intelligence.",
+  icons: {
+    icon: "/icon.svg",
+  },
+  openGraph: {
+    type: "website",
+    title: "Breaking Ground",
+    description:
+      "Western Pennsylvania construction news, project profiles, market analysis, and industry intelligence.",
+    url: SITE_URL,
+    siteName: "Breaking Ground",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Breaking Ground",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Breaking Ground",
+    description:
+      "Western Pennsylvania construction news, project profiles, market analysis, and industry intelligence.",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function RootLayout({

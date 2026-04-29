@@ -5,7 +5,7 @@ import { client } from "@/sanity/client";
 import FigmaArticlePage from "@/components/FigmaArticlePage";
 import FigmaProfileArticlePage from "@/components/FigmaProfileArticlePage";
 import Link from "next/link";
-import { articleUrl } from "@/lib/urls";
+import { SITE_URL, articleUrl } from "@/lib/urls";
 
 const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   _type,
@@ -192,7 +192,14 @@ export async function generateMetadata({
           alt: social.alt || rawTitle || "Breaking Ground",
         },
       ]
-    : undefined;
+    : [
+        {
+          url: `${SITE_URL}/opengraph-image.png`,
+          width: OG_WIDTH,
+          height: OG_HEIGHT,
+          alt: "Breaking Ground",
+        },
+      ];
 
   return {
     title,
