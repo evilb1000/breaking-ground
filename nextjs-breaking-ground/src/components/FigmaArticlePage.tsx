@@ -563,7 +563,7 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
           {/* Article body grid: sidebar on the left, main column on the right.
               Figma frame: sidebar x=143 w=206, main x=377 w=686. */}
           <div
-            className="relative flex flex-col gap-[32px] pb-[56px] pt-[32px] lg:grid lg:gap-x-[28px] lg:pb-[80px] lg:pt-[160px]"
+            className="relative flex flex-col gap-[32px] pb-[56px] pt-[20px] lg:grid lg:gap-x-[28px] lg:pb-[80px] lg:pt-[20px]"
             style={{
               gridTemplateColumns: "143px 206px 28px 686px 1fr",
             }}
@@ -637,8 +637,8 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
               <NextArticleCTA next={article.nextArticle} />
             </article>
 
-            {/* Sidebar — left column, starts below intro image (y=623 in Figma) */}
-            <div className="order-2 lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:mt-[463px]">
+            {/* Align sidebar heading with the article type tag. */}
+            <div className="order-2 lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:mt-[526px]">
               <Sidebar
                 publishedAt={article.publishedAt}
                 readingTime={article.readingTime}
