@@ -41,6 +41,8 @@ export type RelatedRef = {
   section?: string;
   category?: string;
   publishedAt?: string;
+  homepageImage?: SanityImage;
+  heroImage?: SanityImage;
   headerImage?: SanityImage;
   introImage?: SanityImage;
 };
@@ -490,7 +492,10 @@ function Sidebar({
           <p className="bg-type-tag text-[color:var(--bg-disabled)]">RELATED</p>
           <ul className="flex flex-col gap-[16px]">
             {relatedArticles.map((rel) => {
-              const img = imageSrc(rel.introImage || rel.headerImage, 220);
+              const img = imageSrc(
+                rel.homepageImage || rel.headerImage || rel.heroImage || rel.introImage,
+                220
+              );
               return (
                 <li key={rel._id}>
                   <Link href={relatedSlug(rel)} className="group flex flex-col gap-[8px]">

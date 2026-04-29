@@ -40,6 +40,8 @@ const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
     section,
     category,
     publishedAt,
+    homepageImage{_type, asset, "assetUrl": asset->url, alt, crop, hotspot},
+    heroImage{_type, asset, "assetUrl": asset->url, alt, crop, hotspot},
     headerImage{_type, asset, "assetUrl": asset->url, alt, crop, hotspot},
     introImage{_type, asset, "assetUrl": asset->url, alt, crop, hotspot}
   },

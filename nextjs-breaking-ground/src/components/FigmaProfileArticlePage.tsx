@@ -166,16 +166,32 @@ function Sidebar({
             Related articles
           </p>
           <ul className="flex flex-col gap-[14px]">
-            {relatedArticles!.slice(0, 3).map((rel) => (
-              <li key={rel._id}>
-                <Link
-                  href={relatedSlug(rel)}
-                  className="bg-font-roboto text-[14px] leading-[22px] font-normal text-[#312e28] hover:underline"
-                >
-                  {relatedTitle(rel)}
-                </Link>
-              </li>
-            ))}
+            {relatedArticles!.slice(0, 3).map((rel) => {
+              const img = imageSrc(
+                rel.homepageImage || rel.headerImage || rel.heroImage || rel.introImage,
+                220
+              );
+
+              return (
+                <li key={rel._id}>
+                  <Link
+                    href={relatedSlug(rel)}
+                    className="group flex flex-col gap-[8px] bg-font-roboto text-[14px] leading-[22px] font-normal text-[#312e28]"
+                  >
+                    {img ? (
+                      <div className="h-[120px] w-full overflow-hidden rounded-[2px] bg-[#f5f3f0]">
+                        <img
+                          src={img}
+                          alt={relatedTitle(rel)}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
+                      </div>
+                    ) : null}
+                    <span className="group-hover:underline">{relatedTitle(rel)}</span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
       ) : null}
