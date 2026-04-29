@@ -468,7 +468,7 @@ function Sidebar({
             ) : (
               <div className="h-[40px] w-[40px] rounded-full bg-[color:var(--bg-beige)]" aria-hidden="true" />
             )}
-            <p className="bg-type-article-h4 text-[color:var(--bg-on-surface)]">{author.name}</p>
+            <p className="bg-type-article-h4 text-[#312E28]">{author.name}</p>
           </div>
           {authorBio ? (
             <p className="bg-type-caption text-[color:var(--bg-on-surface)] leading-[16px]">
@@ -506,7 +506,7 @@ function Sidebar({
                     <p className="bg-type-tag text-[color:var(--bg-disabled)]">
                       {sectionLabel(rel.section || rel.category)}
                     </p>
-                    <p className="bg-type-article-h4 text-[color:var(--bg-on-surface)] group-hover:underline">
+                    <p className="bg-type-article-h4 text-[#312E28] group-hover:underline">
                       {relatedTitle(rel)}
                     </p>
                   </Link>
