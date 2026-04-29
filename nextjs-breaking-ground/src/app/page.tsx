@@ -781,13 +781,13 @@ export default async function IndexPage() {
         />
         <MobileLatestNews news={latest} />
         <MobileArticleSection
-          title="Construction Profiles"
+          title="Projects & Profiles"
           items={profiles}
           href="/sections/project-profiles"
           cta="View all profiles"
         />
         <MobileArticleSection
-          title="Expert Perspectives"
+          title="Industry Perspectives"
           items={perspectives}
           href="/sections/perspectives"
           cta="View all perspectives"
