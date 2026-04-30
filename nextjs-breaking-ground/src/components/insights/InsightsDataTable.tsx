@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import type { ReactNode } from "react";
 import type { SparklineSeries } from "@/data/sparkline_types";
 import InsightsAdUnit from "./InsightsAdUnit";
+import { selectAd, type AdCreative } from "@/lib/ads";
 
 const CLUSTER_ORDER = [
   "Overhead Economic Indicators",
@@ -230,7 +231,13 @@ function ClusterTable({ cluster, series }: { cluster: string; series: SparklineS
 }
 
 
-export default function InsightsDataTable({ series }: { series: SparklineSeries[] }) {
+export default function InsightsDataTable({
+  series,
+  ads,
+}: {
+  series: SparklineSeries[];
+  ads?: AdCreative[];
+}) {
   const byCluster = CLUSTER_ORDER.reduce<Record<string, SparklineSeries[]>>((acc, cluster) => {
     acc[cluster] = series.filter((s) => s.cluster === cluster);
     return acc;
@@ -256,7 +263,7 @@ export default function InsightsDataTable({ series }: { series: SparklineSeries[
           <ClusterTable cluster={cluster} series={byCluster[cluster]} />
           {/* Ad after table 1 (index 0), then every other: index 0, 2, 4, 6 */}
           {i % 2 === 0 && i < allClusters.length - 1 ? (
-            <InsightsAdUnit />
+            <InsightsAdUnit ad={selectAd(ads, i)} />
           ) : null}
         </Fragment>
       ))}

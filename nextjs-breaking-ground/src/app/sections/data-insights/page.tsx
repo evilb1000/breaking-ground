@@ -4,6 +4,7 @@ import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import InsightsDataTable from "@/components/insights/InsightsDataTable";
 import type { SparklineJson } from "@/data/sparkline_types";
+import { getAdsForSurface } from "@/lib/ads";
 
 export const revalidate = 3600; // re-fetch at most once per hour
 
@@ -24,7 +25,7 @@ async function getInsightsData(): Promise<SparklineJson> {
 }
 
 export default async function DataInsightsPage() {
-  const data = await getInsightsData();
+  const [data, ads] = await Promise.all([getInsightsData(), getAdsForSurface("data")]);
 
   return (
     <main className="min-h-screen bg-white text-[#312e28]">
@@ -82,7 +83,7 @@ export default async function DataInsightsPage() {
           </div>
         </div>
 
-        <InsightsDataTable series={data.series} />
+        <InsightsDataTable series={data.series} ads={ads} />
       </section>
 
       <div className="mx-auto w-full max-w-[1440px] px-[16px] md:px-[26px]">

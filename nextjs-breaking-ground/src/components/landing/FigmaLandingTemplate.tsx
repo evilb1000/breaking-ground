@@ -7,6 +7,7 @@ import HomepageEventBanner, {
 } from "@/components/homepage/HomepageEventBanner";
 import InsightsAdUnit from "@/components/insights/InsightsAdUnit";
 import { client } from "@/sanity/client";
+import { getAdsForSurface, selectAd, type AdSurface } from "@/lib/ads";
 
 const FALLBACK_TILE_IMAGE = "/figma-assets/landing-asset-1.png";
 const FILTER_ICON = "/figma-assets/landing-asset-2.svg";
@@ -36,6 +37,7 @@ type FigmaLandingTemplateProps = {
   loadMoreLabel?: string;
   loadMoreExternal?: boolean;
   variant?: "default" | "newsFeed";
+  adSurface?: AdSurface;
   pagination?: {
     currentPage: number;
     totalPages: number;
@@ -140,13 +142,13 @@ export default async function FigmaLandingTemplate({
   loadMoreLabel = "Load more",
   loadMoreExternal = false,
   variant = "default",
+  adSurface,
   pagination,
 }: FigmaLandingTemplateProps) {
-  const homepageEvent = await client.fetch<HomepageEventSource>(
-    HOMEPAGE_EVENT_QUERY,
-    {},
-    eventOptions
-  );
+  const [homepageEvent, ads] = await Promise.all([
+    client.fetch<HomepageEventSource>(HOMEPAGE_EVENT_QUERY, {}, eventOptions),
+    getAdsForSurface(adSurface || (variant === "newsFeed" ? "news" : "articles")),
+  ]);
   const eventBanner: HomepageEventBannerProps = {
     title: homepageEvent?.title,
     subtitle: formatEventSubtitle(homepageEvent?.publishedAt),
@@ -281,7 +283,7 @@ export default async function FigmaLandingTemplate({
                     {/* Ad after article 1 (index 0), then every other: 0, 2, 4, 6... */}
                     {i % 2 === 0 ? (
                       <div className="py-[8px] lg:py-0">
-                        <InsightsAdUnit />
+                        <InsightsAdUnit ad={selectAd(ads, i)} />
                       </div>
                     ) : null}
                   </Fragment>

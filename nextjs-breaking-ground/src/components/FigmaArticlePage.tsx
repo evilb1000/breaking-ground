@@ -9,6 +9,7 @@ import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import ArticleAdUnit from "@/components/ads/ArticleAdUnit";
 import { threeAdChunks } from "@/lib/chunkBody";
 import { articleHref, articleUrl } from "@/lib/urls";
+import { adSurfaceForArticleSection, getAdsForSurface, selectAd } from "@/lib/ads";
 
 /* ------------------------------------------------------------------ */
 /*  Image URL builder                                                  */
@@ -547,9 +548,10 @@ function NextArticleCTA({ next }: { next?: NextRef }) {
 /*  Main component                                                     */
 /* ------------------------------------------------------------------ */
 
-export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc }) {
+export default async function FigmaArticlePage({ article }: { article: FigmaArticleDoc }) {
   const headline = article.headline || "Untitled";
   const section = article.section;
+  const ads = await getAdsForSurface(adSurfaceForArticleSection(section));
   const introSrc = imageSrc(article.introImage, 1400);
   const introPos = hotspotPosition(article.introImage);
   const slugValue =
@@ -632,7 +634,7 @@ export default function FigmaArticlePage({ article }: { article: FigmaArticleDoc
                       <div key={i} className="bg-article-body">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
-                        <ArticleAdUnit />
+                        <ArticleAdUnit ad={selectAd(ads, i)} />
                       </div>
                     ))}
                   </>

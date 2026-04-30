@@ -9,6 +9,7 @@ import HomepageTabbedPanel, {
 } from "@/components/homepage/HomepageTabbedPanel";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import { articleHref } from "@/lib/urls";
+import { getAdsForSurface, selectAd, type AdCreative } from "@/lib/ads";
 
 // Figma-sourced assets. Downloaded from the Figma MCP asset CDN (which expires
 // after 7 days) and committed locally at public/figma-assets/ for permanence.
@@ -468,7 +469,7 @@ function EventBanner({
   );
 }
 
-function SponsorsAndAd() {
+function SponsorsAndAd({ ad }: { ad?: AdCreative | null }) {
   const logos = [
     imgScreenshot20260402At34113Pm1,
     imgScreenshot20260402At34116Pm1,
@@ -493,7 +494,13 @@ function SponsorsAndAd() {
         </div>
       </div>
       <div className="absolute left-[730px] top-[1677px] flex h-[361px] w-[686px] items-center justify-center bg-[#d9d9d9]">
-        <h2 className="bg-type-h1 text-[#adadad]">Ad space</h2>
+        {ad?.imageUrl && ad.clickUrl ? (
+          <a href={ad.clickUrl} target="_blank" rel="noopener noreferrer" className="block h-full w-full">
+            <img src={ad.imageUrl} alt={ad.altText || ad.title || ""} className="h-full w-full object-cover" />
+          </a>
+        ) : (
+          <h2 className="bg-type-h1 text-[#adadad]">Ad space</h2>
+        )}
       </div>
     </>
   );
@@ -720,7 +727,7 @@ function MobileEventBanner({
   );
 }
 
-function MobileSponsorsAndAd() {
+function MobileSponsorsAndAd({ ad }: { ad?: AdCreative | null }) {
   const logos = [
     imgScreenshot20260402At34113Pm1,
     imgScreenshot20260402At34116Pm1,
@@ -743,19 +750,27 @@ function MobileSponsorsAndAd() {
         </p>
       </div>
       <div className="mt-[28px] flex h-[170px] items-center justify-center bg-[#d9d9d9]">
-        <h2 className="bg-font-roboto-flex text-[28px] leading-[32px] text-[#adadad]">Ad space</h2>
+        {ad?.imageUrl && ad.clickUrl ? (
+          <a href={ad.clickUrl} target="_blank" rel="noopener noreferrer" className="block h-full w-full">
+            <img src={ad.imageUrl} alt={ad.altText || ad.title || ""} className="h-full w-full object-cover" />
+          </a>
+        ) : (
+          <h2 className="bg-font-roboto-flex text-[28px] leading-[32px] text-[#adadad]">Ad space</h2>
+        )}
       </div>
     </section>
   );
 }
 
 export default async function IndexPage() {
-  const [homepage, profilesRaw, perspectivesRaw, latest] = await Promise.all([
+  const [homepage, profilesRaw, perspectivesRaw, latest, homepageAds] = await Promise.all([
     client.fetch<HomepageDoc>(HOMEPAGE_QUERY, {}, options),
     client.fetch<HomepageEntry[]>(PROFILES_TAB_QUERY, {}, options),
     client.fetch<HomepageEntry[]>(PERSPECTIVES_TAB_QUERY, {}, options),
     loadLatestNewsItems(),
+    getAdsForSurface("homepage"),
   ]);
+  const homepageAd = selectAd(homepageAds);
   const hero = homepage?.heroArticle ?? null;
   const event = homepage?.tertiaryFeature ?? homepage?.issueHighlight ?? null;
 
@@ -798,7 +813,7 @@ export default async function IndexPage() {
           ctaLabel={homepage?.announcementLinkLabel}
           body={homepage?.announcementMessage}
         />
-        <MobileSponsorsAndAd />
+        <MobileSponsorsAndAd ad={homepageAd} />
       </div>
 
       <div className="hidden overflow-x-auto lg:block">
@@ -817,7 +832,7 @@ export default async function IndexPage() {
           ctaLabel={homepage?.announcementLinkLabel}
           body={homepage?.announcementMessage}
         />
-        <SponsorsAndAd />
+        <SponsorsAndAd ad={homepageAd} />
       </div>
       </div>
     </main>

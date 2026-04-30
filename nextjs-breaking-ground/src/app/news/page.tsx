@@ -37,6 +37,7 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
       tiles={pagedItems}
       currentListLabel="Latest Construction and Development News"
       variant="newsFeed"
+      adSurface="news"
       pagination={{
         currentPage,
         totalPages,

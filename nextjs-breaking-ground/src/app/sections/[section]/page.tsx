@@ -5,6 +5,7 @@ import { client } from "@/sanity/client";
 import FigmaLandingTemplate, { type LandingItem } from "@/components/landing/FigmaLandingTemplate";
 import Masthead from "@/components/Masthead";
 import { articleHref } from "@/lib/urls";
+import { adSurfaceForArticleSection } from "@/lib/ads";
 
 const SECTIONS: Record<string, { title: string; seriesSlug: string }> = {
   local: { title: "Local", seriesSlug: "regional-market-update" },
@@ -184,6 +185,7 @@ export default async function SectionPage({
       currentListLabel={`Current ${config.title.toLowerCase()}`}
       loadMoreHref={`/sections/${section}`}
       loadMoreLabel="Load more"
+      adSurface={adSurfaceForArticleSection(section)}
     />
   );
 }

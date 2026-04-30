@@ -5,6 +5,7 @@ import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import ProfileAdUnit from "@/components/ads/ProfileAdUnit";
 import { threeAdChunks } from "@/lib/chunkBody";
 import { articleUrl } from "@/lib/urls";
+import { adSurfaceForArticleSection, getAdsForSurface, selectAd } from "@/lib/ads";
 import {
   articleComponents,
   formatMetaDate,
@@ -351,9 +352,10 @@ type SanityImageLike = {
 /*  Main component                                                     */
 /* ------------------------------------------------------------------ */
 
-export default function FigmaProfileArticlePage({ article }: { article: FigmaArticleDoc }) {
+export default async function FigmaProfileArticlePage({ article }: { article: FigmaArticleDoc }) {
   const headline = article.headline || "Untitled";
   const section = article.section;
+  const ads = await getAdsForSurface(adSurfaceForArticleSection(section));
   const heroImg =
     article.heroImage || article.introImage || article.headerImage || undefined;
   const slugValue =
@@ -410,7 +412,7 @@ export default function FigmaProfileArticlePage({ article }: { article: FigmaArt
                       <div key={i} className="bg-article-body">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
-                        <ProfileAdUnit />
+                        <ProfileAdUnit ad={selectAd(ads, i)} />
                       </div>
                     ))}
                   </>
