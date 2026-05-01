@@ -220,7 +220,7 @@ function ProfileHero({ headline, image }: { headline: string; image?: SanityImag
   //   Headline top            498 →  369  (w 686,      left 377)
   return (
     <section className="relative w-full">
-      <div className="relative h-[380px] lg:hidden">
+      <div className="relative h-[354px] lg:hidden">
         <div className="h-[260px] w-full overflow-hidden bg-[#d9d9d9]">
           {src ? (
             <img
@@ -231,7 +231,7 @@ function ProfileHero({ headline, image }: { headline: string; image?: SanityImag
             />
           ) : null}
         </div>
-        <div className="absolute left-[20px] right-[20px] top-[204px] flex h-[176px] items-center justify-center overflow-hidden rounded-[4px] bg-[#373632] px-[20px] text-center">
+        <div className="absolute left-[20px] right-[20px] top-[164px] flex h-[190px] items-center justify-center overflow-hidden rounded-[4px] bg-[#373632] px-[20px] text-center">
           <img
             src={HERO_MAP_TEXTURE}
             alt=""
@@ -239,7 +239,7 @@ function ProfileHero({ headline, image }: { headline: string; image?: SanityImag
             className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-multiply"
           />
           <h1
-            className="relative bg-font-roboto-flex text-[32px] leading-[38px] text-white"
+            className="relative bg-font-roboto-flex text-[30px] leading-[36px] text-white"
             style={{
               fontVariationSettings:
                 "'GRAD' 0, 'XOPQ' 96, 'XTRA' 468, 'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712, 'wdth' 100",
