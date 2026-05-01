@@ -480,19 +480,21 @@ function SponsorsAndAd({ ad }: { ad?: AdCreative | null }) {
   ];
   return (
     <>
-      <div className="absolute left-[26px] top-[1669px] h-[361px] w-[684px]">
+      <Link href="/sponsors" className="group absolute left-[26px] top-[1669px] block h-[361px] w-[684px]">
         <div className="mt-[68px] flex h-[89px] w-[684px] items-center justify-center gap-[10px] opacity-80">
           {logos.map((src, i) => (
             <img key={i} src={src} alt="" className="h-[75px] w-[82px] object-contain" />
           ))}
         </div>
         <div className="mx-auto mt-[34px] w-[348px] text-center">
-          <h2 className="bg-type-h1 text-[#312e28]">Our sponsors</h2>
+          <h2 className="bg-type-h1 text-[#312e28] transition-all duration-200 group-hover:text-shadow-[0_0_10px_rgba(17,50,81,0.18)] group-hover:underline group-hover:decoration-[#113251] group-hover:underline-offset-[8px]">
+            Our sponsors
+          </h2>
           <p className="bg-type-body mt-[12px] text-[#312e28]">
-            Text about how to become a sponsor or who to contact to learn more about it, <span className="underline">click here.</span>
+            Breaking Ground reaches the firms shaping Western Pennsylvania construction — from owners and developers to contractors and specialty trades. To position your company within that network, learn more about becoming a sponsor.
           </p>
         </div>
-      </div>
+      </Link>
       <div className="absolute left-[730px] top-[1677px] flex h-[361px] w-[686px] items-center justify-center bg-[#d9d9d9]">
         {ad?.imageUrl && ad.clickUrl ? (
           <a href={ad.clickUrl} target="_blank" rel="noopener noreferrer" className="block h-full w-full">
@@ -738,17 +740,21 @@ function MobileSponsorsAndAd({ ad }: { ad?: AdCreative | null }) {
   ];
   return (
     <section className="px-[20px] py-[36px]">
-      <div className="grid grid-cols-3 items-center gap-[10px] opacity-80">
-        {logos.map((src, i) => (
-          <img key={i} src={src} alt="" className="mx-auto h-[54px] w-[74px] object-contain" />
-        ))}
-      </div>
-      <div className="mt-[26px] text-center">
-        <h2 className="bg-font-roboto-flex text-[28px] leading-[32px] text-[#312e28]">Our sponsors</h2>
-        <p className="mx-auto mt-[10px] max-w-[310px] bg-font-crimson text-[17px] leading-[24px] text-[#312e28]">
-          Text about how to become a sponsor or who to contact to learn more about it, <span className="underline">click here.</span>
-        </p>
-      </div>
+      <Link href="/sponsors" className="group block">
+        <div className="grid grid-cols-3 items-center gap-[10px] opacity-80">
+          {logos.map((src, i) => (
+            <img key={i} src={src} alt="" className="mx-auto h-[54px] w-[74px] object-contain" />
+          ))}
+        </div>
+        <div className="mt-[26px] text-center">
+          <h2 className="bg-font-roboto-flex text-[28px] leading-[32px] text-[#312e28] transition-all duration-200 group-hover:text-shadow-[0_0_10px_rgba(17,50,81,0.18)] group-hover:underline group-hover:decoration-[#113251] group-hover:underline-offset-[6px]">
+            Our sponsors
+          </h2>
+          <p className="mx-auto mt-[10px] max-w-[310px] bg-font-crimson text-[17px] leading-[24px] text-[#312e28]">
+            Breaking Ground reaches the firms shaping Western Pennsylvania construction — from owners and developers to contractors and specialty trades. To position your company within that network, learn more about becoming a sponsor.
+          </p>
+        </div>
+      </Link>
       <div className="mt-[28px] flex h-[170px] items-center justify-center bg-[#d9d9d9]">
         {ad?.imageUrl && ad.clickUrl ? (
           <a href={ad.clickUrl} target="_blank" rel="noopener noreferrer" className="block h-full w-full">
