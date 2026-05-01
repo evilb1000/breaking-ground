@@ -220,7 +220,7 @@ function ProfileHero({ headline, image }: { headline: string; image?: SanityImag
   //   Headline top            498 →  369  (w 686,      left 377)
   return (
     <section className="relative w-full">
-      <div className="lg:hidden">
+      <div className="relative h-[380px] lg:hidden">
         <div className="h-[260px] w-full overflow-hidden bg-[#d9d9d9]">
           {src ? (
             <img
@@ -231,7 +231,7 @@ function ProfileHero({ headline, image }: { headline: string; image?: SanityImag
             />
           ) : null}
         </div>
-        <div className="relative mx-[20px] -mt-[52px] overflow-hidden rounded-[4px] bg-[#373632] px-[20px] py-[28px] text-center">
+        <div className="absolute left-[20px] right-[20px] top-[204px] flex h-[176px] items-center justify-center overflow-hidden rounded-[4px] bg-[#373632] px-[20px] text-center">
           <img
             src={HERO_MAP_TEXTURE}
             alt=""
