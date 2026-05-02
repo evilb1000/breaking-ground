@@ -9,7 +9,6 @@ const SPONSORS_QUERY = `*[_type == "sponsor" && active == true] | order(name asc
   _id,
   name,
   websiteUrl,
-  tier,
   "logoUrl": logo.asset->url,
   "logoAlt": logo.alt
 }`;
@@ -18,29 +17,17 @@ type Sponsor = {
   _id: string;
   name?: string;
   websiteUrl?: string;
-  tier?: string;
   logoUrl?: string;
   logoAlt?: string;
 };
 
 const options = { next: { revalidate: 0 } };
 
-function sponsorTierLabel(tier?: string) {
-  if (!tier) return null;
-  return tier
-    .split("-")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
-
 function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
   const card = (
     <article className="flex min-h-[220px] flex-col justify-between border border-[#312e28]/20 bg-[#f5f3f0] p-[20px] transition-colors hover:border-[#113251]/50">
       <div>
-        {sponsor.tier ? (
-          <p className="bg-type-meta text-[#ff611d]">{sponsorTierLabel(sponsor.tier)?.toUpperCase()}</p>
-        ) : null}
-        <h2 className="mt-[8px] bg-font-roboto-condensed text-[24px] leading-[30px] font-medium text-[#312e28]">
+        <h2 className="bg-font-roboto-condensed text-[24px] leading-[30px] font-medium text-[#312e28]">
           {sponsor.name || "Untitled Sponsor"}
         </h2>
       </div>
