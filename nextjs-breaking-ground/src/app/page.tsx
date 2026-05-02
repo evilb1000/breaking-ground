@@ -824,7 +824,9 @@ export default async function IndexPage() {
 
       <div className="hidden overflow-x-auto lg:block">
       <div className="relative mx-auto h-[2097px] w-[1440px] bg-white">
-        <HomepageTopRibbon />
+        <div className="relative left-1/2 z-[100] w-screen -translate-x-1/2">
+          <HomepageTopRibbon />
+        </div>
         <HeroFeature
           entry={hero}
           badgeLabel={homepage?.heroBadgeLabel}
