@@ -5,6 +5,7 @@ import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import InsightsDataTable from "@/components/insights/InsightsDataTable";
 import type { SparklineJson } from "@/data/sparkline_types";
 import { getAdsForSurface } from "@/lib/ads";
+import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 
 export const revalidate = 3600; // re-fetch at most once per hour
 
@@ -25,7 +26,11 @@ async function getInsightsData(): Promise<SparklineJson> {
 }
 
 export default async function DataInsightsPage() {
-  const [data, ads] = await Promise.all([getInsightsData(), getAdsForSurface("data")]);
+  const [data, ads, eventBanner] = await Promise.all([
+    getInsightsData(),
+    getAdsForSurface("data"),
+    getHomepageEventBannerProps(),
+  ]);
 
   return (
     <main className="min-h-screen bg-white text-[#312e28]">
@@ -87,13 +92,7 @@ export default async function DataInsightsPage() {
       </section>
 
       <div className="mx-auto w-full max-w-[1440px] px-[16px] md:px-[26px]">
-        <HomepageEventBanner
-          title="Come Join Us At the 2025 Evening of Excellence"
-          subtitle="Event starts 8:00 pm on 04.13.2026"
-          body="Join us for an unforgettable evening of celebration, inspiration, and impact."
-          ctaLabel="Register here"
-          ctaHref="https://www.mbawpa.org/events/mba-young-constructors-leadership-development-seminar/"
-        />
+        <HomepageEventBanner {...eventBanner} />
       </div>
     </main>
   );
