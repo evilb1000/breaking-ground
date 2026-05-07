@@ -15,6 +15,8 @@ Frontend rendering:
 - `nextjs-breaking-ground/src/components/AnimatedBarClient.tsx`
 - `nextjs-breaking-ground/src/components/AnimatedLineClient.tsx`
 - `nextjs-breaking-ground/src/components/AnimatedPieClient.tsx`
+- `nextjs-breaking-ground/src/components/AnimatedDonutClient.tsx`
+- `nextjs-breaking-ground/src/components/AnimatedComboClient.tsx`
 - `nextjs-breaking-ground/src/app/api/chart/[id]/route.ts`
 
 Article placement:
@@ -30,6 +32,8 @@ The Sanity schema currently lists these chart type options:
 - `line`
 - `bar`
 - `pie`
+- `donut`
+- `combo`
 - `area`
 - `scatter`
 - `stacked`
@@ -39,6 +43,8 @@ Only these are currently implemented on the frontend:
 - `line`
 - `bar`
 - `pie`
+- `donut`
+- `combo`
 
 If an editor selects `area`, `scatter`, or `stacked`, the site will not render a real chart yet. It will show a fallback message like:
 
@@ -87,9 +93,10 @@ Every `Chart Data` document uses these key fields:
 - `Title`: internal chart name.
 - `Slug`: generated from title.
 - `CSV Data`: uploaded `.csv` file.
-- `Chart Type`: `line`, `bar`, or `pie` for now.
+- `Chart Type`: `line`, `bar`, `pie`, `donut`, or `combo` for now.
 - `X Field`: the CSV column used for labels, categories, or x-axis values.
-- `Y Field(s)`: the CSV column used for numeric values. The frontend currently uses the first selected y-field.
+- `Y Field(s)`: the CSV column used for numeric values. Line charts can use multiple y-fields. Bar, pie, and donut charts use the first selected y-field.
+- `Series Configuration`: combo charts only. Defines which CSV fields render as bars or lines and which y-axis each series uses.
 - `Colors`: optional hex colors, used in series/category order.
 - `Chart Title`: optional visible title above chart.
 - `X Axis Title`: optional label for line/bar x-axis.
@@ -98,7 +105,7 @@ Every `Chart Data` document uses these key fields:
 - `Show Axes`: line/bar only.
 - `Show Tick Labels`: line/bar only.
 - `Y Tick Count`: line/bar only.
-- `Show Legend`: pie only.
+- `Show Legend`: pie and donut only.
 
 ## Line Chart
 
@@ -221,6 +228,104 @@ Best practices:
 - Keep slice count small, ideally 3-7 slices.
 - Add colors in the same order as CSV rows if specific brand/category colors matter.
 
+## Donut Chart
+
+Use a donut chart for showing parts of a whole with a center total.
+
+Sanity setup:
+
+- `Chart Type`: `Donut`
+- `X Field`: slice/category label
+- `Y Field(s)`: one numeric value column
+- `Show Legend`: on or off
+
+CSV structure:
+
+```csv
+segment,share
+Public,45
+Private,35
+Institutional,20
+```
+
+Sanity fields:
+
+```text
+X Field: segment
+Y Field(s): share
+```
+
+How it renders:
+
+- One ring segment per CSV row.
+- Segment labels come from `X Field`.
+- Segment sizes come from the first selected y-field.
+- Percent labels appear on segments above 5%.
+- The center shows the numeric total.
+- The donut animates open as the user scrolls.
+
+Best practices:
+
+- Values do not need to add to 100; the chart calculates percentages from the total.
+- Keep segment count small, ideally 3-7 segments.
+- Add colors in the same order as CSV rows if specific brand/category colors matter.
+
+## Combo Bar + Line Chart
+
+Use a combo chart when two related measures share the same categories but need different visual forms or scales, such as project count as bars and total project value as a line.
+
+Sanity setup:
+
+- `Chart Type`: `Combo Bar + Line`
+- `X Field`: shared category/time column
+- `Y Field(s)`: add the same numeric fields used in the series configuration. If no series configuration is set, the first y-field renders as a bar on the left axis and the second y-field renders as a line on the right axis.
+- `Series Configuration`: configure each numeric CSV field.
+
+CSV structure:
+
+```csv
+Year,Project Count,Total Value
+2022,42,180000000
+2023,58,245000000
+2024,63,310000000
+```
+
+Sanity fields:
+
+```text
+X Field: Year
+Y Field(s): Project Count, Total Value
+```
+
+Series configuration:
+
+```text
+Field: Project Count
+Display Label: Project Count
+Render As: Bar
+Axis: Left
+
+Field: Total Value
+Display Label: Total Value
+Render As: Line
+Axis: Right
+```
+
+How it renders:
+
+- Bars and lines share the same x-axis labels from `X Field`.
+- Bar and line series can use independent left/right y-axis scales.
+- The left axis label uses `Y Axis Title`.
+- The right axis label uses the first right-axis series label.
+- Bars grow upward and lines draw in as the user scrolls.
+- A centered legend shows whether each series is a bar or line.
+
+Best practices:
+
+- Use the left axis for the bar series and the right axis for the line series when values are on very different scales.
+- Keep labels short because the SVG has fixed dimensions.
+- Use plain numbers only. For large dollar values, omit `$` and commas from the CSV values.
+
 ## Unsupported Chart Types
 
 These options exist in Sanity but are not implemented on the frontend yet:
@@ -301,10 +406,11 @@ Fields:
 
 Before publishing:
 
-- Chart type is `Line`, `Bar`, or `Pie`.
+- Chart type is `Line`, `Bar`, `Pie`, `Donut`, or `Combo Bar + Line`.
 - CSV first row contains headers.
 - `X Field` exactly matches one CSV header.
-- First `Y Field(s)` value exactly matches one numeric CSV header.
+- `Y Field(s)` values exactly match numeric CSV headers.
+- Combo charts have `Series Configuration` fields that exactly match numeric CSV headers.
 - Numeric values contain numbers only.
 - CSV does not use commas inside cell values.
 - Chart is inserted into the article body as `Inline Chart` or `Chart Figure`.

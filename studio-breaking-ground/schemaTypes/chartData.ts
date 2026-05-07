@@ -39,6 +39,8 @@ export default defineType({
           {title: 'Line', value: 'line'},
           {title: 'Bar', value: 'bar'},
           {title: 'Pie', value: 'pie'},
+          {title: 'Donut', value: 'donut'},
+          {title: 'Combo Bar + Line', value: 'combo'},
           {title: 'Area', value: 'area'},
           {title: 'Scatter', value: 'scatter'},
           {title: 'Stacked Bar', value: 'stacked'},
@@ -61,6 +63,80 @@ export default defineType({
       of: [{type: 'string'}],
       description: 'One or more value columns (for grouped/stacked line/bar). For pie, pick one.',
       validation: (r) => r.min(1),
+    }),
+    defineField({
+      name: 'seriesConfig',
+      title: 'Series Configuration',
+      type: 'array',
+      description: 'For combo charts, configure each CSV value column as a bar or line and assign it to the left or right axis.',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'field',
+              title: 'CSV Field',
+              type: 'string',
+              description: 'Exact CSV column name for this series.',
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: 'label',
+              title: 'Display Label',
+              type: 'string',
+              description: 'Optional legend label. Falls back to the CSV field name.',
+            }),
+            defineField({
+              name: 'renderAs',
+              title: 'Render As',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Bar', value: 'bar'},
+                  {title: 'Line', value: 'line'},
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'bar',
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: 'axis',
+              title: 'Axis',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Left', value: 'left'},
+                  {title: 'Right', value: 'right'},
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'left',
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: 'color',
+              title: 'Color',
+              type: 'string',
+              description: 'Optional hex or CSS color for this series.',
+            }),
+          ],
+          preview: {
+            select: {
+              field: 'field',
+              label: 'label',
+              renderAs: 'renderAs',
+              axis: 'axis',
+            },
+            prepare({field, label, renderAs, axis}) {
+              return {
+                title: label || field || 'Untitled series',
+                subtitle: [renderAs, axis ? `${axis} axis` : null].filter(Boolean).join(' - '),
+              }
+            },
+          },
+        },
+      ],
     }),
     defineField({ 
       name: 'groupField', 

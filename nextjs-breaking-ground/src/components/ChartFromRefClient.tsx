@@ -3,6 +3,9 @@ import React, {useEffect, useState} from 'react'
 import AnimatedBarClient from '@/components/AnimatedBarClient'
 import AnimatedPieClient from '@/components/AnimatedPieClient'
 import AnimatedLineClient from '@/components/AnimatedLineClient'
+import AnimatedDonutClient from '@/components/AnimatedDonutClient'
+import AnimatedComboClient from '@/components/AnimatedComboClient'
+import type {ComboSeriesConfig} from '@/components/ComboChartAnimated'
 
 type Doc = any
 
@@ -44,6 +47,16 @@ export default function ChartFromRefClient({
 
   const yField = (doc.yFields?.[0] as string) || ''
   const yFields = Array.isArray(doc.yFields) ? (doc.yFields as string[]).filter(Boolean) : []
+  const seriesConfig = Array.isArray(doc.seriesConfig)
+    ? (doc.seriesConfig as ComboSeriesConfig[]).filter((series) => series.field)
+    : []
+  const comboSeriesConfig = seriesConfig.length
+    ? seriesConfig
+    : yFields.slice(0, 2).map((field, index) => ({
+        field,
+        renderAs: index === 0 ? 'bar' : 'line',
+        axis: index === 0 ? 'left' : 'right',
+      } satisfies ComboSeriesConfig))
   const widthClass = size === 'small' ? 'max-w-[25%]' : size === 'medium' ? 'max-w-[50%]' : size === 'large' ? 'max-w-[75%]' : 'max-w-full'
   const alignClass = align === 'left' ? 'float-left mr-8 mb-6' : align === 'right' ? 'float-right ml-8 mb-6' : 'mx-auto my-8 block'
 
@@ -73,11 +86,35 @@ export default function ChartFromRefClient({
           chartTitle={doc.chartTitle}
           showLegend={doc.showLegend ?? true}
         />
+      ) : doc.chartType === 'donut' ? (
+        <AnimatedDonutClient
+          data={rows}
+          xField={doc.xField}
+          yField={yField}
+          colors={doc.colors}
+          duration={doc.animationDuration ?? 1200}
+          chartTitle={doc.chartTitle}
+          showLegend={doc.showLegend ?? true}
+        />
       ) : doc.chartType === 'line' ? (
         <AnimatedLineClient
           data={rows}
           xField={doc.xField}
           yFields={yFields.length ? yFields : [yField]}
+          colors={doc.colors}
+          duration={doc.animationDuration ?? 1200}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          yLabel={doc.yLabel}
+          showAxis={doc.showAxis ?? true}
+          showTicks={doc.showTicks ?? true}
+          tickCount={doc.tickCount ?? 5}
+        />
+      ) : doc.chartType === 'combo' ? (
+        <AnimatedComboClient
+          data={rows}
+          xField={doc.xField}
+          seriesConfig={comboSeriesConfig}
           colors={doc.colors}
           duration={doc.animationDuration ?? 1200}
           chartTitle={doc.chartTitle}

@@ -9,7 +9,7 @@ function toNumber(n: string | undefined) {
   return Number.isFinite(v) ? v : 0
 }
 
-export default function PieChartAnimated({
+export default function DonutChartAnimated({
   data,
   xField,
   yField,
@@ -29,7 +29,8 @@ export default function PieChartAnimated({
   const width = 800
   const height = 500
   const padding = {top: 60, right: 20, bottom: 20, left: 20}
-  const radius = Math.min(width - padding.left - padding.right, height - padding.top - padding.bottom) / 2 - 20
+  const outerRadius = Math.min(width - padding.left - padding.right, height - padding.top - padding.bottom) / 2 - 20
+  const innerRadius = outerRadius * 0.58
   const centerX = width / 2
   const centerY = padding.top + (height - padding.top - padding.bottom) / 2
 
@@ -60,14 +61,24 @@ export default function PieChartAnimated({
   const {ref, progress} = useChartRevealProgress<SVGSVGElement>(duration)
 
   const arcPath = (startAngle: number, endAngle: number, easedProgress: number) => {
-    const sAngle = startAngle
     const eAngle = startAngle + (endAngle - startAngle) * easedProgress
-    const largeArcFlag = eAngle - sAngle > Math.PI ? 1 : 0
-    const x1 = centerX + radius * Math.cos(sAngle)
-    const y1 = centerY + radius * Math.sin(sAngle)
-    const x2 = centerX + radius * Math.cos(eAngle)
-    const y2 = centerY + radius * Math.sin(eAngle)
-    return `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`
+    const largeArcFlag = eAngle - startAngle > Math.PI ? 1 : 0
+    const outerStartX = centerX + outerRadius * Math.cos(startAngle)
+    const outerStartY = centerY + outerRadius * Math.sin(startAngle)
+    const outerEndX = centerX + outerRadius * Math.cos(eAngle)
+    const outerEndY = centerY + outerRadius * Math.sin(eAngle)
+    const innerEndX = centerX + innerRadius * Math.cos(eAngle)
+    const innerEndY = centerY + innerRadius * Math.sin(eAngle)
+    const innerStartX = centerX + innerRadius * Math.cos(startAngle)
+    const innerStartY = centerY + innerRadius * Math.sin(startAngle)
+
+    return [
+      `M ${outerStartX} ${outerStartY}`,
+      `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${outerEndX} ${outerEndY}`,
+      `L ${innerEndX} ${innerEndY}`,
+      `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${innerStartX} ${innerStartY}`,
+      'Z',
+    ].join(' ')
   }
 
   const eased = 1 - Math.pow(1 - progress, 3)
@@ -77,7 +88,7 @@ export default function PieChartAnimated({
       {chartTitle ? (
         <text x={centerX} y={30} textAnchor="middle" fontSize={18} fontWeight={700}>{chartTitle}</text>
       ) : null}
-      
+
       {segments.map((seg, i) => (
         <g key={i}>
           <path
@@ -86,10 +97,10 @@ export default function PieChartAnimated({
             stroke="#fff"
             strokeWidth={2}
           />
-          {seg.percentage > 0.05 && eased > 0.5 && (
+          {seg.percentage > 0.05 && eased > 0.5 ? (
             <text
-              x={centerX + (radius * 0.7) * Math.cos(seg.midAngle)}
-              y={centerY + (radius * 0.7) * Math.sin(seg.midAngle)}
+              x={centerX + ((outerRadius + innerRadius) / 2) * Math.cos(seg.midAngle)}
+              y={centerY + ((outerRadius + innerRadius) / 2) * Math.sin(seg.midAngle)}
               textAnchor="middle"
               dominantBaseline="middle"
               fontSize={14}
@@ -98,12 +109,23 @@ export default function PieChartAnimated({
             >
               {`${(seg.percentage * 100).toFixed(0)}%`}
             </text>
-          )}
+          ) : null}
         </g>
       ))}
 
+      {total > 0 ? (
+        <g>
+          <text x={centerX} y={centerY - 6} textAnchor="middle" fontSize={24} fontWeight={700} fill="#312e28">
+            {total.toLocaleString('en-US', {maximumFractionDigits: 1})}
+          </text>
+          <text x={centerX} y={centerY + 18} textAnchor="middle" fontSize={12} fontWeight={700} fill="#595959">
+            Total
+          </text>
+        </g>
+      ) : null}
+
       {showLegend && (
-        <g transform={`translate(${centerX + radius + 40}, ${padding.top})`}>
+        <g transform={`translate(${centerX + outerRadius + 40}, ${padding.top})`}>
           {segments.map((seg, i) => (
             <g key={i} transform={`translate(0, ${i * 25})`}>
               <rect x={0} y={0} width={16} height={16} fill={seg.color} />
@@ -117,4 +139,3 @@ export default function PieChartAnimated({
     </svg>
   )
 }
-

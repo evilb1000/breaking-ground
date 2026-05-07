@@ -8,6 +8,7 @@ pnpm-lock.yaml
 out/
 dist/
 .eslintcache
+charts_for_build/
 # Sanity build
 studio-breaking-ground/dist/
 # Local environment

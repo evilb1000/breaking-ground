@@ -1,40 +1,8 @@
 "use client"
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {useMemo} from 'react'
+import {useChartRevealProgress} from './useChartRevealProgress'
 
 type Row = Record<string, string>
-
-// Track element and return a 0..1 progress value driven by scroll position
-function useScrollProgress<T extends Element>() {
-  const ref = useRef<T | null>(null)
-  const [progress, setProgress] = useState(0)
-  useEffect(() => {
-    const onScroll = () => {
-      const el = ref.current
-      if (!el) return
-      const rect = el.getBoundingClientRect()
-      const vh = window.innerHeight || 1
-      const start = vh * 0.8
-      const end = -rect.height * 0.2
-      const p = (start - rect.top) / (start - end)
-      const clamped = Math.max(0, Math.min(1, p))
-      setProgress(clamped)
-    }
-    onScroll()
-    let raf = 0
-    const handler = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(onScroll)
-    }
-    window.addEventListener('scroll', handler, {passive: true})
-    window.addEventListener('resize', handler)
-    return () => {
-      window.removeEventListener('scroll', handler)
-      window.removeEventListener('resize', handler)
-      cancelAnimationFrame(raf)
-    }
-  }, [])
-  return {ref, progress}
-}
 
 function toNumber(n: string | undefined) {
   const v = Number(n)
@@ -84,22 +52,10 @@ export default function LineChartAnimated({
   const lineColor = (index: number) =>
     colors?.[index % colors.length] || ['#113251', '#ff611d', '#1a7a4a', '#c85006'][index % 4]
 
-  const {ref, progress} = useScrollProgress<SVGSVGElement>()
-  const [t, setT] = useState(0)
-  useEffect(() => {
-    let raf = 0
-    const animate = () => {
-      const target = progress
-      const next = t + (target - t) * 0.15
-      setT(next)
-      if (Math.abs(target - next) > 0.001) raf = requestAnimationFrame(animate)
-    }
-    raf = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(raf)
-  }, [progress, t])
+  const {ref, progress} = useChartRevealProgress<SVGSVGElement>(duration)
 
   // Build animated path
-  const eased = 1 - Math.pow(1 - t, 3)
+  const eased = 1 - Math.pow(1 - progress, 3)
   const series = useMemo(
     () =>
       activeYFields.map((field, fieldIndex) => ({
