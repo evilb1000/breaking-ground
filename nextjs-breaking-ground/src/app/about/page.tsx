@@ -1,8 +1,11 @@
 import Link from "next/link";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
+import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const eventBanner = await getHomepageEventBannerProps();
+
   return (
     <main className="min-h-screen bg-white text-[#312e28]">
       <HomepageTopRibbon />
@@ -43,13 +46,7 @@ export default function AboutPage() {
       </section>
 
       <div className="mx-auto w-full max-w-[1440px] px-4 md:px-[26px]">
-        <HomepageEventBanner
-          title="Come Join Us At the 2025 Evening of Excellence"
-          subtitle="Event starts 8:00 pm on 04.13.2026"
-          body="Join us for an unforgettable evening of celebration, inspiration, and impact."
-          ctaLabel="Register here"
-          ctaHref="https://www.mbawpa.org/events/mba-young-constructors-leadership-development-seminar/"
-        />
+        <HomepageEventBanner {...eventBanner} />
       </div>
     </main>
   );
