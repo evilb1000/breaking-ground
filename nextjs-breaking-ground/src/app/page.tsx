@@ -132,7 +132,10 @@ const TAB_PROJECTION = `{
 
 const PROFILES_TAB_QUERY = `*[_type == "figmaArticle" && section in ["project-profiles", "member-profiles"]] | order(coalesce(publishedAt, _createdAt) desc)[0...6]${TAB_PROJECTION}`;
 
-const PERSPECTIVES_TAB_QUERY = `*[_type == "figmaArticle" && section == "perspectives"] | order(coalesce(publishedAt, _createdAt) desc)[0...6]${TAB_PROJECTION}`;
+const PERSPECTIVES_TAB_QUERY = `*[_type == "figmaArticle" && section == "perspectives"] | order(coalesce(publishedAt, _createdAt) desc)[0...10]${TAB_PROJECTION}`;
+
+const PERSPECTIVES_ROTATION_SIZE = 3;
+const PERSPECTIVES_ROTATION_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 type SanityImageLike = {
   asset?: {
@@ -218,6 +221,20 @@ function newsItemDateValue(item: NewsFeedItem): number {
   if (!raw) return 0;
   const ts = new Date(raw).getTime();
   return Number.isNaN(ts) ? 0 : ts;
+}
+
+function selectRotatingRecentItems<T>(
+  items: T[],
+  count: number,
+  intervalMs: number,
+  now = Date.now()
+): T[] {
+  if (items.length <= count) return items;
+
+  const windowIndex = Math.floor(now / intervalMs);
+  const start = (windowIndex * count) % items.length;
+
+  return Array.from({ length: count }, (_, i) => items[(start + i) % items.length]);
 }
 
 async function loadLatestNewsItems(): Promise<NewsFeedItem[]> {
@@ -789,7 +806,11 @@ export default async function IndexPage() {
     readingTime: entry.readingTime,
   });
   const profiles = (profilesRaw || []).map(toTabItem);
-  const perspectives = (perspectivesRaw || []).map(toTabItem);
+  const perspectives = selectRotatingRecentItems(
+    (perspectivesRaw || []).map(toTabItem),
+    PERSPECTIVES_ROTATION_SIZE,
+    PERSPECTIVES_ROTATION_INTERVAL_MS
+  );
 
   return (
     <main className="figma-homepage min-h-screen bg-white lg:bg-[#e8e8e8]">
