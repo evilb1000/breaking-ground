@@ -43,6 +43,7 @@ export default function ChartFromRefClient({
   if (!doc) return null
 
   const yField = (doc.yFields?.[0] as string) || ''
+  const yFields = Array.isArray(doc.yFields) ? (doc.yFields as string[]).filter(Boolean) : []
   const widthClass = size === 'small' ? 'max-w-[25%]' : size === 'medium' ? 'max-w-[50%]' : size === 'large' ? 'max-w-[75%]' : 'max-w-full'
   const alignClass = align === 'left' ? 'float-left mr-8 mb-6' : align === 'right' ? 'float-right ml-8 mb-6' : 'mx-auto my-8 block'
 
@@ -76,7 +77,7 @@ export default function ChartFromRefClient({
         <AnimatedLineClient
           data={rows}
           xField={doc.xField}
-          yField={yField}
+          yFields={yFields.length ? yFields : [yField]}
           colors={doc.colors}
           duration={doc.animationDuration ?? 1200}
           chartTitle={doc.chartTitle}

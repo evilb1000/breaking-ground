@@ -44,7 +44,7 @@ function toNumber(n: string | undefined) {
 export default function LineChartAnimated({
   data,
   xField,
-  yField,
+  yFields,
   colors,
   duration = 800,
   chartTitle,
@@ -56,7 +56,7 @@ export default function LineChartAnimated({
 }: {
   data: Row[]
   xField: string
-  yField: string
+  yFields: string[]
   colors?: string[]
   duration?: number
   chartTitle?: string
@@ -71,13 +71,18 @@ export default function LineChartAnimated({
   const padding = {top: 20, right: 20, bottom: 40, left: 50}
   const innerW = width - padding.left - padding.right
   const innerH = height - padding.top - padding.bottom
+  const activeYFields = useMemo(() => yFields.filter(Boolean), [yFields])
 
-  const values = useMemo(() => data.map((d) => toNumber(d[yField])), [data, yField])
+  const values = useMemo(
+    () => data.flatMap((d) => activeYFields.map((field) => toNumber(d[field]))),
+    [data, activeYFields]
+  )
   const maxV = Math.max(1, ...values)
   const xScale = (i: number) => (i / Math.max(1, data.length - 1)) * innerW
   const yScale = (v: number) => innerH - (v / maxV) * innerH
 
-  const lineColor = colors && colors.length > 0 ? colors[0] : '#111'
+  const lineColor = (index: number) =>
+    colors?.[index % colors.length] || ['#113251', '#ff611d', '#1a7a4a', '#c85006'][index % 4]
 
   const {ref, progress} = useScrollProgress<SVGSVGElement>()
   const [t, setT] = useState(0)
@@ -95,30 +100,40 @@ export default function LineChartAnimated({
 
   // Build animated path
   const eased = 1 - Math.pow(1 - t, 3)
-  const points = useMemo(() => {
-    return data.map((d, i) => {
-      const v = toNumber(d[yField])
-      return {
-        x: xScale(i),
-        y: yScale(v),
-        label: d[xField],
-        value: v,
-      }
-    })
-  }, [data, xField, yField, maxV])
+  const series = useMemo(
+    () =>
+      activeYFields.map((field, fieldIndex) => ({
+        field,
+        color: lineColor(fieldIndex),
+        points: data.map((d, i) => {
+          const v = toNumber(d[field])
+          return {
+            x: xScale(i),
+            y: yScale(v),
+            label: d[xField],
+            value: v,
+          }
+        }),
+      })),
+    [data, xField, activeYFields, maxV, colors]
+  )
 
   // Generate path string for line
-  const pathData = useMemo(() => {
-    if (points.length === 0) return ''
-    const visibleCount = Math.ceil(points.length * eased)
-    if (visibleCount === 0) return ''
-    
-    let path = `M ${points[0].x} ${points[0].y}`
-    for (let i = 1; i < visibleCount; i++) {
-      path += ` L ${points[i].x} ${points[i].y}`
-    }
-    return path
-  }, [points, eased])
+  const pathData = useMemo(
+    () =>
+      series.map(({points}) => {
+        if (points.length === 0) return ''
+        const visibleCount = Math.ceil(points.length * eased)
+        if (visibleCount === 0) return ''
+
+        let path = `M ${points[0].x} ${points[0].y}`
+        for (let i = 1; i < visibleCount; i++) {
+          path += ` L ${points[i].x} ${points[i].y}`
+        }
+        return path
+      }),
+    [series, eased]
+  )
 
   return (
     <svg ref={ref} width={width} height={height + 40} className="mx-auto block">
@@ -158,38 +173,52 @@ export default function LineChartAnimated({
             })}
           </>
         )}
-        {/* Animated line */}
-        {pathData && (
-          <path
-            d={pathData}
-            fill="none"
-            stroke={lineColor}
-            strokeWidth={3}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        )}
-        {/* Data points */}
-        {points.map((pt, i) => {
-          const visible = i < Math.ceil(points.length * eased)
-          if (!visible) return null
-          return (
-            <circle
-              key={i}
-              cx={pt.x}
-              cy={pt.y}
-              r={4}
-              fill={lineColor}
-              stroke="#fff"
-              strokeWidth={2}
-            />
-          )
-        })}
+        {series.map((line, lineIndex) => (
+          <g key={line.field}>
+            {pathData[lineIndex] ? (
+              <path
+                d={pathData[lineIndex]}
+                fill="none"
+                stroke={line.color}
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            ) : null}
+            {line.points.map((pt, i) => {
+              const visible = i < Math.ceil(line.points.length * eased)
+              if (!visible) return null
+              return (
+                <circle
+                  key={`${line.field}-${i}`}
+                  cx={pt.x}
+                  cy={pt.y}
+                  r={4}
+                  fill={line.color}
+                  stroke="#fff"
+                  strokeWidth={2}
+                />
+              )
+            })}
+          </g>
+        ))}
         {xLabel ? (
           <text x={innerW / 2} y={innerH + 28} textAnchor="middle" fontSize={12} fontWeight={700} fill="#444">{xLabel}</text>
         ) : null}
         {yLabel ? (
           <text transform={`rotate(-90)`} x={-innerH / 2} y={-40} textAnchor="middle" fontSize={12} fontWeight={700} fill="#444">{yLabel}</text>
+        ) : null}
+        {series.length > 1 ? (
+          <g transform={`translate(0, ${innerH + 50})`}>
+            {series.map((line, i) => (
+              <g key={line.field} transform={`translate(${i * 140}, 0)`}>
+                <line x1={0} y1={0} x2={18} y2={0} stroke={line.color} strokeWidth={3} strokeLinecap="round" />
+                <text x={26} y={4} fontSize={12} fontWeight={700} fill="#333">
+                  {line.field}
+                </text>
+              </g>
+            ))}
+          </g>
         ) : null}
       </g>
     </svg>

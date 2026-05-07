@@ -7,7 +7,7 @@ type Row = Record<string, string>
 export default function AnimatedLineClient({
   data,
   xField,
-  yField,
+  yFields,
   colors,
   duration,
   chartTitle,
@@ -19,7 +19,7 @@ export default function AnimatedLineClient({
 }: {
   data: Row[]
   xField: string
-  yField: string
+  yFields: string[]
   colors?: string[]
   duration?: number
   chartTitle?: string
@@ -33,7 +33,7 @@ export default function AnimatedLineClient({
     <LineChartAnimated
       data={data}
       xField={xField}
-      yField={yField}
+      yFields={yFields}
       colors={colors}
       duration={duration}
       chartTitle={chartTitle}
