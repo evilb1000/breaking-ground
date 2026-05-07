@@ -14,7 +14,7 @@ export async function GET(
     const doc = await client.fetch(`*[_id == $id && _type == "chartData"][0]{
       chartType, xField, yFields, seriesConfig, colors,
       animationDuration, chartTitle, xLabel, yLabel,
-      showAxis, showTicks, tickCount, showLegend,
+      showAxis, showTicks, tickCount, numberFormat, showLegend,
       dataFile{asset->{url}}
     }`, {id})
 

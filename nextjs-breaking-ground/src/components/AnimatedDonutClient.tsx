@@ -11,6 +11,7 @@ export default function AnimatedDonutClient({
   colors,
   duration,
   chartTitle,
+  numberFormat,
   showLegend,
 }: {
   data: Row[]
@@ -19,6 +20,7 @@ export default function AnimatedDonutClient({
   colors?: string[]
   duration?: number
   chartTitle?: string
+  numberFormat?: string
   showLegend?: boolean
 }) {
   return (
@@ -29,6 +31,7 @@ export default function AnimatedDonutClient({
       colors={colors}
       duration={duration}
       chartTitle={chartTitle}
+      numberFormat={numberFormat}
       showLegend={showLegend}
     />
   )

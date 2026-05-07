@@ -94,6 +94,7 @@ export default function ChartFromRefClient({
           colors={doc.colors}
           duration={doc.animationDuration ?? 1200}
           chartTitle={doc.chartTitle}
+          numberFormat={doc.numberFormat}
           showLegend={doc.showLegend ?? true}
         />
       ) : doc.chartType === 'line' ? (

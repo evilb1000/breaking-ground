@@ -9,6 +9,20 @@ function toNumber(n: string | undefined) {
   return Number.isFinite(v) ? v : 0
 }
 
+function formatValue(value: number, numberFormat?: string) {
+  const format = numberFormat?.toLowerCase()
+
+  if (format?.includes('$') || format?.includes('currency')) {
+    return value.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+    })
+  }
+
+  return value.toLocaleString('en-US', {maximumFractionDigits: 1})
+}
+
 export default function DonutChartAnimated({
   data,
   xField,
@@ -16,6 +30,7 @@ export default function DonutChartAnimated({
   colors,
   duration = 800,
   chartTitle,
+  numberFormat,
   showLegend = true,
 }: {
   data: Row[]
@@ -24,6 +39,7 @@ export default function DonutChartAnimated({
   colors?: string[]
   duration?: number
   chartTitle?: string
+  numberFormat?: string
   showLegend?: boolean
 }) {
   const width = 800
@@ -116,7 +132,7 @@ export default function DonutChartAnimated({
       {total > 0 ? (
         <g>
           <text x={centerX} y={centerY - 6} textAnchor="middle" fontSize={24} fontWeight={700} fill="#312e28">
-            {total.toLocaleString('en-US', {maximumFractionDigits: 1})}
+            {formatValue(total, numberFormat)}
           </text>
           <text x={centerX} y={centerY + 18} textAnchor="middle" fontSize={12} fontWeight={700} fill="#595959">
             Total
