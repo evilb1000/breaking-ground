@@ -134,6 +134,8 @@ export default function LineChartAnimated({
       }),
     [series, eased]
   )
+  const legendItemWidth = 140
+  const legendWidth = series.length * legendItemWidth
 
   return (
     <svg ref={ref} width={width} height={height + 40} className="mx-auto block">
@@ -203,13 +205,13 @@ export default function LineChartAnimated({
           </g>
         ))}
         {xLabel ? (
-          <text x={innerW / 2} y={innerH + 28} textAnchor="middle" fontSize={12} fontWeight={700} fill="#444">{xLabel}</text>
+          <text x={innerW / 2} y={innerH + 28} textAnchor="middle" fontSize={14} fontWeight={800} fill="#333">{xLabel}</text>
         ) : null}
         {yLabel ? (
-          <text transform={`rotate(-90)`} x={-innerH / 2} y={-40} textAnchor="middle" fontSize={12} fontWeight={700} fill="#444">{yLabel}</text>
+          <text transform={`rotate(-90)`} x={-innerH / 2} y={-40} textAnchor="middle" fontSize={14} fontWeight={800} fill="#333">{yLabel}</text>
         ) : null}
         {series.length > 1 ? (
-          <g transform={`translate(0, ${innerH + 50})`}>
+          <g transform={`translate(${innerW / 2 - legendWidth / 2}, ${innerH + 50})`}>
             {series.map((line, i) => (
               <g key={line.field} transform={`translate(${i * 140}, 0)`}>
                 <line x1={0} y1={0} x2={18} y2={0} stroke={line.color} strokeWidth={3} strokeLinecap="round" />
