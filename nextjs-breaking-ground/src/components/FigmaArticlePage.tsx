@@ -10,6 +10,7 @@ import ArticleAdUnit from "@/components/ads/ArticleAdUnit";
 import { threeAdChunks } from "@/lib/chunkBody";
 import { articleHref, articleUrl } from "@/lib/urls";
 import { adSurfaceForArticleSection, getAdsForSurface, selectAd } from "@/lib/ads";
+import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 
 /* ------------------------------------------------------------------ */
 /*  Image URL builder                                                  */
@@ -551,7 +552,10 @@ function NextArticleCTA({ next }: { next?: NextRef }) {
 export default async function FigmaArticlePage({ article }: { article: FigmaArticleDoc }) {
   const headline = article.headline || "Untitled";
   const section = article.section;
-  const ads = await getAdsForSurface(adSurfaceForArticleSection(section));
+  const [ads, eventBanner] = await Promise.all([
+    getAdsForSurface(adSurfaceForArticleSection(section)),
+    getHomepageEventBannerProps(),
+  ]);
   const introSrc = imageSrc(article.introImage, 1400);
   const introPos = hotspotPosition(article.introImage);
   const slugValue =
@@ -660,13 +664,7 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
 
           {/* Event banner (frame 165:764) */}
           <div className="px-0 pb-[56px] lg:px-[24px] lg:pb-[80px]">
-            <HomepageEventBanner
-              title="2026 Breaking Ground Summit"
-              subtitle="Industry leaders. Western PA. One room."
-              body="Join us for a full day of project announcements, regional data, and off-the-record conversations with the contractors, owners, and architects shaping the next decade of building."
-              ctaLabel="Register"
-              ctaHref="/events"
-            />
+            <HomepageEventBanner {...eventBanner} />
           </div>
         </div>
       </main>

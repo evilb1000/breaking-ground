@@ -6,6 +6,7 @@ import ProfileAdUnit from "@/components/ads/ProfileAdUnit";
 import { threeAdChunks } from "@/lib/chunkBody";
 import { articleUrl } from "@/lib/urls";
 import { adSurfaceForArticleSection, getAdsForSurface, selectAd } from "@/lib/ads";
+import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 import {
   articleComponents,
   formatMetaDate,
@@ -355,7 +356,10 @@ type SanityImageLike = {
 export default async function FigmaProfileArticlePage({ article }: { article: FigmaArticleDoc }) {
   const headline = article.headline || "Untitled";
   const section = article.section;
-  const ads = await getAdsForSurface(adSurfaceForArticleSection(section));
+  const [ads, eventBanner] = await Promise.all([
+    getAdsForSurface(adSurfaceForArticleSection(section)),
+    getHomepageEventBannerProps(),
+  ]);
   const heroImg =
     article.heroImage || article.introImage || article.headerImage || undefined;
   const slugValue =
@@ -425,13 +429,7 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
 
           {/* Event banner */}
           <div className="px-0 pb-[56px] lg:px-[24px] lg:pb-[80px]">
-            <HomepageEventBanner
-              title="Come Join Us At the 2025 Evening of Excellence"
-              subtitle="Event starts 8:00 pm on 04.13.2026"
-              body="Join us for an unforgettable evening of celebration, inspiration, and impact."
-              ctaLabel="Register here"
-              ctaHref="https://www.mbawpa.org/events/mba-young-constructors-leadership-development-seminar/"
-            />
+            <HomepageEventBanner {...eventBanner} />
           </div>
         </div>
       </main>
