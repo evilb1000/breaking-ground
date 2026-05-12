@@ -6,7 +6,7 @@ import HomepageEventBanner, {
   type HomepageEventBannerProps,
 } from "@/components/homepage/HomepageEventBanner";
 import InsightsAdUnit from "@/components/insights/InsightsAdUnit";
-import { getAdsForSurface, selectAd, type AdSurface } from "@/lib/ads";
+import { adPlacementForSurface, getAdsForSurface, selectAdForPlacement, type AdSurface } from "@/lib/ads";
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 
 const FALLBACK_TILE_IMAGE = "/figma-assets/landing-asset-1.png";
@@ -109,9 +109,11 @@ export default async function FigmaLandingTemplate({
   adSurface,
   pagination,
 }: FigmaLandingTemplateProps) {
+  const resolvedAdSurface = adSurface || (variant === "newsFeed" ? "news" : "articles");
+  const adPlacement = adPlacementForSurface(resolvedAdSurface);
   const [eventBanner, ads] = await Promise.all([
     getHomepageEventBannerProps(),
-    getAdsForSurface(adSurface || (variant === "newsFeed" ? "news" : "articles")),
+    getAdsForSurface(resolvedAdSurface),
   ]);
 
   return (
@@ -239,7 +241,7 @@ export default async function FigmaLandingTemplate({
                     {/* Ad after article 1 (index 0), then every other: 0, 2, 4, 6... */}
                     {i % 2 === 0 ? (
                       <div className="py-[8px] lg:py-0">
-                        <InsightsAdUnit ad={selectAd(ads, i)} />
+                        <InsightsAdUnit ad={selectAdForPlacement(ads, adPlacement, i)} />
                       </div>
                     ) : null}
                   </Fragment>

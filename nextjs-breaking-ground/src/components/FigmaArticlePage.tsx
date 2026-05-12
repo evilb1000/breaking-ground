@@ -9,7 +9,7 @@ import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import ArticleAdUnit from "@/components/ads/ArticleAdUnit";
 import { threeAdChunks } from "@/lib/chunkBody";
 import { articleHref, articleUrl } from "@/lib/urls";
-import { adSurfaceForArticleSection, getAdsForSurface, selectAd } from "@/lib/ads";
+import { adPlacementForArticleSection, adSurfaceForArticleSection, getAdsForSurface, selectAdForPlacement } from "@/lib/ads";
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 
 /* ------------------------------------------------------------------ */
@@ -570,6 +570,7 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
     getAdsForSurface(adSurfaceForArticleSection(section)),
     getHomepageEventBannerProps(),
   ]);
+  const adPlacement = adPlacementForArticleSection(section);
   const introSrc = imageSrc(article.introImage, 1400);
   const introPos = hotspotPosition(article.introImage);
   const slugValue =
@@ -652,7 +653,7 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
                       <div key={i} className="bg-article-body">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
-                        <ArticleAdUnit ad={selectAd(ads, i)} />
+                        <ArticleAdUnit ad={selectAdForPlacement(ads, adPlacement, i)} />
                       </div>
                     ))}
                   </>

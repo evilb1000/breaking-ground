@@ -5,7 +5,7 @@ import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import ProfileAdUnit from "@/components/ads/ProfileAdUnit";
 import { threeAdChunks } from "@/lib/chunkBody";
 import { articleUrl } from "@/lib/urls";
-import { adSurfaceForArticleSection, getAdsForSurface, selectAd } from "@/lib/ads";
+import { adSurfaceForArticleSection, getAdsForSurface, profileAdPlacementForSlot, selectAdForPlacement } from "@/lib/ads";
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 import {
   articleComponents,
@@ -416,7 +416,7 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
                       <div key={i} className="bg-article-body">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
-                        <ProfileAdUnit ad={selectAd(ads, i)} />
+                        <ProfileAdUnit ad={selectAdForPlacement(ads, profileAdPlacementForSlot(i), i)} />
                       </div>
                     ))}
                   </>

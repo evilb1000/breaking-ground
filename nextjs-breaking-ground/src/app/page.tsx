@@ -9,7 +9,7 @@ import HomepageTabbedPanel, {
 } from "@/components/homepage/HomepageTabbedPanel";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import { articleHref } from "@/lib/urls";
-import { getAdsForSurface, selectAd, type AdCreative } from "@/lib/ads";
+import { getAdsForSurface, selectAdForPlacement, type AdCreative } from "@/lib/ads";
 
 // Figma-sourced assets. Downloaded from the Figma MCP asset CDN (which expires
 // after 7 days) and committed locally at public/figma-assets/ for permanence.
@@ -793,7 +793,7 @@ export default async function IndexPage() {
     loadLatestNewsItems(),
     getAdsForSurface("homepage"),
   ]);
-  const homepageAd = selectAd(homepageAds);
+  const homepageAd = selectAdForPlacement(homepageAds, "homepageSponsor");
   const hero = homepage?.heroArticle ?? null;
   const event = homepage?.tertiaryFeature ?? homepage?.issueHighlight ?? null;
 

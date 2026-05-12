@@ -9,6 +9,17 @@ export type AdSurface =
   | "data"
   | "insights";
 
+export type SponsorTier = "founder" | "partner" | "network" | "courtesy";
+
+export type AdPlacement =
+  | "homepageSponsor"
+  | "profileFounder"
+  | "profilePartner"
+  | "standardArticle"
+  | "newsFeed"
+  | "data"
+  | "insights";
+
 export type AdCreative = {
   _id: string;
   title?: string;
@@ -52,6 +63,74 @@ export async function getAdsForSurface(surface: AdSurface): Promise<AdCreative[]
 export function selectAd(ads: AdCreative[] | undefined, slotIndex = 0): AdCreative | null {
   if (!ads?.length) return null;
   return ads[Math.abs(slotIndex) % ads.length] ?? null;
+}
+
+const TIER_PRIORITY_BY_PLACEMENT: Record<AdPlacement, SponsorTier[]> = {
+  homepageSponsor: ["founder", "courtesy"],
+  profileFounder: ["founder", "courtesy"],
+  profilePartner: ["partner", "courtesy"],
+  standardArticle: ["network", "courtesy"],
+  newsFeed: ["network", "courtesy"],
+  data: ["network", "courtesy"],
+  insights: ["network", "courtesy"],
+};
+
+function rotationSeed(date = new Date()) {
+  return Math.floor(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) / 86_400_000);
+}
+
+function adsForTier(ads: AdCreative[], tier: SponsorTier) {
+  return ads.filter((ad) => ad.sponsor?.tier === tier);
+}
+
+export function selectAdForPlacement(
+  ads: AdCreative[] | undefined,
+  placement: AdPlacement,
+  slotIndex = 0,
+  seed = rotationSeed()
+): AdCreative | null {
+  if (!ads?.length) return null;
+
+  const tiers = TIER_PRIORITY_BY_PLACEMENT[placement];
+  for (const tier of tiers) {
+    const tierAds = adsForTier(ads, tier);
+    if (tierAds.length) return selectAd(tierAds, slotIndex + seed);
+  }
+
+  return selectAd(ads, slotIndex + seed);
+}
+
+export function profileAdPlacementForSlot(slotIndex: number): AdPlacement {
+  return slotIndex >= 2 ? "profilePartner" : "profileFounder";
+}
+
+export function adPlacementForArticleSection(section?: string): AdPlacement {
+  switch (section) {
+    case "news":
+      return "newsFeed";
+    case "data-insights":
+      return "data";
+    default:
+      return "standardArticle";
+  }
+}
+
+export function adPlacementForSurface(surface: AdSurface): AdPlacement {
+  switch (surface) {
+    case "homepage":
+      return "homepageSponsor";
+    case "memberProfile":
+    case "projectProfile":
+      return "profileFounder";
+    case "news":
+      return "newsFeed";
+    case "data":
+      return "data";
+    case "insights":
+      return "insights";
+    default:
+      return "standardArticle";
+  }
 }
 
 export function adSurfaceForArticleSection(section?: string): AdSurface {
