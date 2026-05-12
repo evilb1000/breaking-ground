@@ -59,6 +59,8 @@ export type NextRef = {
   category?: string;
 };
 
+export type AuthorBio = string | Array<Record<string, unknown>>;
+
 export type FigmaArticleDoc = {
   _id?: string;
   _type: "figmaArticle";
@@ -73,8 +75,8 @@ export type FigmaArticleDoc = {
   introImage?: SanityImage;
   heroImage?: SanityImage;
   headerImage?: SanityImage;
-  author?: { name?: string; image?: SanityImage; bio?: string };
-  coAuthors?: Array<{ name?: string; image?: SanityImage; bio?: string }>;
+  author?: { name?: string; image?: SanityImage; bio?: AuthorBio };
+  coAuthors?: Array<{ name?: string; image?: SanityImage; bio?: AuthorBio }>;
   authorBio?: string;
   body?: Array<Record<string, unknown>>;
   relatedArticles?: RelatedRef[];
@@ -149,6 +151,11 @@ function safeHref(raw?: string): string | undefined {
   }
 
   return undefined;
+}
+
+export function hasAuthorBioValue(bio?: AuthorBio): boolean {
+  if (typeof bio === "string") return bio.trim().length > 0;
+  return Array.isArray(bio) && bio.length > 0;
 }
 
 /* ------------------------------------------------------------------ */
@@ -361,6 +368,45 @@ export const articleComponents = {
   },
 };
 
+const authorBioComponents = (className: string) => ({
+  block: {
+    normal: ({ children }: { children?: React.ReactNode }) => (
+      <p className={className}>{children}</p>
+    ),
+  },
+  marks: {
+    link: ({ value, children }: { value?: { href?: string; openInNewTab?: boolean }; children?: React.ReactNode }) => {
+      const href = safeHref(value?.href) || "#";
+      const newTab = value?.openInNewTab ?? true;
+
+      return (
+        <a
+          href={href}
+          target={newTab ? "_blank" : undefined}
+          rel={newTab ? "noopener noreferrer" : undefined}
+          className="underline decoration-[color:var(--bg-disabled)] underline-offset-[2px] hover:decoration-current"
+        >
+          {children}
+        </a>
+      );
+    },
+  },
+});
+
+export function AuthorBioText({ bio, className }: { bio?: AuthorBio; className: string }) {
+  if (!hasAuthorBioValue(bio)) return null;
+
+  if (typeof bio === "string") {
+    return <p className={className}>{bio}</p>;
+  }
+
+  return (
+    <div className="flex flex-col gap-[6px]">
+      <PortableText value={bio as any} components={authorBioComponents(className) as any} />
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /*  Sub-components                                                     */
 /* ------------------------------------------------------------------ */
@@ -481,7 +527,7 @@ function Sidebar({
   headline: string;
 }) {
   const authors = [author, ...(coAuthors || [])].filter((item) => item?.name);
-  const hasAuthorBio = authors.some((item) => item?.bio);
+  const hasAuthorBio = authors.some((item) => hasAuthorBioValue(item?.bio));
   return (
     <aside className="flex w-full flex-col gap-[28px] border-t border-[color:var(--bg-disabled)] pt-[24px] lg:w-[206px] lg:border-t-0 lg:pt-0">
       {/* Meta block */}
@@ -515,11 +561,10 @@ function Sidebar({
                     )}
                     <p className="bg-type-article-h4 text-[#312E28]">{item?.name}</p>
                   </div>
-                  {bio ? (
-                    <p className="bg-type-caption text-[color:var(--bg-on-surface)] leading-[16px]">
-                      {bio}
-                    </p>
-                  ) : null}
+                  <AuthorBioText
+                    bio={bio}
+                    className="bg-type-caption text-[color:var(--bg-on-surface)] leading-[16px]"
+                  />
                 </div>
               );
             })}

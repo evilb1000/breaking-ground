@@ -8,8 +8,10 @@ import { articleUrl } from "@/lib/urls";
 import { adSurfaceForArticleSection, getAdsForSurface, profileAdPlacementForSlot, selectAdForPlacement } from "@/lib/ads";
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 import {
+  AuthorBioText,
   articleComponents,
   formatMetaDate,
+  hasAuthorBioValue,
   imageSrc,
   hotspotPosition,
   relatedSlug,
@@ -66,7 +68,7 @@ function AuthorBlock({
 }) {
   const authors = [author, ...(coAuthors || [])].filter((item) => item?.name);
   if (authors.length === 0 && !authorBio) return null;
-  const hasAuthorBio = authors.some((item) => item?.bio);
+  const hasAuthorBio = authors.some((item) => hasAuthorBioValue(item?.bio));
 
   return (
     <div className="flex flex-col gap-[8px]">
@@ -90,11 +92,10 @@ function AuthorBlock({
                 By {item?.name}
               </p>
             </div>
-            {bio ? (
-              <p className="bg-font-roboto text-[10px] leading-[16px] font-normal text-[#312e28]">
-                {bio}
-              </p>
-            ) : null}
+            <AuthorBioText
+              bio={bio}
+              className="bg-font-roboto text-[10px] leading-[16px] font-normal text-[#312e28]"
+            />
           </div>
         );
       })}
