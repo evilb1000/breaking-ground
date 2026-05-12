@@ -100,7 +100,12 @@ export default function DonutChartAnimated({
   const eased = 1 - Math.pow(1 - progress, 3)
 
   return (
-    <svg ref={ref} width={width} height={height} className="mx-auto block">
+    <svg
+      ref={ref}
+      viewBox={`0 0 ${width} ${height}`}
+      className="mx-auto block h-auto w-full max-w-full overflow-visible"
+      role="img"
+    >
       {chartTitle ? (
         <text x={centerX} y={30} textAnchor="middle" fontSize={18} fontWeight={700}>{chartTitle}</text>
       ) : null}

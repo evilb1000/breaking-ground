@@ -48,7 +48,12 @@ export default function BarChartAnimated({
   const eased = 1 - Math.pow(1 - progress, 3)
 
   return (
-    <svg ref={ref} width={width} height={height + 40} className="mx-auto block">
+    <svg
+      ref={ref}
+      viewBox={`0 0 ${width} ${height + 40}`}
+      className="mx-auto block h-auto w-full max-w-full overflow-visible"
+      role="img"
+    >
       {/* Title */}
       {chartTitle ? (
         <text x={width / 2} y={20} textAnchor="middle" fontSize={18} fontWeight={700}>{chartTitle}</text>

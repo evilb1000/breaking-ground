@@ -57,8 +57,20 @@ export default function ChartFromRefClient({
         renderAs: index === 0 ? 'bar' : 'line',
         axis: index === 0 ? 'left' : 'right',
       } satisfies ComboSeriesConfig))
-  const widthClass = size === 'small' ? 'max-w-[25%]' : size === 'medium' ? 'max-w-[50%]' : size === 'large' ? 'max-w-[75%]' : 'max-w-full'
-  const alignClass = align === 'left' ? 'float-left mr-8 mb-6' : align === 'right' ? 'float-right ml-8 mb-6' : 'mx-auto my-8 block'
+  const widthClass =
+    size === 'small'
+      ? 'w-full max-w-full md:max-w-[25%]'
+      : size === 'medium'
+        ? 'w-full max-w-full md:max-w-[50%]'
+        : size === 'large'
+          ? 'w-full max-w-full md:max-w-[75%]'
+          : 'w-full max-w-full'
+  const alignClass =
+    align === 'left'
+      ? 'mx-auto my-8 block md:float-left md:mr-8 md:mb-6 md:my-0'
+      : align === 'right'
+        ? 'mx-auto my-8 block md:float-right md:ml-8 md:mb-6 md:my-0'
+        : 'mx-auto my-8 block'
 
   return (
     <div className={`${widthClass} ${alignClass}`}>
