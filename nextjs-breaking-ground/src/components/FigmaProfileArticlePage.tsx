@@ -27,7 +27,6 @@ import {
 
 const HERO_MAP_TEXTURE = "/figma-assets/hero-map-texture.png";
 const CLOCK_ICON = "/figma-assets/clock-dark.svg";
-const REPLY_ICON = "/figma-assets/reply-dark.svg";
 const FB_ICON = "/figma-assets/facebook-white.svg";
 const LI_ICON = "/figma-assets/linkedin-white.svg";
 const IG_ICON = "/figma-assets/instagram-white.svg";
@@ -52,42 +51,56 @@ function MetaInfo({ publishedAt, readingTime }: { publishedAt?: string; readingT
           {read}
         </p>
       </div>
-      <img src={REPLY_ICON} alt="" aria-hidden="true" className="h-[14px] w-[14px]" />
     </div>
   );
 }
 
 function AuthorBlock({
   author,
+  coAuthors,
   authorBio,
 }: {
   author?: FigmaArticleDoc["author"];
+  coAuthors?: FigmaArticleDoc["coAuthors"];
   authorBio?: string;
 }) {
-  if (!author?.name && !authorBio) return null;
-  const avatar = author?.image ? imageSrc(author.image, 80) : null;
-  const bio = authorBio || author?.bio;
+  const authors = [author, ...(coAuthors || [])].filter((item) => item?.name);
+  if (authors.length === 0 && !authorBio) return null;
+  const hasAuthorBio = authors.some((item) => item?.bio);
+
   return (
     <div className="flex flex-col gap-[8px]">
-      {author?.name ? (
-        <div className="flex items-center gap-[4px]">
-          {avatar ? (
-            <img
-              src={avatar}
-              alt={author.name}
-              className="h-[17px] w-[19px] rounded-full object-cover"
-            />
-          ) : (
-            <div className="h-[17px] w-[19px] rounded-full bg-[#d9d9d9]" aria-hidden="true" />
-          )}
-          <p className="bg-font-roboto text-[10px] leading-[16px] font-normal text-[#312e28] whitespace-nowrap">
-            By {author.name}
-          </p>
-        </div>
-      ) : null}
-      {bio ? (
+      {authors.map((item, index) => {
+        const avatar = item?.image ? imageSrc(item.image, 80) : null;
+        const bio = item?.bio;
+
+        return (
+          <div key={`${item?.name}-${index}`} className="flex flex-col gap-[6px]">
+            <div className="flex items-center gap-[4px]">
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt={item?.name || "Author"}
+                  className="h-[17px] w-[19px] rounded-full object-cover"
+                />
+              ) : (
+                <div className="h-[17px] w-[19px] rounded-full bg-[#d9d9d9]" aria-hidden="true" />
+              )}
+              <p className="bg-font-roboto text-[10px] leading-[16px] font-normal text-[#312e28] whitespace-nowrap">
+                By {item?.name}
+              </p>
+            </div>
+            {bio ? (
+              <p className="bg-font-roboto text-[10px] leading-[16px] font-normal text-[#312e28]">
+                {bio}
+              </p>
+            ) : null}
+          </div>
+        );
+      })}
+      {authorBio && !hasAuthorBio ? (
         <p className="bg-font-roboto text-[10px] leading-[16px] font-normal text-[#312e28]">
-          {bio}
+          {authorBio}
         </p>
       ) : null}
     </div>
@@ -140,6 +153,7 @@ function Sidebar({
   publishedAt,
   readingTime,
   author,
+  coAuthors,
   authorBio,
   relatedArticles,
   shareUrl,
@@ -148,6 +162,7 @@ function Sidebar({
   publishedAt?: string;
   readingTime?: number;
   author?: FigmaArticleDoc["author"];
+  coAuthors?: FigmaArticleDoc["coAuthors"];
   authorBio?: string;
   relatedArticles?: RelatedRef[];
   shareUrl: string;
@@ -158,7 +173,7 @@ function Sidebar({
     <aside className="flex w-full flex-col gap-[28px] border-t border-[#d9d9d9] pt-[24px] lg:w-[206px] lg:border-t-0 lg:pt-0">
       <div className="flex w-full flex-col gap-[8px] border-b border-solid border-[#d9d9d9] pb-[28px] lg:w-[192px] lg:pb-[36px]">
         <MetaInfo publishedAt={publishedAt} readingTime={readingTime} />
-        <AuthorBlock author={author} authorBio={authorBio} />
+        <AuthorBlock author={author} coAuthors={coAuthors} authorBio={authorBio} />
         <SocialRow shareUrl={shareUrl} headline={headline} />
       </div>
 
@@ -393,6 +408,7 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
                 publishedAt={article.publishedAt}
                 readingTime={article.readingTime}
                 author={article.author}
+                coAuthors={article.coAuthors}
                 authorBio={article.authorBio}
                 relatedArticles={article.relatedArticles}
                 shareUrl={shareUrl}

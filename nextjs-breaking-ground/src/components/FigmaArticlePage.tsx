@@ -74,6 +74,7 @@ export type FigmaArticleDoc = {
   heroImage?: SanityImage;
   headerImage?: SanityImage;
   author?: { name?: string; image?: SanityImage; bio?: string };
+  coAuthors?: Array<{ name?: string; image?: SanityImage; bio?: string }>;
   authorBio?: string;
   body?: Array<Record<string, unknown>>;
   relatedArticles?: RelatedRef[];
@@ -183,6 +184,26 @@ export const articleComponents = {
     ),
     normal: ({ children }: { children?: React.ReactNode }) => (
       <p className="bg-type-body text-[color:var(--bg-on-surface)]">{children}</p>
+    ),
+  },
+  list: {
+    bullet: ({ children }: { children?: React.ReactNode }) => (
+      <ul className="my-6 ml-6 list-disc space-y-2 text-[color:var(--bg-on-surface)] marker:text-[color:var(--bg-on-surface)]">
+        {children}
+      </ul>
+    ),
+    number: ({ children }: { children?: React.ReactNode }) => (
+      <ol className="my-6 ml-6 list-decimal space-y-2 text-[color:var(--bg-on-surface)] marker:text-[color:var(--bg-on-surface)]">
+        {children}
+      </ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }: { children?: React.ReactNode }) => (
+      <li className="bg-type-body pl-2 text-[color:var(--bg-on-surface)]">{children}</li>
+    ),
+    number: ({ children }: { children?: React.ReactNode }) => (
+      <li className="bg-type-body pl-2 text-[color:var(--bg-on-surface)]">{children}</li>
     ),
   },
   marks: {
@@ -375,12 +396,6 @@ function MetaRow({ publishedAt, readingTime }: { publishedAt?: string; readingTi
           {readingTime} MIN READ
         </span>
       ) : null}
-      <span className="inline-flex items-center gap-[6px]">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-          <path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-7.6-4.5L3 21l1.5-4.5A8.38 8.38 0 0 1 3 11.5 8.5 8.5 0 0 1 11.5 3h1A8.38 8.38 0 0 1 21 11.5z" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        REPLY
-      </span>
     </div>
   );
 }
@@ -450,6 +465,7 @@ function Sidebar({
   publishedAt,
   readingTime,
   author,
+  coAuthors,
   authorBio,
   relatedArticles,
   shareUrl,
@@ -458,12 +474,14 @@ function Sidebar({
   publishedAt?: string;
   readingTime?: number;
   author?: FigmaArticleDoc["author"];
+  coAuthors?: FigmaArticleDoc["coAuthors"];
   authorBio?: string;
   relatedArticles?: RelatedRef[];
   shareUrl: string;
   headline: string;
 }) {
-  const authorImg = author?.image ? imageSrc(author.image, 80) : null;
+  const authors = [author, ...(coAuthors || [])].filter((item) => item?.name);
+  const hasAuthorBio = authors.some((item) => item?.bio);
   return (
     <aside className="flex w-full flex-col gap-[28px] border-t border-[color:var(--bg-disabled)] pt-[24px] lg:w-[206px] lg:border-t-0 lg:pt-0">
       {/* Meta block */}
@@ -473,22 +491,40 @@ function Sidebar({
       </div>
 
       {/* Author block */}
-      {author?.name ? (
+      {authors.length > 0 ? (
         <div className="flex flex-col gap-[12px]">
-          <p className="bg-type-tag text-[color:var(--bg-disabled)]">AUTHOR</p>
-          <div className="flex items-center gap-[12px]">
-            {authorImg ? (
-              <img
-                src={authorImg}
-                alt={author.name}
-                className="h-[40px] w-[40px] rounded-full object-cover"
-              />
-            ) : (
-              <div className="h-[40px] w-[40px] rounded-full bg-[color:var(--bg-beige)]" aria-hidden="true" />
-            )}
-            <p className="bg-type-article-h4 text-[#312E28]">{author.name}</p>
+          <p className="bg-type-tag text-[color:var(--bg-disabled)]">
+            {authors.length > 1 ? "AUTHORS" : "AUTHOR"}
+          </p>
+          <div className="flex flex-col gap-[12px]">
+            {authors.map((item, index) => {
+              const authorImg = item?.image ? imageSrc(item.image, 80) : null;
+              const bio = item?.bio;
+
+              return (
+                <div key={`${item?.name}-${index}`} className="flex flex-col gap-[8px]">
+                  <div className="flex items-center gap-[12px]">
+                    {authorImg ? (
+                      <img
+                        src={authorImg}
+                        alt={item?.name || "Author"}
+                        className="h-[40px] w-[40px] rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-[40px] w-[40px] rounded-full bg-[color:var(--bg-beige)]" aria-hidden="true" />
+                    )}
+                    <p className="bg-type-article-h4 text-[#312E28]">{item?.name}</p>
+                  </div>
+                  {bio ? (
+                    <p className="bg-type-caption text-[color:var(--bg-on-surface)] leading-[16px]">
+                      {bio}
+                    </p>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
-          {authorBio ? (
+          {authorBio && !hasAuthorBio ? (
             <p className="bg-type-caption text-[color:var(--bg-on-surface)] leading-[16px]">
               {authorBio}
             </p>
@@ -670,6 +706,7 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
                 publishedAt={article.publishedAt}
                 readingTime={article.readingTime}
                 author={article.author}
+                coAuthors={article.coAuthors}
                 authorBio={article.authorBio}
                 relatedArticles={article.relatedArticles}
                 shareUrl={shareUrl}

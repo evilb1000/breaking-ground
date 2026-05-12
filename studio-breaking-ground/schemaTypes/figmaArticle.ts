@@ -151,11 +151,12 @@ export const figmaArticle = defineType({
     }),
     defineField({
       name: 'authorBio',
-      title: 'Author Bio',
+      title: 'Author Bio Override',
       type: 'text',
       rows: 4,
       group: 'sidebar',
-      validation: (Rule) => Rule.required(),
+      description:
+        'Optional legacy fallback. Prefer the Bio field on each Author document so multiple authors can each display their own bio.',
     }),
     defineField({
       name: 'relatedArticles',

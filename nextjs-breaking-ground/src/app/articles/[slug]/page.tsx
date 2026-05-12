@@ -22,7 +22,7 @@ const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   heroImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot},
   author->{name, image, bio},
   authorBio,
-  coAuthors[]->{name, image},
+  coAuthors[]->{name, image, bio},
   series->{title, slug, seriesImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot}},
   category,
   body[]{
@@ -67,6 +67,7 @@ const META_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   publishedAt,
   section,
   "authorName": author->name,
+  "coAuthorNames": coAuthors[]->name,
   "bodyText": pt::text(body),
   introImage{alt, asset->{_id, url}},
   heroImage{alt, asset->{_id, url}},
@@ -92,6 +93,7 @@ type MetaDoc = {
   publishedAt?: string;
   section?: string;
   authorName?: string;
+  coAuthorNames?: string[];
   introImage?: MetaImage;
   heroImage?: MetaImage;
   headerImage?: MetaImage;
@@ -184,6 +186,7 @@ export async function generateMetadata({
   const description = buildDescription(meta);
   const canonical = articleUrl(resolved.slug);
   const social = pickSocialImage(meta);
+  const authorNames = [meta.authorName, ...(meta.coAuthorNames || [])].filter(Boolean) as string[];
 
   const ogImages = social
     ? [
@@ -215,7 +218,7 @@ export async function generateMetadata({
       siteName: "Breaking Ground",
       ...(ogImages ? { images: ogImages } : {}),
       ...(meta.publishedAt ? { publishedTime: meta.publishedAt } : {}),
-      ...(meta.authorName ? { authors: [meta.authorName] } : {}),
+      ...(authorNames.length > 0 ? { authors: authorNames } : {}),
       ...(meta.section ? { section: meta.section } : {}),
     },
     twitter: {
