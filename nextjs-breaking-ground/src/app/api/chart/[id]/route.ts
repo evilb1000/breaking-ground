@@ -28,7 +28,12 @@ export async function GET(
     
     if (url) {
       try {
-        const csvResponse = await fetch(url)
+        const parsedUrl = new URL(url)
+        if (parsedUrl.protocol !== 'https:' || parsedUrl.hostname !== 'cdn.sanity.io') {
+          return NextResponse.json({error: 'Chart asset URL not allowed'}, {status: 400})
+        }
+
+        const csvResponse = await fetch(parsedUrl.toString())
         if (csvResponse.ok) {
           const csvText = await csvResponse.text()
           const lines = csvText.trim().split(/\r?\n/)

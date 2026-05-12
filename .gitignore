@@ -12,9 +12,13 @@ charts_for_build/
 # Sanity build
 studio-breaking-ground/dist/
 # Local environment
-.env
-.env.local
-.env.*.local
+.env*
+!.env.example
+.envrc
+.direnv/
+*.pem
+*.key
+*.p12
 # OS/Editor
 .DS_Store
 *.swp

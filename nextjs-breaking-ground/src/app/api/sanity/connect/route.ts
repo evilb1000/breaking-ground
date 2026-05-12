@@ -7,6 +7,10 @@ import { NextResponse } from "next/server";
  * Returns { ok, projectId, dataset, documentCount? } or error details.
  */
 export async function GET() {
+  if (process.env.NODE_ENV === "production") {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   const projectId = "y9xwdi89";
   const dataset = "production";
 

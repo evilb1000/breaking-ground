@@ -43,6 +43,41 @@ export default async function AboutPage() {
             building.
           </p>
         </div>
+
+        <div className="mt-[40px] flex flex-col gap-[18px] border-t border-[#d8d1c6] pt-[28px]">
+          <p className="bg-type-body text-[#312e28]">
+            Breaking Ground is a publication of the Master Builders&rsquo; Association
+            of Western Pennsylvania. The content presented on this website and in
+            associated digital publications is intended for informational,
+            editorial, and industry discussion purposes only. Opinions expressed
+            in articles, interviews, guest contributions, and commentary are those
+            of the respective authors and do not necessarily reflect the views of
+            the Master Builders&rsquo; Association, its leadership, members, sponsors,
+            or affiliates.
+          </p>
+          <p className="bg-type-body text-[#312e28]">
+            While reasonable efforts are made to ensure accuracy, Breaking Ground
+            does not guarantee the completeness, reliability, or timeliness of
+            information contained within the publication. Market data, economic
+            commentary, project information, forecasts, and industry analysis are
+            subject to change and should not be relied upon as legal, financial,
+            engineering, construction, or professional advice. Readers should
+            consult qualified professionals regarding specific situations or
+            decisions.
+          </p>
+          <p className="bg-type-body text-[#312e28]">
+            References to companies, products, projects, organizations, or
+            services do not constitute endorsement unless explicitly stated.
+            Sponsored content, advertisements, and partner materials may appear
+            throughout the publication and are identified separately from
+            editorial content where applicable.
+          </p>
+          <p className="bg-type-body text-[#312e28]">
+            All content, unless otherwise noted, is the property of Breaking
+            Ground and/or its respective contributors and may not be reproduced
+            without permission.
+          </p>
+        </div>
       </section>
 
       <div className="mx-auto w-full max-w-[1440px] px-4 md:px-[26px]">

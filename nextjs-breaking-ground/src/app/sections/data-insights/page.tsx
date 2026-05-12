@@ -1,8 +1,8 @@
-import { headers } from "next/headers";
 import Link from "next/link";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import InsightsDataTable from "@/components/insights/InsightsDataTable";
+import insightsData from "@/data/insights-sparklines.json";
 import type { SparklineJson } from "@/data/sparkline_types";
 import { getAdsForSurface } from "@/lib/ads";
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
@@ -14,20 +14,9 @@ export const metadata = {
   description: "Construction industry economic indicators and market data.",
 };
 
-async function getInsightsData(): Promise<SparklineJson> {
-  const headersList = await headers();
-  const host = headersList.get("host") ?? "localhost:3000";
-  const protocol = host.startsWith("localhost") ? "http" : "https";
-  const res = await fetch(`${protocol}://${host}/data/sparkline_test.json`, {
-    next: { revalidate: 3600 },
-  });
-  if (!res.ok) throw new Error(`Failed to load insights data: ${res.status}`);
-  return res.json() as Promise<SparklineJson>;
-}
-
 export default async function DataInsightsPage() {
   const [data, ads, eventBanner] = await Promise.all([
-    getInsightsData(),
+    Promise.resolve(insightsData as unknown as SparklineJson),
     getAdsForSurface("data"),
     getHomepageEventBannerProps(),
   ]);

@@ -137,6 +137,19 @@ export function hotspotPosition(img?: SanityImage): string {
   return `${(h.x * 100).toFixed(1)}% ${(h.y * 100).toFixed(1)}%`;
 }
 
+function safeHref(raw?: string): string | undefined {
+  if (!raw) return undefined;
+
+  try {
+    const parsed = new URL(raw, "https://www.breakinggroundpittsburgh.com");
+    if (["http:", "https:", "mailto:"].includes(parsed.protocol)) return raw;
+  } catch {
+    return undefined;
+  }
+
+  return undefined;
+}
+
 /* ------------------------------------------------------------------ */
 /*  PortableText serializers                                           */
 /* ------------------------------------------------------------------ */
@@ -174,7 +187,7 @@ export const articleComponents = {
   },
   marks: {
     link: ({ value, children }: { value?: { href?: string; openInNewTab?: boolean }; children?: React.ReactNode }) => {
-      const href = value?.href || "#";
+      const href = safeHref(value?.href) || "#";
       const newTab = value?.openInNewTab;
       return (
         <a
@@ -198,6 +211,7 @@ export const articleComponents = {
       };
     }) => {
       const src = value?.image ? imageSrc(value.image, 1400) : null;
+      const linkUrl = safeHref(value?.linkUrl);
       const inner = src ? (
         <img
           src={src}
@@ -216,9 +230,9 @@ export const articleComponents = {
       );
       return (
         <div className="my-8">
-          {value?.linkUrl ? (
+          {linkUrl ? (
             <a
-              href={value.linkUrl}
+              href={linkUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="block"
