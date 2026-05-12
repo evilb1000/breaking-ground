@@ -263,7 +263,7 @@ export default function InsightsDataTable({
           <ClusterTable cluster={cluster} series={byCluster[cluster]} />
           {/* Ad after table 1 (index 0), then every other: index 0, 2, 4, 6 */}
           {i % 2 === 0 && i < allClusters.length - 1 ? (
-            <InsightsAdUnit ad={selectAdForPlacement(ads, "data", i)} />
+            <InsightsAdUnit ad={selectAdForPlacement(ads, "data", i, `data-insights:${cluster}`)} />
           ) : null}
         </Fragment>
       ))}

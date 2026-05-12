@@ -793,7 +793,7 @@ export default async function IndexPage() {
     loadLatestNewsItems(),
     getAdsForSurface("homepage"),
   ]);
-  const homepageAd = selectAdForPlacement(homepageAds, "homepageSponsor");
+  const homepageAd = selectAdForPlacement(homepageAds, "homepageSponsor", 0, "homepage");
   const hero = homepage?.heroArticle ?? null;
   const event = homepage?.tertiaryFeature ?? homepage?.issueHighlight ?? null;
 

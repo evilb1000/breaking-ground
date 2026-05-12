@@ -79,6 +79,16 @@ function rotationSeed(date = new Date()) {
   return Math.floor(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) / 86_400_000);
 }
 
+function contextSeed(contextKey?: string) {
+  if (!contextKey) return 0;
+
+  let hash = 0;
+  for (let i = 0; i < contextKey.length; i += 1) {
+    hash = (hash * 31 + contextKey.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
 function adsForTier(ads: AdCreative[], tier: SponsorTier) {
   return ads.filter((ad) => ad.sponsor?.tier === tier);
 }
@@ -87,17 +97,19 @@ export function selectAdForPlacement(
   ads: AdCreative[] | undefined,
   placement: AdPlacement,
   slotIndex = 0,
+  contextKey?: string,
   seed = rotationSeed()
 ): AdCreative | null {
   if (!ads?.length) return null;
 
+  const effectiveSlotIndex = slotIndex + seed + contextSeed(contextKey);
   const tiers = TIER_PRIORITY_BY_PLACEMENT[placement];
   for (const tier of tiers) {
     const tierAds = adsForTier(ads, tier);
-    if (tierAds.length) return selectAd(tierAds, slotIndex + seed);
+    if (tierAds.length) return selectAd(tierAds, effectiveSlotIndex);
   }
 
-  return selectAd(ads, slotIndex + seed);
+  return selectAd(ads, effectiveSlotIndex);
 }
 
 export function profileAdPlacementForSlot(slotIndex: number): AdPlacement {

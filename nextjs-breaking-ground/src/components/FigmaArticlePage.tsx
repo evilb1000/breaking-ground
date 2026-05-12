@@ -577,6 +577,7 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
     typeof article.slug === "string"
       ? article.slug
       : article.slug?.current || "";
+  const adContextKey = slugValue || headline;
   const shareUrl = articleUrl(slugValue);
 
   return (
@@ -653,7 +654,7 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
                       <div key={i} className="bg-article-body">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
-                        <ArticleAdUnit ad={selectAdForPlacement(ads, adPlacement, i)} />
+                        <ArticleAdUnit ad={selectAdForPlacement(ads, adPlacement, i, adContextKey)} />
                       </div>
                     ))}
                   </>

@@ -364,6 +364,7 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
     article.heroImage || article.introImage || article.headerImage || undefined;
   const slugValue =
     typeof article.slug === "string" ? article.slug : article.slug?.current || "";
+  const adContextKey = slugValue || headline;
   const shareUrl = articleUrl(slugValue);
 
   return (
@@ -416,7 +417,7 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
                       <div key={i} className="bg-article-body">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
-                        <ProfileAdUnit ad={selectAdForPlacement(ads, profileAdPlacementForSlot(i), i)} />
+                        <ProfileAdUnit ad={selectAdForPlacement(ads, profileAdPlacementForSlot(i), i, adContextKey)} />
                       </div>
                     ))}
                   </>

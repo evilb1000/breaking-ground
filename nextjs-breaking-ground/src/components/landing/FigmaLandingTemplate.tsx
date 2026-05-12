@@ -111,6 +111,12 @@ export default async function FigmaLandingTemplate({
 }: FigmaLandingTemplateProps) {
   const resolvedAdSurface = adSurface || (variant === "newsFeed" ? "news" : "articles");
   const adPlacement = adPlacementForSurface(resolvedAdSurface);
+  const adContextKey = [
+    variant,
+    breadcrumbCurrent || pageTitle || currentListLabel,
+    resolvedAdSurface,
+    pagination?.currentPage,
+  ].filter(Boolean).join(":");
   const [eventBanner, ads] = await Promise.all([
     getHomepageEventBannerProps(),
     getAdsForSurface(resolvedAdSurface),
@@ -241,7 +247,7 @@ export default async function FigmaLandingTemplate({
                     {/* Ad after article 1 (index 0), then every other: 0, 2, 4, 6... */}
                     {i % 2 === 0 ? (
                       <div className="py-[8px] lg:py-0">
-                        <InsightsAdUnit ad={selectAdForPlacement(ads, adPlacement, i)} />
+                        <InsightsAdUnit ad={selectAdForPlacement(ads, adPlacement, i, adContextKey)} />
                       </div>
                     ) : null}
                   </Fragment>
