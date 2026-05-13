@@ -10,7 +10,6 @@ import { adPlacementForSurface, getAdsForSurface, selectAdForPlacement, type AdS
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 
 const FALLBACK_TILE_IMAGE = "/figma-assets/landing-asset-1.png";
-const FILTER_ICON = "/figma-assets/landing-asset-2.svg";
 
 export type LandingItem = {
   id: string;
@@ -32,7 +31,6 @@ type FigmaLandingTemplateProps = {
   featuredItem?: LandingItem;
   tiles: LandingItem[];
   currentListLabel?: string;
-  showFilter?: boolean;
   loadMoreHref?: string;
   loadMoreLabel?: string;
   loadMoreExternal?: boolean;
@@ -101,7 +99,6 @@ export default async function FigmaLandingTemplate({
   featuredItem,
   tiles,
   currentListLabel = "Current news",
-  showFilter = true,
   loadMoreHref,
   loadMoreLabel = "Load more",
   loadMoreExternal = false,
@@ -211,12 +208,6 @@ export default async function FigmaLandingTemplate({
             >
               {currentListLabel}
             </h2>
-            {variant === "default" && showFilter ? (
-              <button type="button" className="inline-flex shrink-0 items-center gap-[4px] bg-font-roboto text-[14px] text-[#312e28] lg:text-[16px]">
-                <span>Filter</span>
-                <img src={FILTER_ICON} alt="" className="h-[20px] w-[20px]" />
-              </button>
-            ) : null}
           </div>
 
           {variant === "newsFeed" ? (
