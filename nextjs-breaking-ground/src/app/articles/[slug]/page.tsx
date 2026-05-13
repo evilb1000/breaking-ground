@@ -20,9 +20,9 @@ const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   introImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot},
   headerImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot},
   heroImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot},
-  author->{name, image, bio},
+  author->{name, image, bio, linkedBio},
   authorBio,
-  coAuthors[]->{name, image, bio},
+  coAuthors[]->{name, image, bio, linkedBio},
   series->{title, slug, seriesImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot}},
   category,
   body[]{

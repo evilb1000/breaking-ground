@@ -14,11 +14,13 @@ export const author = defineType({
       validation: (rule) => rule.required()
     }),
     defineField({name: 'image', type: 'image', title: 'Photo', options: {hotspot: true}}),
+    defineField({name: 'bio', type: 'text', title: 'Bio'}),
     defineField({
-      name: 'bio',
+      name: 'linkedBio',
       type: 'array',
-      title: 'Bio',
-      description: 'Short author bio. Highlight text and add a link to include LinkedIn or other profile URLs.',
+      title: 'Bio With Links',
+      description:
+        'Optional rich bio. Use this when you need hyperlinks such as LinkedIn. If filled out, this displays instead of the plain Bio field.',
       of: [
         defineArrayMember({
           type: 'block',

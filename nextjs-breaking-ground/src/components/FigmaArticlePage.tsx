@@ -75,8 +75,8 @@ export type FigmaArticleDoc = {
   introImage?: SanityImage;
   heroImage?: SanityImage;
   headerImage?: SanityImage;
-  author?: { name?: string; image?: SanityImage; bio?: AuthorBio };
-  coAuthors?: Array<{ name?: string; image?: SanityImage; bio?: AuthorBio }>;
+  author?: { name?: string; image?: SanityImage; bio?: string; linkedBio?: AuthorBio };
+  coAuthors?: Array<{ name?: string; image?: SanityImage; bio?: string; linkedBio?: AuthorBio }>;
   authorBio?: string;
   body?: Array<Record<string, unknown>>;
   relatedArticles?: RelatedRef[];
@@ -527,7 +527,7 @@ function Sidebar({
   headline: string;
 }) {
   const authors = [author, ...(coAuthors || [])].filter((item) => item?.name);
-  const hasAuthorBio = authors.some((item) => hasAuthorBioValue(item?.bio));
+  const hasAuthorBio = authors.some((item) => hasAuthorBioValue(item?.linkedBio || item?.bio));
   return (
     <aside className="flex w-full flex-col gap-[28px] border-t border-[color:var(--bg-disabled)] pt-[24px] lg:w-[206px] lg:border-t-0 lg:pt-0">
       {/* Meta block */}
@@ -545,7 +545,7 @@ function Sidebar({
           <div className="flex flex-col gap-[12px]">
             {authors.map((item, index) => {
               const authorImg = item?.image ? imageSrc(item.image, 80) : null;
-              const bio = item?.bio;
+              const bio = item?.linkedBio || item?.bio;
 
               return (
                 <div key={`${item?.name}-${index}`} className="flex flex-col gap-[8px]">

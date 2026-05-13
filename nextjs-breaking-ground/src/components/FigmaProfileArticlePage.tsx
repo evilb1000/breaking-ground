@@ -68,13 +68,13 @@ function AuthorBlock({
 }) {
   const authors = [author, ...(coAuthors || [])].filter((item) => item?.name);
   if (authors.length === 0 && !authorBio) return null;
-  const hasAuthorBio = authors.some((item) => hasAuthorBioValue(item?.bio));
+  const hasAuthorBio = authors.some((item) => hasAuthorBioValue(item?.linkedBio || item?.bio));
 
   return (
     <div className="flex flex-col gap-[8px]">
       {authors.map((item, index) => {
         const avatar = item?.image ? imageSrc(item.image, 80) : null;
-        const bio = item?.bio;
+        const bio = item?.linkedBio || item?.bio;
 
         return (
           <div key={`${item?.name}-${index}`} className="flex flex-col gap-[6px]">
