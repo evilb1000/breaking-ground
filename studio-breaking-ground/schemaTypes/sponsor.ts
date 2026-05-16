@@ -7,6 +7,21 @@ const sponsorTiers = [
   {title: 'Courtesy', value: 'courtesy'},
 ]
 
+export const businessCategories = [
+  {title: 'Legal', value: 'legal'},
+  {title: 'Financial Services', value: 'financialServices'},
+  {title: 'Insurance & Risk Management', value: 'insuranceRisk'},
+  {title: 'Architecture & Engineering', value: 'architectureEngineering'},
+  {title: 'General Contractor', value: 'generalContractor'},
+  {title: 'Specialty Contractor', value: 'specialtyContractor'},
+  {title: 'Construction Management', value: 'constructionManagement'},
+  {title: 'Real Estate & Development', value: 'realEstateDevelopment'},
+  {title: 'Building Materials & Suppliers', value: 'buildingMaterialsSuppliers'},
+  {title: 'Technology', value: 'technology'},
+  {title: 'Workforce, Training & Education', value: 'workforceTrainingEducation'},
+  {title: 'Association, Civic & Public Sector', value: 'associationCivicPublic'},
+]
+
 const eligibleSurfaces = [
   {title: 'Homepage', value: 'homepage'},
   {title: 'Member Profile', value: 'memberProfile'},
@@ -57,6 +72,18 @@ export const sponsor = defineType({
       type: 'url',
     }),
     defineField({
+      name: 'businessCategory',
+      title: 'Business Category',
+      type: 'string',
+      description:
+        'Used to prevent sponsor ads from appearing beside articles authored by a competing firm or organization.',
+      options: {
+        list: businessCategories,
+        layout: 'dropdown',
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'tier',
       title: 'Tier',
       type: 'string',
@@ -88,13 +115,14 @@ export const sponsor = defineType({
     select: {
       title: 'name',
       tier: 'tier',
+      category: 'businessCategory',
       active: 'active',
       media: 'logo',
     },
-    prepare({title, tier, active, media}) {
+    prepare({title, tier, category, active, media}) {
       return {
         title: title || 'Untitled Sponsor',
-        subtitle: [tier, active === false ? 'inactive' : null].filter(Boolean).join(' - '),
+        subtitle: [tier, category, active === false ? 'inactive' : null].filter(Boolean).join(' - '),
         media,
       }
     },

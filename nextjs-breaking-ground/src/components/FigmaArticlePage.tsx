@@ -9,7 +9,15 @@ import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import ArticleAdUnit from "@/components/ads/ArticleAdUnit";
 import { threeAdChunks } from "@/lib/chunkBody";
 import { articleHref, articleUrl } from "@/lib/urls";
-import { adPlacementForArticleSection, adSurfaceForArticleSection, getAdsForSurface, selectAdForPlacement } from "@/lib/ads";
+import {
+  adPlacementForArticleSection,
+  adSurfaceForArticleSection,
+  excludeConflictingAds,
+  getAdsForSurface,
+  selectAdForPlacement,
+  type AdConflictSponsor,
+  type SponsorBusinessCategory,
+} from "@/lib/ads";
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 
 /* ------------------------------------------------------------------ */
@@ -77,6 +85,8 @@ export type FigmaArticleDoc = {
   headerImage?: SanityImage;
   author?: { name?: string; image?: SanityImage; bio?: string; linkedBio?: AuthorBio };
   coAuthors?: Array<{ name?: string; image?: SanityImage; bio?: string; linkedBio?: AuthorBio }>;
+  adConflictSponsor?: AdConflictSponsor | null;
+  adConflictCategory?: SponsorBusinessCategory;
   authorBio?: string;
   body?: Array<Record<string, unknown>>;
   relatedArticles?: RelatedRef[];
@@ -651,6 +661,10 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
     getAdsForSurface(adSurfaceForArticleSection(section)),
     getHomepageEventBannerProps(),
   ]);
+  const eligibleAds = excludeConflictingAds(ads, {
+    _id: article.adConflictSponsor?._id,
+    businessCategory: article.adConflictSponsor?.businessCategory || article.adConflictCategory,
+  });
   const adPlacement = adPlacementForArticleSection(section);
   const introSrc = imageSrc(article.introImage, 1400);
   const introPos = hotspotPosition(article.introImage);
@@ -735,7 +749,7 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
                       <div key={i} className="bg-article-body">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
-                        <ArticleAdUnit ad={selectAdForPlacement(ads, adPlacement, i, adContextKey)} />
+                        <ArticleAdUnit ad={selectAdForPlacement(eligibleAds, adPlacement, i, adContextKey)} />
                       </div>
                     ))}
                   </>

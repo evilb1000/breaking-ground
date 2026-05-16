@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {businessCategories} from './sponsor'
 
 export const figmaArticle = defineType({
   name: 'figmaArticle',
@@ -148,6 +149,27 @@ export const figmaArticle = defineType({
       of: [{type: 'reference', to: [{type: 'author'}]}],
       description:
         'Optional additional authors when multiple people co-write a piece (preserved from legacy article schema).',
+    }),
+    defineField({
+      name: 'adConflictSponsor',
+      title: 'Ad Conflict Sponsor',
+      type: 'reference',
+      group: 'sidebar',
+      to: [{type: 'sponsor'}],
+      description:
+        'Optional. Select the author firm or organization when it is also a sponsor. Ads from this sponsor and sponsor category will be excluded from this article.',
+    }),
+    defineField({
+      name: 'adConflictCategory',
+      title: 'Ad Conflict Category',
+      type: 'string',
+      group: 'sidebar',
+      description:
+        'Optional. Use this when the author firm or organization is not a sponsor yet. Ads from this sponsor category will be excluded from this article.',
+      options: {
+        list: businessCategories,
+        layout: 'dropdown',
+      },
     }),
     defineField({
       name: 'authorBio',

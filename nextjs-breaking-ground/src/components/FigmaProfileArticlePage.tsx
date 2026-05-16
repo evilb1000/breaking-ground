@@ -5,7 +5,7 @@ import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import ProfileAdUnit from "@/components/ads/ProfileAdUnit";
 import { threeAdChunks } from "@/lib/chunkBody";
 import { articleUrl } from "@/lib/urls";
-import { adSurfaceForArticleSection, getAdsForSurface, profileAdPlacementForSlot, selectAdForPlacement } from "@/lib/ads";
+import { adSurfaceForArticleSection, excludeConflictingAds, getAdsForSurface, profileAdPlacementForSlot, selectAdForPlacement } from "@/lib/ads";
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 import {
   AuthorBioText,
@@ -376,6 +376,10 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
     getAdsForSurface(adSurfaceForArticleSection(section)),
     getHomepageEventBannerProps(),
   ]);
+  const eligibleAds = excludeConflictingAds(ads, {
+    _id: article.adConflictSponsor?._id,
+    businessCategory: article.adConflictSponsor?.businessCategory || article.adConflictCategory,
+  });
   const heroImg =
     article.heroImage || article.introImage || article.headerImage || undefined;
   const slugValue =
@@ -434,7 +438,7 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
                       <div key={i} className="bg-article-body">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <PortableText value={chunk as any} components={articleComponents as any} />
-                        <ProfileAdUnit ad={selectAdForPlacement(ads, profileAdPlacementForSlot(i), i, adContextKey)} />
+                        <ProfileAdUnit ad={selectAdForPlacement(eligibleAds, profileAdPlacementForSlot(i), i, adContextKey)} />
                       </div>
                     ))}
                   </>

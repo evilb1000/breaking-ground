@@ -23,6 +23,8 @@ const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   author->{name, image, bio, linkedBio},
   authorBio,
   coAuthors[]->{name, image, bio, linkedBio},
+  adConflictSponsor->{_id, name, businessCategory},
+  adConflictCategory,
   series->{title, slug, seriesImage{_type, asset, "assetUrl": asset->url, alt, caption, crop, hotspot}},
   category,
   body[]{

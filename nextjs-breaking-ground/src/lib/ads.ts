@@ -11,6 +11,20 @@ export type AdSurface =
 
 export type SponsorTier = "founder" | "partner" | "network" | "courtesy";
 
+export type SponsorBusinessCategory =
+  | "legal"
+  | "financialServices"
+  | "insuranceRisk"
+  | "architectureEngineering"
+  | "generalContractor"
+  | "specialtyContractor"
+  | "constructionManagement"
+  | "realEstateDevelopment"
+  | "buildingMaterialsSuppliers"
+  | "technology"
+  | "workforceTrainingEducation"
+  | "associationCivicPublic";
+
 export type AdPlacement =
   | "homepageSponsor"
   | "profileFounder"
@@ -27,9 +41,16 @@ export type AdCreative = {
   altText?: string;
   clickUrl?: string;
   sponsor?: {
+    _id?: string;
     name?: string;
     tier?: string;
+    businessCategory?: SponsorBusinessCategory;
   };
+};
+
+export type AdConflictSponsor = {
+  _id?: string;
+  businessCategory?: SponsorBusinessCategory;
 };
 
 const AD_CREATIVES_BY_SURFACE_QUERY = `*[
@@ -49,8 +70,10 @@ const AD_CREATIVES_BY_SURFACE_QUERY = `*[
   altText,
   clickUrl,
   sponsor->{
+    _id,
     name,
-    tier
+    tier,
+    businessCategory
   }
 }`;
 
@@ -91,6 +114,27 @@ function contextSeed(contextKey?: string) {
 
 function adsForTier(ads: AdCreative[], tier: SponsorTier) {
   return ads.filter((ad) => ad.sponsor?.tier === tier);
+}
+
+export function excludeConflictingAds(
+  ads: AdCreative[] | undefined,
+  conflictSponsor?: AdConflictSponsor | null
+): AdCreative[] {
+  if (!ads?.length) return [];
+  if (!conflictSponsor?._id && !conflictSponsor?.businessCategory) return ads;
+
+  return ads.filter((ad) => {
+    const sponsor = ad.sponsor;
+    if (!sponsor) return false;
+    if (conflictSponsor._id && sponsor._id === conflictSponsor._id) return false;
+    if (
+      conflictSponsor.businessCategory &&
+      sponsor.businessCategory === conflictSponsor.businessCategory
+    ) {
+      return false;
+    }
+    return true;
+  });
 }
 
 export function selectAdForPlacement(
