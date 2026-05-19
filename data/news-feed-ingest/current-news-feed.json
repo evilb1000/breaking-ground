@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-05-12T17:29:54.544Z",
+  "updatedAt": "2026-05-19T13:51:19.242Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -837,6 +837,28 @@
       "headline": "Dodge Momentum Index Soars 6.2% in April, Driven by Commercial and Institutional Planning Gains",
       "blurb": "The Dodge Momentum Index surged 6.2% in April, signaling a robust revival in commercial and institutional planning after a slow start to the year. With significant increases in sectors like traditional office buildings, data centers, and education projects, experts suggest this uptick could foreshadow a wave of renewed construction activity. However, challenges such as labor shortages and supply chain issues continue to loom large on the horizon.",
       "publicationAddedAt": "2026-05-12T17:27:21.658Z"
+    },
+    {
+      "link": "https://www.abc.org/News-Media/News-Releases/abc-construction-materials-prices-soar-in-april-up-62-since-january",
+      "source": "ABC",
+      "title": "ABC: Construction Materials Prices Soar in April, Up 6.2% Since January",
+      "pubDate": "2026-05-13",
+      "summaryText": "A May report from the Associated Builders and Contractors (ABC) reveals significant increases in construction materials prices. Construction input prices rose by 1.7% in April compared to March, with nonresidential construction prices climbing by 1.8%. Year-over-year, overall construction input prices are up 7.0%, while nonresidential input prices increased by 7.4%. The report highlights substantial increases in all three energy subcategories, with crude petroleum prices soaring by 11.3% in April. Unprocessed energy materials and natural gas prices also saw increases of 9.2% and 4.9%, respectively.\n\nABC Chief Economist Anirban Basu emphasized the rapid rise in input prices, stating, “Construction input prices surged again in April.” He noted that the 6.2% increase in the first four months of 2026 has surpassed the total rise of 4.8% over the previous three years. Basu attributed much of this escalation to soaring oil prices, but highlighted that the increase was widespread, particularly affecting tariff-impacted materials such as iron and steel.\n\nBasu added context regarding the broader economic environment, saying, “In addition to the direct impact of this reemerging materials price escalation, too-hot inflation data coupled with upbeat labor market indicators suggest that the Federal Reserve is unlikely to cut rates this year.” He concluded by noting that while contractors remain busy, as indicated by ABC’s Construction Backlog Indicator, the ongoing cost pressures could influence construction activity in the forthcoming months.\n\nSource URL: https://www.abc.org/News-Media/News-Releases/abc-construction-materials-prices-soar-in-april-up-62-since-january",
+      "addedAt": "2026-05-19T13:50:41.184Z",
+      "headline": "Construction Material Prices Skyrocket 6.2% in First Four Months of 2026, Driven by Soaring Oil Costs",
+      "blurb": "In a striking May report, the Associated Builders and Contractors (ABC) reveals that construction material prices have surged 6.2% in just the first four months of 2026, largely driven by skyrocketing oil costs. April alone saw a 1.7% rise in overall construction inputs, with nonresidential prices climbing even higher. As energy costs continue to escalate, experts warn that these price pressures could significantly impact future construction activity.",
+      "publicationAddedAt": "2026-05-19T13:50:46.570Z"
+    },
+    {
+      "link": "https://news.agc.org/economics/surging-materials-and-energy-costs-drive-construction-input-prices-sharply-higher-in-april-forcing-contractors-to-pay-more-for-key-supplies/",
+      "source": "AGC Construction Data",
+      "title": "Surging Materials And Energy Costs Drive Construction Input Prices Sharply Higher In April, Forcing Contractors To Pay More For Key Supplies",
+      "pubDate": "2026-05-13",
+      "summaryText": "A May report from AGC Construction Data details that the producer price index for inputs to new nonresidential construction increased by 1.7 percent in April and 6.6 percent compared to April 2025. The producer price index specifically for new nonresidential building construction rose only 3.6 percent over the same period. Association officials commented that proposals to suspend the federal gas tax would not effectively mitigate these rising costs. Macrina Wilkins, director of market insights for the Associated General Contractors of America, stated, “Construction input costs continue to rise much faster than contractors’ bid prices, particularly for energy-intensive and metals-related materials,” highlighting difficulties in pricing projects amidst cost volatility, which could lead to delays and redesigns. \n\nSource URL: https://news.agc.org/economics/surging-materials-and-energy-costs-drive-construction-input-prices-sharply-higher-in-april-forcing-contractors-to-pay-more-for-key-supplies/",
+      "addedAt": "2026-05-19T13:50:34.733Z",
+      "headline": "Rising Material and Energy Costs Spike Construction Input Prices, Challenging Contractors Amid Cost Volatility",
+      "blurb": "In a recent report from AGC Construction Data, rising material and energy costs have pushed construction input prices up 1.7 percent in April alone, leading to significant challenges for contractors. With the initial costs of new nonresidential construction climbing as much as 6.6 percent compared to last year, experts warn that frequent price increases could result in project delays and necessary redesigns. Amid proposals to suspend the federal gas tax, industry leaders stress that immediate relief may not be on the horizon.",
+      "publicationAddedAt": "2026-05-19T13:50:45.405Z"
     }
   ]
 }
