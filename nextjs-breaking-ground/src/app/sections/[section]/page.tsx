@@ -55,6 +55,7 @@ const ARTICLES_BY_SECTION_QUERY = `*[_type == "figmaArticle" && section == $sect
 
 export const revalidate = 0;
 const options = { next: { revalidate: 0 } };
+const LANDING_PAGE_SIZE = 6;
 
 const urlFor = (source: SanityImageSource) =>
   imageUrlBuilder({
@@ -112,10 +113,15 @@ function formatDisplayDate(raw?: string): string {
 
 export default async function SectionPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ section: string }>;
+  searchParams?: Promise<{ page?: string }>;
 }) {
   const { section } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const rawPage = Number.parseInt(resolvedSearchParams.page || "1", 10);
+  const currentPage = Number.isFinite(rawPage) ? Math.max(rawPage, 1) : 1;
   const config = SECTIONS[section];
 
   if (!config) {
@@ -176,14 +182,19 @@ export default async function SectionPage({
     };
   });
 
+  const remainingItems = mappedItems.slice(1);
+  const visibleTiles = remainingItems.slice(0, currentPage * LANDING_PAGE_SIZE);
+  const hasMoreItems = visibleTiles.length < remainingItems.length;
+  const nextPageHref = `/sections/${section}?page=${currentPage + 1}`;
+
   return (
     <FigmaLandingTemplate
       pageTitle={config.title}
       breadcrumbCurrent={config.title}
       featuredItem={mappedItems[0]}
-      tiles={mappedItems.slice(1, 7)}
+      tiles={visibleTiles}
       currentListLabel={`Current ${config.title.toLowerCase()}`}
-      loadMoreHref={`/sections/${section}`}
+      loadMoreHref={hasMoreItems ? nextPageHref : undefined}
       loadMoreLabel="Load more"
       adSurface={adSurfaceForArticleSection(section)}
     />

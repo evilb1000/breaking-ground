@@ -268,7 +268,7 @@ export default async function FigmaLandingTemplate({
             </>
           ) : (
             <div className="mt-[24px] grid grid-cols-1 gap-y-[32px] sm:grid-cols-2 sm:gap-x-[20px] lg:mt-[31px] lg:grid-cols-3 lg:gap-x-[23px] lg:gap-y-[25px]">
-              {tiles.slice(0, 6).map((item) => (
+              {tiles.map((item) => (
                 <TileCard key={item.id} item={item} />
               ))}
             </div>
