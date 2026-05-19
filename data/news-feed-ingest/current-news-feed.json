@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-05-19T13:51:19.242Z",
+  "updatedAt": "2026-05-19T14:04:34.367Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -859,6 +859,28 @@
       "headline": "Rising Material and Energy Costs Spike Construction Input Prices, Challenging Contractors Amid Cost Volatility",
       "blurb": "In a recent report from AGC Construction Data, rising material and energy costs have pushed construction input prices up 1.7 percent in April alone, leading to significant challenges for contractors. With the initial costs of new nonresidential construction climbing as much as 6.6 percent compared to last year, experts warn that frequent price increases could result in project delays and necessary redesigns. Amid proposals to suspend the federal gas tax, industry leaders stress that immediate relief may not be on the horizon.",
       "publicationAddedAt": "2026-05-19T13:50:45.405Z"
+    },
+    {
+      "link": "https://www.trepp.com/trepptalk/chief-economists-weekly-watch-may-18-2026",
+      "source": "trepp",
+      "title": "Chief Economist's Weekly Watch – May 18, 2026: FOMC Minutes, Housing Data, & S&P Flash PMIs",
+      "pubDate": "2026-05-18",
+      "summaryText": "A May 18, 2026 report from Trepp discusses recent economic indicators and upcoming releases impacting the market. Last week, the Consumer Price Index and Producer Price Index exceeded expectations, leading markets to reconsider potential interest rate cuts for 2026 and to incorporate the possibility of a rate hike later this year. Additionally, Jerome Powell's tenure as Federal Reserve chair ended, with Kevin Warsh taking over.\n\nThe report highlights three key areas to monitor:\n\n1. **FOMC Minutes**: Scheduled for release on Wednesday, the April Federal Open Market Committee (FOMC) minutes will reveal the committee's views on inflation and growth risks during a meeting where rates were maintained despite a split vote of eight to four. There were various dissenting opinions, including some against an easing bias and one advocating for an immediate rate cut. This insight will be important for understanding the future rate path, particularly for commercial real estate financing costs.\n\n2. **Housing Data Releases**: On Thursday, data on April housing starts and building permits will be published, shedding light on the construction pipeline amid high mortgage rates and waning demand. For commercial real estate, data on multifamily permits and starts will show trends affecting apartment supply, with a decrease in multifamily permits potentially indicating a reduction in supply pressure in the apartment market later this year.\n\n3. **Global Flash Purchasing Managers' Indexes**: Also on Thursday, the S&P Global Flash Purchasing Managers' Indexes will provide an early measure of May's manufacturing and services activity. The report speculates that the strength in manufacturing observed in April may have been driven by defensive stockpiling, and it will be critical to see if this persists. The services data will reflect office-leasing demand, while manufacturing may indicate trends in industrial property fundamentals.\n\nThese updates aim to clarify the Federal Reserve's stance on rates before leadership changes, the evolving housing supply situation, and the overall business activity in key sectors.\n\nSource URL: https://www.trepp.com/trepptalk/chief-economists-weekly-watch-may-18-2026",
+      "addedAt": "2026-05-19T13:50:31.926Z",
+      "headline": "Market Moves: FOMC Insights, Housing Trends, and Global PMIs Shape Economic Outlook",
+      "blurb": "Navigate the shifting economic landscape with Trepp's latest insights as they unpack critical indicators that could reshape market expectations. The upcoming FOMC minutes promise to shed light on the Federal Reserve's stance amidst leadership changes, while fresh housing data reveals the impact of high mortgage rates. Additionally, global PMIs will offer early indicators of manufacturing and service activity, highlighting trends that could influence commercial real estate.",
+      "publicationAddedAt": "2026-05-19T14:02:56.793Z"
+    },
+    {
+      "link": "https://www.abc.org/News-Media/News-Releases/abc-all-but-6-states-had-construction-unemployment-rates-below-10-in-march",
+      "source": "ABC",
+      "title": "ABC: All But 6 States Had Construction Unemployment Rates Below 10% in March",
+      "pubDate": "2026-05-18",
+      "summaryText": "A May report from ABC reveals that the national March not seasonally adjusted construction unemployment rate was 6.7%, a 1.3% increase from March 2025. The analysis, based on U.S. Bureau of Labor Statistics data, found only two states, Louisiana and Ohio, had lower estimated construction unemployment rates, with all but six states reporting rates below 10%. \n\nNationally, non-seasonally adjusted payroll construction employment increased by 58,000 compared to March 2025, marking the 12th consecutive month of year-over-year growth below 100,000. Seasonally adjusted payroll construction employment reached 8.3 million, which is 9.3% above the pre-pandemic peak of 7.6 million. \n\nIn March 2026, 20 states had construction unemployment rates lower than in February 2020, and 19 states had lower rates than in March 2019. Bernard Markstein, president and chief economist of Markstein Advisors, noted that “the Iran war and resulting hike in energy prices are negatively affecting the construction industry,” which faces challenges like rising insurance premiums, labor costs, and skills shortages. This has led to a slowdown in construction activity and demand for workers.\n\nMonth-to-month, the national NSA construction unemployment rate dropped 0.2% from February, with 28 states reporting lower rates and 20 states showing higher rates. The seven states with the lowest rates in March were Oklahoma (2.8%), South Dakota (2.9%), Tennessee (3.4%), New Hampshire (3.5%), and Colorado, Hawaii, and North Carolina (4.1% each). South Dakota recorded its second-lowest rate on record at 2.9%.\n\nConversely, the five states with the highest rates were New Mexico (11.7%), New Jersey (12.9%), Minnesota (13.2%), Connecticut (14.8%), and Rhode Island (16.2%). Rhode Island noted the largest monthly decline, down 3.4%, while Connecticut saw a 2.7% reduction.\n\nSource URL: https://www.abc.org/News-Media/News-Releases/abc-all-but-6-states-had-construction-unemployment-rates-below-10-in-march",
+      "addedAt": "2026-05-19T14:02:53.043Z",
+      "headline": "Construction Unemployment Rate Hits 6.7% in March, with Most States Below 10%",
+      "blurb": "A recent report from ABC reveals that the construction unemployment rate in March 2026 rose to 6.7%, yet most states are thriving with rates below 10%. Notably, Oklahoma and South Dakota lead the way with strikingly low unemployment figures, even as the industry grapples with challenges from rising costs and a skills shortage. As construction employment grows steadily for the twelfth consecutive month, the landscape reflects both resilience and the hurdles ahead.",
+      "publicationAddedAt": "2026-05-19T14:03:00.622Z"
     }
   ]
 }
