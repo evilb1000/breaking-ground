@@ -27,10 +27,10 @@ const ARTICLES_BY_SERIES_QUERY = `*[_type == "figmaArticle" && series->slug.curr
     publishedAt,
     readingTime,
     "category": coalesce(articleTag, category, section),
-    introImage{asset->{url,_ref,_type}, alt},
-    headerImage{asset->{url,_ref,_type}, alt},
-    heroImage{asset->{url,_ref,_type}, alt},
-    homepageImage{asset->{url,_ref,_type}, alt},
+    introImage{asset->{url,_ref,_type}, alt, crop, hotspot},
+    headerImage{asset->{url,_ref,_type}, alt, crop, hotspot},
+    heroImage{asset->{url,_ref,_type}, alt, crop, hotspot},
+    homepageImage{asset->{url,_ref,_type}, alt, crop, hotspot},
     author->{name},
     series->{title, seriesImage{asset->{url,_ref,_type}, alt}}
   }`;
@@ -45,10 +45,10 @@ const ARTICLES_BY_SECTION_QUERY = `*[_type == "figmaArticle" && section == $sect
     publishedAt,
     "category": coalesce(articleTag, category, section),
     readingTime,
-    introImage{asset->{url,_ref,_type}, alt},
-    headerImage{asset->{url,_ref,_type}, alt},
-    heroImage{asset->{url,_ref,_type}, alt},
-    homepageImage{asset->{url,_ref,_type}, alt},
+    introImage{asset->{url,_ref,_type}, alt, crop, hotspot},
+    headerImage{asset->{url,_ref,_type}, alt, crop, hotspot},
+    heroImage{asset->{url,_ref,_type}, alt, crop, hotspot},
+    homepageImage{asset->{url,_ref,_type}, alt, crop, hotspot},
     author->{name},
     series->{title, seriesImage{asset->{url,_ref,_type}, alt}}
   }`;
@@ -66,6 +66,8 @@ const urlFor = (source: SanityImageSource) =>
 type ImageAssetRef = {
   asset?: { url?: string; _ref?: string; _type?: string };
   alt?: string;
+  crop?: unknown;
+  hotspot?: { x?: number; y?: number };
 };
 
 type LandingSourceItem = {
@@ -97,6 +99,12 @@ const pickImage = (article: LandingSourceItem) =>
     : hasAsset(article?.series?.seriesImage)
     ? article.series?.seriesImage ?? null
     : null;
+
+const hotspotPosition = (img?: ImageAssetRef | null) => {
+  const hotspot = img?.hotspot;
+  if (typeof hotspot?.x !== "number" || typeof hotspot?.y !== "number") return undefined;
+  return `${(hotspot.x * 100).toFixed(1)}% ${(hotspot.y * 100).toFixed(1)}%`;
+};
 
 function formatDisplayDate(raw?: string): string {
   if (!raw) return "APRIL 15, 2026";
@@ -175,6 +183,7 @@ export default async function SectionPage({
       href: articleHref(article.slug?.current),
       imageSrc,
       imageAlt: img?.alt || article.title || "Article image",
+      imagePosition: hotspotPosition(img),
       dateLabel: formatDisplayDate(article.publishedAt),
       readTimeLabel: article.readingTime ? `${article.readingTime} MIN READ` : "3 MIN READ",
       tagLabel,

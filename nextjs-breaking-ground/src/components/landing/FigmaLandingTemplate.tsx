@@ -19,6 +19,7 @@ export type LandingItem = {
   href: string;
   imageSrc?: string | null;
   imageAlt?: string;
+  imagePosition?: string;
   dateLabel?: string;
   readTimeLabel?: string;
   tagLabel?: string;
@@ -76,6 +77,7 @@ function TileCard({ item }: { item: LandingItem }) {
           src={item.imageSrc || FALLBACK_TILE_IMAGE}
           alt={item.imageAlt || item.title}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
         />
       </div>
       <div className="mt-[16px] flex flex-col gap-[5px]">

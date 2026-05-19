@@ -2,6 +2,7 @@ import Link from "next/link";
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import { client } from "@/sanity/client";
+import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 
 export const revalidate = 0;
 
@@ -58,7 +59,10 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
 }
 
 export default async function SponsorsPage() {
-  const sponsors = await client.fetch<Sponsor[]>(SPONSORS_QUERY, {}, options);
+  const [sponsors, eventBanner] = await Promise.all([
+    client.fetch<Sponsor[]>(SPONSORS_QUERY, {}, options),
+    getHomepageEventBannerProps(),
+  ]);
 
   return (
     <main className="min-h-screen bg-white text-[#312e28]">
@@ -96,13 +100,7 @@ export default async function SponsorsPage() {
       </section>
 
       <div className="mx-auto w-full max-w-[1440px] px-4 md:px-[26px]">
-        <HomepageEventBanner
-          title="Come Join Us At the 2025 Evening of Excellence"
-          subtitle="Event starts 8:00 pm on 04.13.2026"
-          body="Join us for an unforgettable evening of celebration, inspiration, and impact."
-          ctaLabel="Register here"
-          ctaHref="https://www.mbawpa.org/events/mba-young-constructors-leadership-development-seminar/"
-        />
+        <HomepageEventBanner {...eventBanner} />
       </div>
     </main>
   );
