@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-05-19T14:32:15.632Z",
+  "updatedAt": "2026-05-20T14:54:09.752Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -892,6 +892,17 @@
       "headline": "URA Board Meeting Highlights Key Discussions on Housing and Community Initiatives",
       "blurb": "The URA Regular Board Meeting in May 2026 spotlighted vital discussions on housing affordability and community initiatives, with residents voicing concerns about gentrification and land access. Key developments included the announcement of a commercial facade grant program and the launch of a housing opportunity fund survey, inviting local input on affordable housing priorities. The board also reviewed plans for new affordable housing projects, aiming to make a significant impact in neighborhoods like Fairywood and Hazlewood.",
       "publicationAddedAt": "2026-05-19T14:28:43.171Z"
+    },
+    {
+      "link": "https://www.goldmansachs.com/insights/articles/us-data-center-power-demand-projected-to-double-by-2027",
+      "source": "Goldman Sachs",
+      "title": "US Data Center Power Demand Projected to Double by 2027",
+      "pubDate": "2026-05-20",
+      "summaryText": "A May report from Goldman Sachs forecasts that US data center power demand will more than double by 2027, driven by increasing needs for artificial intelligence (AI) computing. According to Goldman Sachs Research, power demand is projected to rise from 31 gigawatts (GW) in 2025 to 41 GW in 2026 and further to 66 GW in 2027. This estimation is based on the anticipated US data center capacity increasing to about 95 GW by the end of 2027, with a capacity utilization assumption of 70%.\n\nThe report outlines a significant acceleration in capacity additions, predicting 13.6 GW in 2026 and 36.3 GW in 2027, in contrast to the 6.4 GW and 8.5 GW realized in 2024 and 2025, respectively. These forecasts leverage construction schedules from Aterio, which consider detailed facility-level data.\n\nHowever, the report notes that not all scheduled construction will necessarily translate into functioning data centers. Historically, around 72% of planned data centers are completed within expected timelines, a figure that decreases for longer-term projects. Leading factors in potential delays include simultaneous applications for various sites and supply chain or labor shortages, with average construction timelines of 18 to 24 months post-permit acquisition.\n\nAfter adjusting for these challenges, Goldman Sachs projects that about 60% of planned capacity for the coming year will be operational on time, decreasing to 50% in the subsequent two years. Even with these conservative estimates, a significant amount of new capacity—approximately 11.5 GW—could be online by the last quarters of 2026.\n\nRegional disparities in power demand growth are also evident. By 2027, annual data center additions in the Mid-Atlantic, Texas, and Mid-Continent markets are anticipated to surpass the total national additions of 2025. However, power reliability risks are heightened in the Mid-Atlantic, Mid-Continent, and Northwest markets due to limited planned generation capacity relative to the surge in data center demand. Conversely, Texas and Georgia are expected to experience only slight increases in power demand, supported by significant new generation capacity.\n\nThe report indicates that the share of US data centers in peak summer power demand will increase from 4.1% in 2025 to 5.3% in 2026 and to 8.5% in 2027. This tightening situation may affect electricity prices and grid stability nationwide. Goldman Sachs also highlights the uncertainty surrounding the forecasts, noting potential delays and cancellations could hinder actual capacity while new, unanticipated projects might boost additions.\n\nThis article is for educational purposes only and not a recommendation. Goldman Sachs disclaims all warranties concerning the accuracy of its statements. \n\nSource URL: https://www.goldmansachs.com/insights/articles/us-data-center-power-demand-projected-to-double-by-2027",
+      "addedAt": "2026-05-20T14:53:24.261Z",
+      "headline": "US Data Center Power Demand Set to Surge Over 100% by 2027 Amid AI Boom, Warns Goldman Sachs",
+      "blurb": "A recent report from Goldman Sachs projects a staggering surge in US data center power demand, which is expected to more than double by 2027. As the artificial intelligence boom accelerates, power needs may soar from 31 gigawatts in 2025 to a remarkable 66 gigawatts by 2027, signaling a crucial moment for energy infrastructure and stability across the nation. With significant regional disparities in growth and potential reliability challenges looming, the report underscores the urgent need for strategic planning in energy generation and management.",
+      "publicationAddedAt": "2026-05-20T14:53:32.217Z"
     }
   ]
 }
