@@ -139,6 +139,10 @@ function contextSeed(contextKey?: string) {
 function contextOffset(contextKey?: string): number {
   const articleOrdinal = contextKey?.match(/^article-ordinal:(\d+)$/)?.[1];
   if (articleOrdinal) return Number.parseInt(articleOrdinal, 10) * 3;
+
+  const newsPageOrdinal = contextKey?.match(/^news-page-ordinal:(\d+)$/)?.[1];
+  if (newsPageOrdinal) return (Number.parseInt(newsPageOrdinal, 10) - 1) * 5;
+
   return contextSeed(contextKey);
 }
 
