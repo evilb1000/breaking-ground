@@ -77,10 +77,34 @@ const AD_CREATIVES_BY_SURFACE_QUERY = `*[
   }
 }`;
 
+const ARTICLE_AD_ORDINAL_QUERY = `*[
+  _type == "figmaArticle" &&
+  defined(slug.current) &&
+  (!defined($section) || section == $section)
+] | order(coalesce(publishedAt, _createdAt) desc, slug.current asc) {
+  "slug": slug.current
+}`;
+
 const options = { next: { revalidate: 0 } };
 
 export async function getAdsForSurface(surface: AdSurface): Promise<AdCreative[]> {
   return client.fetch<AdCreative[]>(AD_CREATIVES_BY_SURFACE_QUERY, { surface }, options);
+}
+
+export async function getArticleAdOrdinal(
+  slug?: string | null,
+  section?: string | null
+): Promise<number | null> {
+  if (!slug) return null;
+
+  const rows = await client.fetch<Array<{ slug?: string }>>(
+    ARTICLE_AD_ORDINAL_QUERY,
+    { section: section || null },
+    options
+  );
+  const index = rows.findIndex((row) => row.slug === slug);
+
+  return index >= 0 ? index : null;
 }
 
 export function selectAd(ads: AdCreative[] | undefined, slotIndex = 0): AdCreative | null {
@@ -110,6 +134,12 @@ function contextSeed(contextKey?: string) {
     hash = (hash * 31 + contextKey.charCodeAt(i)) >>> 0;
   }
   return hash;
+}
+
+function contextOffset(contextKey?: string): number {
+  const articleOrdinal = contextKey?.match(/^article-ordinal:(\d+)$/)?.[1];
+  if (articleOrdinal) return Number.parseInt(articleOrdinal, 10) * 3;
+  return contextSeed(contextKey);
 }
 
 function adsForTier(ads: AdCreative[], tier: SponsorTier) {
@@ -168,7 +198,7 @@ export function selectAdForPlacement(
 ): AdCreative | null {
   if (!ads?.length) return null;
 
-  const effectiveSlotIndex = slotIndex + seed + contextSeed(contextKey);
+  const effectiveSlotIndex = slotIndex + seed + contextOffset(contextKey);
   const tiers = TIER_PRIORITY_BY_PLACEMENT[placement];
   for (const tier of tiers) {
     const tierAds = adsForTier(ads, tier);

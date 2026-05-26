@@ -5,7 +5,7 @@ import HomepageEventBanner from "@/components/homepage/HomepageEventBanner";
 import ProfileAdUnit from "@/components/ads/ProfileAdUnit";
 import { threeAdChunks } from "@/lib/chunkBody";
 import { articleUrl } from "@/lib/urls";
-import { adSurfaceForArticleSection, excludeConflictingAds, getAdsForSurface, profileAdPlacementForSlot, selectAdForPlacement } from "@/lib/ads";
+import { adSurfaceForArticleSection, excludeConflictingAds, getArticleAdOrdinal, getAdsForSurface, profileAdPlacementForSlot, selectAdForPlacement } from "@/lib/ads";
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 import {
   AuthorBioText,
@@ -372,9 +372,12 @@ type SanityImageLike = {
 export default async function FigmaProfileArticlePage({ article }: { article: FigmaArticleDoc }) {
   const headline = article.headline || "Untitled";
   const section = article.section;
-  const [ads, eventBanner] = await Promise.all([
+  const slugValue =
+    typeof article.slug === "string" ? article.slug : article.slug?.current || "";
+  const [ads, eventBanner, adOrdinal] = await Promise.all([
     getAdsForSurface(adSurfaceForArticleSection(section)),
     getHomepageEventBannerProps(),
+    getArticleAdOrdinal(slugValue, section),
   ]);
   const eligibleAds = excludeConflictingAds(ads, {
     _id: article.adConflictSponsor?._id,
@@ -382,9 +385,7 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
   });
   const heroImg =
     article.heroImage || article.introImage || article.headerImage || undefined;
-  const slugValue =
-    typeof article.slug === "string" ? article.slug : article.slug?.current || "";
-  const adContextKey = slugValue || headline;
+  const adContextKey = adOrdinal === null ? slugValue || headline : `article-ordinal:${adOrdinal}`;
   const shareUrl = articleUrl(slugValue);
 
   return (

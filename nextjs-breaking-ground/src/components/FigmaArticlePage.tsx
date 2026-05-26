@@ -13,6 +13,7 @@ import {
   adPlacementForArticleSection,
   adSurfaceForArticleSection,
   excludeConflictingAds,
+  getArticleAdOrdinal,
   getAdsForSurface,
   selectAdForPlacement,
   type AdConflictSponsor,
@@ -657,9 +658,14 @@ function NextArticleCTA({ next }: { next?: NextRef }) {
 export default async function FigmaArticlePage({ article }: { article: FigmaArticleDoc }) {
   const headline = article.headline || "Untitled";
   const section = article.section;
-  const [ads, eventBanner] = await Promise.all([
+  const slugValue =
+    typeof article.slug === "string"
+      ? article.slug
+      : article.slug?.current || "";
+  const [ads, eventBanner, adOrdinal] = await Promise.all([
     getAdsForSurface(adSurfaceForArticleSection(section)),
     getHomepageEventBannerProps(),
+    getArticleAdOrdinal(slugValue, section),
   ]);
   const eligibleAds = excludeConflictingAds(ads, {
     _id: article.adConflictSponsor?._id,
@@ -668,11 +674,7 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
   const adPlacement = adPlacementForArticleSection(section);
   const introSrc = imageSrc(article.introImage, 1400);
   const introPos = hotspotPosition(article.introImage);
-  const slugValue =
-    typeof article.slug === "string"
-      ? article.slug
-      : article.slug?.current || "";
-  const adContextKey = slugValue || headline;
+  const adContextKey = adOrdinal === null ? slugValue || headline : `article-ordinal:${adOrdinal}`;
   const shareUrl = articleUrl(slugValue);
 
   return (
