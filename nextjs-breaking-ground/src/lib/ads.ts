@@ -116,6 +116,28 @@ function adsForTier(ads: AdCreative[], tier: SponsorTier) {
   return ads.filter((ad) => ad.sponsor?.tier === tier);
 }
 
+function sponsorKey(ad: AdCreative): string {
+  return ad.sponsor?._id || ad.sponsor?.name || ad._id;
+}
+
+function sponsorBalancedAds(ads: AdCreative[], seed: number): AdCreative[] {
+  const groups = new Map<string, AdCreative[]>();
+
+  for (const ad of ads) {
+    const key = sponsorKey(ad);
+    const group = groups.get(key);
+    if (group) {
+      group.push(ad);
+    } else {
+      groups.set(key, [ad]);
+    }
+  }
+
+  return Array.from(groups.values())
+    .map((group, index) => selectAd(group, seed + index))
+    .filter((ad): ad is AdCreative => Boolean(ad));
+}
+
 export function excludeConflictingAds(
   ads: AdCreative[] | undefined,
   conflictSponsor?: AdConflictSponsor | null
@@ -150,10 +172,10 @@ export function selectAdForPlacement(
   const tiers = TIER_PRIORITY_BY_PLACEMENT[placement];
   for (const tier of tiers) {
     const tierAds = adsForTier(ads, tier);
-    if (tierAds.length) return selectAd(tierAds, effectiveSlotIndex);
+    if (tierAds.length) return selectAd(sponsorBalancedAds(tierAds, effectiveSlotIndex), effectiveSlotIndex);
   }
 
-  return selectAd(ads, effectiveSlotIndex);
+  return selectAd(sponsorBalancedAds(ads, effectiveSlotIndex), effectiveSlotIndex);
 }
 
 export function profileAdPlacementForSlot(slotIndex: number): AdPlacement {
