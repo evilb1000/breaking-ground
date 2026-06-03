@@ -80,6 +80,7 @@ const AD_CREATIVES_BY_SURFACE_QUERY = `*[
 const ARTICLE_AD_ORDINAL_QUERY = `*[
   _type == "figmaArticle" &&
   defined(slug.current) &&
+  hideFromSite != true &&
   (!defined($section) || section == $section)
 ] | order(coalesce(publishedAt, _createdAt) desc, slug.current asc) {
   "slug": slug.current

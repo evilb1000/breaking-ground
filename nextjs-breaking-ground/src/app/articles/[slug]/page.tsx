@@ -7,7 +7,7 @@ import FigmaProfileArticlePage from "@/components/FigmaProfileArticlePage";
 import Link from "next/link";
 import { SITE_URL, articleUrl } from "@/lib/urls";
 
-const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
+const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug && hideFromSite != true][0]{
   _type,
   "slug": slug.current,
   title,
@@ -36,6 +36,7 @@ const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   relatedArticles[]->{
     _id,
     _type,
+    hideFromSite,
     "slug": slug.current,
     title,
     headline,
@@ -50,6 +51,7 @@ const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
   nextArticle->{
     _id,
     _type,
+    hideFromSite,
     "slug": slug.current,
     title,
     headline,
@@ -62,7 +64,7 @@ const ENTRY_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
 // body to a plain-text string so we can truncate the first paragraph as a
 // meta-description fallback when `dek` is missing. Runs as a separate query
 // from the main article fetch so neither path has to carry the other's cost.
-const META_QUERY = `*[_type == "figmaArticle" && slug.current == $slug][0]{
+const META_QUERY = `*[_type == "figmaArticle" && slug.current == $slug && hideFromSite != true][0]{
   title,
   headline,
   dek,

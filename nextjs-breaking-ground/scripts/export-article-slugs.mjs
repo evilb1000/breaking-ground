@@ -32,7 +32,7 @@ const client = createClient({
   useCdn: false,
 })
 
-const QUERY = `*[_type == "figmaArticle" && defined(slug.current)]{
+const QUERY = `*[_type == "figmaArticle" && defined(slug.current) && hideFromSite != true]{
   "slug": slug.current
 } | order(slug asc)`
 

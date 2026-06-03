@@ -43,7 +43,7 @@ type SanityArticleSitemapRow = {
 
 // Live projection so the sitemap's <lastmod> actually reflects the most recent
 // edit in Sanity instead of the last time the static manifest was regenerated.
-const ARTICLES_QUERY = `*[_type == "figmaArticle" && defined(slug.current)]{
+const ARTICLES_QUERY = `*[_type == "figmaArticle" && defined(slug.current) && hideFromSite != true]{
   "slug": slug.current,
   _updatedAt
 }`;

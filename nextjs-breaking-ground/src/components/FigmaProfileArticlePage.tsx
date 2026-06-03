@@ -387,6 +387,8 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
     article.heroImage || article.introImage || article.headerImage || undefined;
   const adContextKey = adOrdinal === null ? slugValue || headline : `article-ordinal:${adOrdinal}`;
   const shareUrl = articleUrl(slugValue);
+  const relatedArticles = (article.relatedArticles || []).filter((rel) => !rel.hideFromSite);
+  const nextArticle = article.nextArticle?.hideFromSite ? undefined : article.nextArticle;
 
   return (
     <>
@@ -416,7 +418,7 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
                 author={article.author}
                 coAuthors={article.coAuthors}
                 authorBio={article.authorBio}
-                relatedArticles={article.relatedArticles}
+                relatedArticles={relatedArticles}
                 shareUrl={shareUrl}
                 headline={headline}
               />
@@ -446,7 +448,7 @@ export default async function FigmaProfileArticlePage({ article }: { article: Fi
                 );
               })() : null}
 
-              <NextArticleCTA next={article.nextArticle} />
+              <NextArticleCTA next={nextArticle} />
             </article>
           </div>
 

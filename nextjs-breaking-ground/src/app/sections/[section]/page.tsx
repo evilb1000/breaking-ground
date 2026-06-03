@@ -18,7 +18,7 @@ const SECTIONS: Record<string, { title: string; seriesSlug: string }> = {
   "ai-in-construction": { title: "AI In Construction", seriesSlug: "ai-in-construction" },
 };
 
-const ARTICLES_BY_SERIES_QUERY = `*[_type == "figmaArticle" && series->slug.current == $seriesSlug && defined(slug.current)]
+const ARTICLES_BY_SERIES_QUERY = `*[_type == "figmaArticle" && series->slug.current == $seriesSlug && defined(slug.current) && hideFromSite != true]
   | order(publishedAt desc){
     _id,
     "title": coalesce(headline, title),
@@ -35,7 +35,7 @@ const ARTICLES_BY_SERIES_QUERY = `*[_type == "figmaArticle" && series->slug.curr
     series->{title, seriesImage{asset->{url,_ref,_type}, alt}}
   }`;
 
-const ARTICLES_BY_SECTION_QUERY = `*[_type == "figmaArticle" && section == $section && defined(slug.current)]
+const ARTICLES_BY_SECTION_QUERY = `*[_type == "figmaArticle" && section == $section && defined(slug.current) && hideFromSite != true]
   | order(publishedAt desc){
     _id,
     _type,

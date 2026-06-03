@@ -39,6 +39,7 @@ const imgArrowForwardWhite = "/figma-assets/arrow-forward-white.svg";
 const ENTRY_PROJECTION = `
   _id,
   _type,
+  hideFromSite,
   "title": coalesce(title, headline),
   homepageHeadline,
   dek,
@@ -70,6 +71,7 @@ const HOMEPAGE_QUERY = `*[_type == "updatedHomepage"] | order(_updatedAt desc)[0
 type HomepageEntry = {
   _id: string;
   _type: string;
+  hideFromSite?: boolean;
   title?: string;
   homepageHeadline?: string;
   dek?: string;
@@ -119,6 +121,7 @@ const options = { next: { revalidate: 0 } };
 const TAB_PROJECTION = `{
   _id,
   _type,
+  hideFromSite,
   "title": coalesce(headline, title),
   "slug": slug,
   publishedAt,
@@ -130,9 +133,9 @@ const TAB_PROJECTION = `{
   introImage
 }`;
 
-const PROFILES_TAB_QUERY = `*[_type == "figmaArticle" && section in ["project-profiles", "member-profiles"]] | order(coalesce(publishedAt, _createdAt) desc)[0...6]${TAB_PROJECTION}`;
+const PROFILES_TAB_QUERY = `*[_type == "figmaArticle" && section in ["project-profiles", "member-profiles"] && hideFromSite != true] | order(coalesce(publishedAt, _createdAt) desc)[0...7]${TAB_PROJECTION}`;
 
-const PERSPECTIVES_TAB_QUERY = `*[_type == "figmaArticle" && section == "perspectives"] | order(coalesce(publishedAt, _createdAt) desc)[0...10]${TAB_PROJECTION}`;
+const PERSPECTIVES_TAB_QUERY = `*[_type == "figmaArticle" && section == "perspectives" && hideFromSite != true] | order(coalesce(publishedAt, _createdAt) desc)[0...11]${TAB_PROJECTION}`;
 
 const PERSPECTIVES_ROTATION_SIZE = 3;
 const PERSPECTIVES_ROTATION_INTERVAL_MS = 24 * 60 * 60 * 1000;
@@ -794,8 +797,15 @@ export default async function IndexPage() {
     getAdsForSurface("homepage"),
   ]);
   const homepageAd = selectAdForPlacement(homepageAds, "homepageSponsor", 0, "homepage");
-  const hero = homepage?.heroArticle ?? null;
-  const event = homepage?.tertiaryFeature ?? homepage?.issueHighlight ?? null;
+  const visibleEntry = (entry?: HomepageEntry | null) => entry && !entry.hideFromSite ? entry : null;
+  const hero = visibleEntry(homepage?.heroArticle);
+  const event = visibleEntry(homepage?.tertiaryFeature) ?? visibleEntry(homepage?.issueHighlight);
+  const heroSlug = hero?.slug?.current;
+  const isHeroEntry = (entry: HomepageEntry) =>
+    Boolean(
+      (hero?._id && entry._id === hero._id) ||
+        (heroSlug && entry.slug?.current === heroSlug)
+    );
 
   const toTabItem = (entry: HomepageEntry): TabItem => ({
     id: entry._id || entry.slug?.current || entry.title || "untitled",
@@ -805,9 +815,9 @@ export default async function IndexPage() {
     publishedAt: entry.publishedAt,
     readingTime: entry.readingTime,
   });
-  const profiles = (profilesRaw || []).map(toTabItem);
+  const profiles = (profilesRaw || []).filter((entry) => !isHeroEntry(entry)).slice(0, 6).map(toTabItem);
   const perspectives = selectRotatingRecentItems(
-    (perspectivesRaw || []).map(toTabItem),
+    (perspectivesRaw || []).filter((entry) => !isHeroEntry(entry)).map(toTabItem),
     PERSPECTIVES_ROTATION_SIZE,
     PERSPECTIVES_ROTATION_INTERVAL_MS
   );

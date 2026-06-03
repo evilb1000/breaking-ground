@@ -33,6 +33,15 @@ export const figmaArticle = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'hideFromSite',
+      title: 'Hide From Site',
+      type: 'boolean',
+      group: 'meta',
+      initialValue: false,
+      description:
+        'Soft unpublish toggle. Keep the article in Studio, but remove it from live article pages, landing pages, homepage feeds, sitemap, and redirects.',
+    }),
+    defineField({
       name: 'readingTime',
       title: 'Estimated Reading Time (Minutes)',
       type: 'number',
