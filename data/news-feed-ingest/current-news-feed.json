@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-06-01T17:21:56.870Z",
+  "updatedAt": "2026-06-04T12:31:24.613Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -1002,6 +1002,28 @@
       "headline": "Allegheny County Council Meeting Minutes from May 26, 2026, Detail Proceedings, Appointments, and Ordinance Approvals.",
       "blurb": "The Allegheny County Council meeting held on May 26, 2026, included the election of Council Member Michelle Naccarati-Chapkis as President and the approval of minutes from the previous meeting. Various proclamations were presented, and appointments to the Independent Police Review Board and the ALCOSAN Board were referred for review. The Council also approved an ordinance related to jail rape, discussed new business items regarding referendums and bond issues, and authorized a public hearing, concluding the meeting with a unanimous motion to adjourn.",
       "publicationAddedAt": "2026-06-01T17:21:46.030Z"
+    },
+    {
+      "link": "https://www.federalreserve.gov/monetarypolicy/beigebook202605-summary.htm",
+      "source": "Federal Reserve",
+      "title": "Beige Book - June 3, 2026",
+      "pubDate": "2026-06-03",
+      "summaryText": "A June 3, 2026 report from the Federal Reserve details economic activity across the twelve Federal Reserve Districts. \n\nOverall, economic activity showed slight to moderate growth in ten Districts, while one reported a slight decline and another no change. Consumer spending varied, with higher-income households appearing less affected by price increases, in contrast to middle- and low-income households facing affordability challenges. Increased credit card usage and reduced retail visits were notable trends. Auto demand softened, particularly for new vehicles, while manufacturing grew modestly in most Districts. Banking conditions remained stable, but loan delinquencies were on the rise in several Districts, particularly for mortgages and consumer loans. Agricultural conditions either saw no change or declined due to heightened cost pressures.\n\nLabor market conditions showed little change across most Districts, with manufacturing hiring remaining strong in select areas. Wage growth was modest, influenced by various cost-of-living adjustments due to rising expenses. Employment hiring remained selective, focusing mainly on critical roles, while job changers were few owing to economic uncertainty.\n\nRegarding prices, inflation emerged stronger than in the previous report, largely attributed to energy-related costs stemming from Middle Eastern conflicts. Many sectors reported challenges in passing on higher costs to consumers, leading firms to adopt various mitigation strategies.\n\nDistrict-specific highlights included:\n\n- **Boston**: Slight economic growth and mixed consumer spending amid elevated gas prices.\n- **New York**: Slight economic increase, with robust manufacturing growth and moderate consumer spending uptick.\n- **Philadelphia**: Slight decline in business activity and mixed employment outcomes.\n- **Cleveland**: Moderate growth in business activity, with increasing demand in manufacturing and construction.\n- **Richmond**: Modest growth across sectors with unchanged employment levels.\n- **Atlanta**: Modest economic growth but stagnation in travel and flat real estate.\n- **Chicago**: Slight economic increase with robust manufacturing demand.\n- **St. Louis**: Slight activity increase amid concerns over rising costs.\n- **Minneapolis**: Modest expansion with sharp price increases.\n- **Kansas City**: Slight economic growth, but cautious spending from consumers.\n- **Dallas**: Modest economic expansion amid mixed retail and real estate performance.\n- **San Francisco**: Stable economic conditions with slight growth in wages and flat retail sales.\n\nThis report was prepared at the Federal Reserve Bank of Kansas City based on information collected on or before May 27, 2026. \n\nSource URL: https://www.federalreserve.gov/monetarypolicy/beigebook202605-summary.htm",
+      "addedAt": "2026-06-04T12:31:20.616Z",
+      "headline": "Federal Reserve report notes slight to moderate economic growth across most districts, with mixed consumer spending and rising loan delinquencies.",
+      "blurb": "The Federal Reserve's June 3, 2026 report indicates slight to moderate economic growth in ten districts, while one district declined and another showed no change. Consumer spending was mixed, with higher-income households less affected by price increases, while loan delinquencies rose, particularly for mortgages and consumer loans. Labor market conditions remained stable, though wage growth was modest and employment hiring focused on critical roles amid economic uncertainty.",
+      "publicationAddedAt": "2026-06-04T12:31:24.017Z"
+    },
+    {
+      "link": "https://news.agc.org/economics/construction-jobs-increase-in-majority-of-metro-areas-from-april-2025-to-april-2026-amid-growing-data-center-pushback-and-need-for-highway-bill/",
+      "source": "AGC Construction Data",
+      "title": "Construction Jobs Increase In Majority Of Metro Areas From April 2025 To April 2026 Amid Growing Data Center Pushback And Need For Highway Bill",
+      "pubDate": "2026-06-03",
+      "summaryText": "A June report from AGC Construction Data highlights that construction employment rose in 192, or 53 percent, of 360 metro areas from April 2025 to April 2026, based on an analysis of new government employment data. Association officials noted concerns about increasing pushback against data center construction and the possibility of Congress failing to pass a crucial highway and transit bill, which could threaten construction employment levels. Ken Simonson, the association’s chief economist, stated, “While it is encouraging to see a majority of metros adding construction jobs, the growth is uneven and fragile,” emphasizing the impact of backlash against data centers on job growth in the industry. \n\nSource URL: https://news.agc.org/economics/construction-jobs-increase-in-majority-of-metro-areas-from-april-2025-to-april-2026-amid-growing-data-center-pushback-and-need-for-highway-bill/",
+      "addedAt": "2026-06-04T12:31:13.233Z",
+      "headline": "Construction Employment Rises in 53% of U.S. Metro Areas Amid Industry Concerns, Says AGC Report",
+      "blurb": "A June report from AGC Construction Data reveals that construction employment increased in 192 out of 360 U.S. metro areas, representing 53 percent of those regions, from April 2025 to April 2026. Despite this growth, concerns remain regarding resistance to data center construction and the potential failure of Congress to pass a vital highway and transit bill, which could adversely affect employment levels in the sector.",
+      "publicationAddedAt": "2026-06-04T12:31:24.613Z"
     }
   ]
 }
