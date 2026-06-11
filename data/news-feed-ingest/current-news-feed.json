@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-06-09T16:23:10.655Z",
+  "updatedAt": "2026-06-11T18:12:39.820Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -1068,6 +1068,17 @@
       "headline": "Agency Delinquency Rates in April 2026 Show Minor National Decline Amid Volatility in Smaller MSAs",
       "blurb": "A June report from Trepp indicates that the national securitized Agency delinquency rate slightly declined to 0.49% in April 2026, despite more new delinquent balances than cures. Smaller metropolitan statistical areas (MSAs) showed increased volatility, while larger MSAs remained more stable, with varying rates across significant markets. The report emphasizes the influence of specific loan-level events on delinquency trends.",
       "publicationAddedAt": "2026-06-09T16:23:09.420Z"
+    },
+    {
+      "link": "https://triblive.com/news/health-now/allegheny-general-hospital-to-undergo-4-year-external-facelift/",
+      "source": "AHN In The News",
+      "title": "Tribune-Review: Allegheny General Hospital to undergo 4-year external facelift",
+      "pubDate": "2026-05-14",
+      "summaryText": "A May 14, 2026 article from the Tribune-Review outlines a significant external renovation planned for Allegheny General Hospital. The hospital's 90-year-old South Tower, a 22-story structure, is set to undergo a four-year renovation project costing $36 million, scheduled to commence in June. The initiative aims to enhance the building's facade, including an overhaul of its masonry and ornamental terra cotta, replacing over 800 windows, and repairing or replacing 60,000 square feet of roofing.\n\nThe project is designed to extend the life of the 467,000-square-foot building while preserving its original architectural beauty. Hospital spokesperson Candance Herrington noted that the renovation’s focus was necessitated by the aging structure, which has suffered from wear over the years. She emphasized that patient care and hospital operations would remain unaffected during the renovation, as all updates will be external, with no changes to the building's layout.\n\nThe renovation will involve both “traditional craftsmanship” and “modern techniques,” with Mascaro Construction Company overseeing the work. The South Tower is historically significant, being one of the first high-rise hospitals in the U.S.; its distinctive top-section cathedral windows are inspired by Ancient Greek architecture.\n\nDr. Imran Qadeer, president of Allegheny General Hospital, expressed that the project is critical for maintaining the hospital as a cornerstone of their clinical campus, housing numerous offices and clinics that support healthcare providers. He clarified that while the TV series \"The Pitt,\" which has depicted the hospital, influenced some public interest, it did not affect the timing of the renovation plans.\n\nIn addition to this renovation, AHN is also preparing for a $43 million expansion of the hospital’s emergency department and recently announced an investment in a new $13 million helicopter for its LifeFlight fleet. \n\nSource URL: https://triblive.com/news/health-now/allegheny-general-hospital-to-undergo-4-year-external-facelift/",
+      "addedAt": "2026-06-11T18:12:26.314Z",
+      "headline": "Allegheny General Hospital to begin $36 million renovation of South Tower, focusing on external upgrades over four years.",
+      "blurb": "Allegheny General Hospital will initiate a $36 million renovation of its 90-year-old South Tower, focusing on external upgrades over the next four years. Scheduled to begin in June, the project includes enhancements to the building’s facade, window replacements, and roofing repairs, all designed to extend the structure's lifespan while preserving its architectural style. The renovations will not disrupt hospital operations or patient care, as they will be confined to the exterior.",
+      "publicationAddedAt": "2026-06-11T18:12:39.820Z"
     }
   ]
 }
