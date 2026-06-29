@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-06-24T19:02:09.164Z",
+  "updatedAt": "2026-06-29T17:03:01.514Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -1222,6 +1222,28 @@
       "headline": "Goldman Sachs Report Highlights Increasing Role of Private Market Financing in Data Center Funding Amidst Rising AI Investment Needs.",
       "blurb": "A June report from Goldman Sachs details the increasing importance of private market financing in funding data centers, driven by substantial investment needs for artificial intelligence. Hyperscalers are expected to invest over $5 trillion by 2030, leading to a shift towards private market solutions. The report notes that private infrastructure funds raised a record $221 billion in 2025, with annual growth rates suggesting a strong future for these markets.",
       "publicationAddedAt": "2026-06-24T19:01:46.099Z"
+    },
+    {
+      "link": "https://www.federalreserve.gov/econres/notes/feds-notes/a-news-based-approach-to-measuring-shortages-and-their-effects-on-the-global-economy-20260626.html",
+      "source": "Federal Reserve",
+      "title": "A News-Based Approach to Measuring Shortages and Their Effects on the Global Economy",
+      "pubDate": "2026-06-26",
+      "summaryText": "A June report from the Federal Reserve by Dario Caldara and Matteo Iacoviello examines the impact of global supply constraints, particularly due to recent Middle Eastern conflicts, on the economy through a \"shortage index\" derived from newspaper coverage. The report highlights that the ongoing conflict has disrupted oil and natural gas supplies and affected critical inputs like naphtha and fertilizers, resulting in longer delivery times and rising prices. \n\nThe researchers analyze the shortage index, which tracks media mentions of shortages across various sectors from 1900 to the present. This index is constructed using data from 25 million articles from six major U.S. newspapers and categorizes mentions related to food, industrial products, labor, and energy. The analysis shows that the shortage index is currently at 175, indicating elevated media focus on shortages related to energy and industrial products, which is significantly above historical averages but lower than peaks observed during the COVID-19 pandemic.\n\nThe authors apply an econometric model to assess the macroeconomic effects linked to movements in the shortage index. They find that an increase in the shortage index mirrors economic patterns in the past, projecting a decrease in global GDP by 0.8% and a rise in world inflation by 1% over three years in response to the current shortage pressures. The report concludes that historical data suggests periods of heightened media coverage of shortages often correlate with significant economic disruptions caused by geopolitical conflicts, natural disasters, or production failures.\n\nOverall, the report underscores the ongoing challenges in global supply chains, with potential ramifications for economic growth and inflation expected should the current shortages persist.\n\nSource URL: https://www.federalreserve.gov/econres/notes/feds-notes/a-news-based-approach-to-measuring-shortages-and-their-effects-on-the-global-economy-20260626.html",
+      "addedAt": "2026-06-29T17:02:51.962Z",
+      "headline": "Federal Reserve Report Analyzes Impact of Global Supply Constraints on Economy Using Shortage Index Derived from Media Coverage.",
+      "blurb": "The June 2026 report from the Federal Reserve by Dario Caldara and Matteo Iacoviello analyzes the impact of global supply constraints, particularly related to conflicts in the Middle East, on the economy using a \"shortage index\" based on media coverage. The study highlights disruptions in oil, natural gas, and essential inputs, revealing significant correlations between the shortage index and economic patterns, projecting a potential decrease in global GDP by 0.8% and a rise in inflation by 1% over three years. The findings emphasize the ongoing challenges within global supply chains and their implications for economic stability.",
+      "publicationAddedAt": "2026-06-29T17:03:01.514Z"
+    },
+    {
+      "link": "https://news.agc.org/news/construction-employment-increases-in-30-states-and-d-c-from-may-2025-to-may-2026-23-states-and-d-c-add-construction-jobs-from-april-to-may/",
+      "source": "AGC Construction Data",
+      "title": "Construction Employment Increases In 30 States And D.C. From May 2025 To May 2026; 23 States And D.C. Add Construction Jobs From April To May",
+      "pubDate": "2026-06-24",
+      "summaryText": "A June report from the Associated General Contractors of America indicates that construction employment rose in 30 states and the District of Columbia from May 2025 to May 2026. Additionally, 23 states and D.C. saw job increases between April and May. However, officials warned that construction demand may be threatened by political challenges affecting key sectors, particularly data center construction and highway and transportation projects. Ken Simonson, the association’s chief economist, noted, “State construction employment has been closely balanced between gains and losses in recent months,” highlighting a mix of strong demand in some areas and declining interest in others. \n\nSource URL: https://news.agc.org/news/construction-employment-increases-in-30-states-and-d-c-from-may-2025-to-may-2026-23-states-and-d-c-add-construction-jobs-from-april-to-may/",
+      "addedAt": "2026-06-29T17:02:56.274Z",
+      "headline": "Construction Employment Rises in 30 States and D.C. from May 2025 to May 2026, Says AGC Report",
+      "blurb": "A report from the Associated General Contractors of America reveals that construction employment increased in 30 states and the District of Columbia from May 2025 to May 2026, with 23 states and D.C. also experiencing job gains between April and May. However, experts caution that political challenges could impact construction demand, particularly in sectors like data center construction and transportation projects.",
+      "publicationAddedAt": "2026-06-29T17:03:01.167Z"
     }
   ]
 }
