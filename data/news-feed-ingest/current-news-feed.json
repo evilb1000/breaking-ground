@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-07-07T13:56:15.455Z",
+  "updatedAt": "2026-07-09T15:02:55.287Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -1321,6 +1321,17 @@
       "headline": "Trepp report highlights economic indicators, labor market data, and upcoming ECB forum participation by Chief Economist Warsh.",
       "blurb": "The June 29 report from Trepp examines key economic indicators, focusing on recent inflation trends, labor market data, and manufacturing releases. It highlights upcoming participation by Chief Economist Warsh at the European Central Bank forum, where his insights on inflation and the labor market are expected to influence market expectations. Additionally, important labor and manufacturing reports are set to be released this week, providing a clearer understanding of economic conditions moving into the latter half of 2026.",
       "publicationAddedAt": "2026-07-07T13:56:15.455Z"
+    },
+    {
+      "link": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20260617.htm",
+      "source": "Federal Reserve",
+      "title": "FOMC Minutes - June 2026 Meeting",
+      "pubDate": "2026-07-08",
+      "summaryText": "A July report from the Federal Reserve details the minutes of the June 2026 Federal Open Market Committee (FOMC) meeting held on June 16-17, 2026. \n\nThe FOMC discussed developments in financial markets, noting that asset prices were influenced by factors such as the Middle East conflict, solid economic data, rising inflation, and investment in artificial intelligence (AI). Optimism over a potential resolution in the Middle East led to a decrease in oil futures and inflation expectations. The manager highlighted that market participants expected no changes in the federal funds rate during the June meeting, with potential for a rate cut by mid-2027.\n\nInflation expectations had fluctuated, with short-term measures declining, though long-term expectations remained stable around the 2 percent target. The nominal 10-year Treasury yield rose due to changing ownership structures in Treasury securities. The S&P 500 index saw a 6 percent increase, buoyed by technology sector growth and IPO activity related to AI investments. Credit markets showed slower inflows to business development companies, while Treasury yields rose more rapidly than in other advanced economies due to shifting policy rate expectations.\n\nThe staff review noted that inflation was still elevated at 3.8 percent in April, led by core PCE inflation of 3.3 percent. Labor market conditions were stable with an unemployment rate of 4.3 percent. Real GDP showed solid growth aided by strong consumer spending and ongoing AI-related investments. Economic growth abroad varied, with some regions experiencing weakness while Asia showed robustness in high-tech exports.\n\nFOMC participants expressed concerns that inflation remained above the 2 percent target due to various pressures, particularly from tariffs and supply chain disruptions, including those linked to the Middle East conflict. They acknowledged the risk of commodity price increases affecting broader price levels but noted that longer-term inflation expectations seemed anchored. \n\nRegarding monetary policy, all members unanimously decided to maintain the federal funds rate target range at 3.5 to 3.75 percent. They discussed the potential for future monetary policy adjustments considering ongoing economic conditions and inflation risks. The meeting concluded with plans for a follow-up discussion in July and unanimous approval of the statement reflecting the Committee's commitment to price stability amid strong economic activity and stable labor conditions.\n\nThe next FOMC meeting is scheduled for July 28-29, 2026. \n\nSource URL: https://www.federalreserve.gov/monetarypolicy/fomcminutes20260617.htm",
+      "addedAt": "2026-07-09T15:02:49.303Z",
+      "headline": "Federal Reserve Releases Minutes from June 2026 FOMC Meeting, Discussing Economic Conditions and Monetary Policy Decisions.",
+      "blurb": "The Federal Reserve has released the minutes from the June 2026 Federal Open Market Committee (FOMC) meeting, held on June 16-17, 2026. The FOMC discussed economic conditions, noting inflation at 3.8 percent and stable labor market conditions, while unanimously deciding to maintain the federal funds rate at 3.5 to 3.75 percent. The next FOMC meeting is scheduled for July 28-29, 2026.",
+      "publicationAddedAt": "2026-07-09T15:02:55.287Z"
     }
   ]
 }
