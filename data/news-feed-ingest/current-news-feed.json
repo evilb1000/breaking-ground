@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-08-05T17:13:24.677Z",
+  "updatedAt": "2026-08-11T18:51:10.617Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -1607,6 +1607,72 @@
       "headline": "Governor Shapiro Allocates Over $26 Million to 17 Economic Development Projects in North Central and Northwest Pennsylvania.",
       "blurb": "Governor Shapiro has invested over $26 million in 17 community and economic development projects in North Central and Northwest Pennsylvania, as reported by the DCED Newsroom. The funding is provided through the Redevelopment Assistance Capital Program (RACP) and aims to enhance economic development, public safety, and infrastructure, among other initiatives. Projects include improvements to public facilities and workforce training programs designed to strengthen local economies and improve quality of life.",
       "publicationAddedAt": "2026-08-03T17:36:53.545Z"
+    },
+    {
+      "link": "https://www.agc.org/sites/default/files/users/user21902/datadigest20260807_V1.pdf",
+      "source": "AGC",
+      "title": "Click here for Data DIGest in August 7th 2026",
+      "pubDate": "2026-08-07",
+      "summaryText": "A report from the AGC, published on August 7, 2026, provides insights into the construction industry’s employment and spending trends. \n\nIn July, construction employment increased to 8,343,000, representing a rise of 22,000 from June and 82,000 (1.0%) year-over-year (y/y). Nonresidential construction experienced a gain of 20,000 jobs, whereas residential construction added only 2,100 jobs. Notably, labor costs for construction exceeded those in other sectors, with average hourly earnings (AHE) for production workers in July reaching $39.24, compared to a 3.2% y/y increase across the private sector, contrasted by a 5.2% hike in construction.\n\nConstruction spending in June totaled $2.17 trillion, indicating a decrease of 0.1% from May's revised figures and a 3.2% y/y decline. Private residential construction fell by 0.3% monthly and 4.7% annually, with various segments like single-family and multifamily dwelling showing declines. Conversely, private nonresidential spending edged up by 0.1% monthly but dropped 4.7% y/y, with data center construction seeing a notable monthly increase of 7.0% and a 46% y/y growth.\n\nPublic construction spending remained stable month-over-month, increasing by 1.7% y/y, particularly in highway and street construction (up 3.1%) and public transportation (up 3.8%).\n\nThe job market within construction saw an increase in job openings to 305,000, marking an uptick of 36% y/y. However, the number of hires dropped by 27,000 (7.7%) y/y, signaling a reduction in labor acquisition; the layoff rate also decreased. The Dodge Momentum Index, a forward-looking indicator for nonresidential building projects, climbed by 6.9% in July, indicating growing planning activity across several segments.\n\nFinally, copper futures prices rose by 1.3%, driven by sustained demand and supply constraints. \n\nSource URL: https://www.agc.org/sites/default/files/users/user21902/datadigest20260807_V1.pdf",
+      "addedAt": "2026-08-11T18:50:54.739Z",
+      "headline": "AGC Report Highlights July 2026 Construction Employment Increase and Spending Trends",
+      "blurb": "The AGC report published on August 7, 2026, indicates that construction employment rose to 8,343,000 in July, reflecting a gain of 22,000 jobs from June and a year-over-year increase of 82,000 jobs. Construction spending in June totaled $2.17 trillion, showing a slight decrease from May and a 3.2% decline compared to the previous year, while job openings in the sector reached 305,000, despite a drop in hires.",
+      "publicationAddedAt": "2026-08-11T18:51:05.094Z"
+    },
+    {
+      "link": "https://news.agc.org/economics/construction-employment-gains-and-wages-accelerate-in-july-industry-officials-warn-gains-may-stall-amid-threats-to-infrastructure-work/",
+      "source": "AGC Construction Data",
+      "title": "Construction Employment Gains And Wages Accelerate In July; Industry Officials Warn Gains May Stall Amid Threats To Infrastructure Work",
+      "pubDate": "2026-08-07",
+      "summaryText": "A report from AGC Construction Data published on August 7, 2026, indicates that construction firms added 22,000 jobs in July and 82,000 over the past year, with pay for craft workers increasing more rapidly than for production workers overall. According to the Associated General Contractors of America, the job gains in July were the highest since March, showcasing the ongoing demand for qualified workers. However, association officials expressed concerns that political factors could jeopardize sectors like public infrastructure and data center work, potentially leading to layoffs if funding or permitting is interrupted. Ken Simonson, the association’s chief economist, stated, “The job gains in construction last month were the most since March, as firms continue to pay a premium to hire qualified workers.” \n\nSource URL: https://news.agc.org/economics/construction-employment-gains-and-wages-accelerate-in-july-industry-officials-warn-gains-may-stall-amid-threats-to-infrastructure-work/",
+      "addedAt": "2026-08-11T18:50:51.873Z",
+      "headline": "Construction Employment Increased by 22,000 Jobs in July, But Concerns About Political Factors Rise, According to AGC Report.",
+      "blurb": "A report from AGC Construction Data reveals that construction employment increased by 22,000 jobs in July, marking the highest monthly gain since March. Over the past year, the industry added a total of 82,000 jobs, with wages for craft workers rising more quickly than for production workers. Despite this growth, officials from the Associated General Contractors of America express concerns that political factors may threaten public infrastructure and data center projects, potentially leading to future layoffs.",
+      "publicationAddedAt": "2026-08-11T18:51:06.035Z"
+    },
+    {
+      "link": "https://dced.pa.gov/newsroom/shapiro-davis-administration-celebrates-continued-investments-in-pennsylvanias-downtowns-and-main-streets-highlights-investment-to-support-small-businesses-in-etna/",
+      "source": "DCED Newsroom",
+      "title": "Shapiro-Davis Administration Celebrates Continued Investments in Pennsylvania’s Downtowns and Main Streets, Highlights Investment to Support Small Businesses in Etna",
+      "pubDate": "2026-08-05",
+      "summaryText": "A August 2026 announcement from the DCED Newsroom details the Shapiro-Davis Administration's ongoing investments in Pennsylvania's downtown areas and Main Streets, with a particular focus on support for small businesses in Etna. The Main Street Matters program, established in 2024, has allocated over $34 million to 137 projects statewide aimed at revitalization and growth of local economies. This initiative reflects the administration's commitment to enhancing community development and fostering small business success in urban and rural areas alike. \n\nSource URL: https://dced.pa.gov/newsroom/shapiro-davis-administration-celebrates-continued-investments-in-pennsylvanias-downtowns-and-main-streets-highlights-investment-to-support-small-businesses-in-etna/",
+      "addedAt": "2026-08-11T18:50:55.934Z",
+      "headline": "Shapiro-Davis Administration Announces Continued Investments in Pennsylvania's Downtowns and Small Businesses, with Focus on Etna.",
+      "blurb": "On August 5, 2026, the Shapiro-Davis Administration announced continued investments in Pennsylvania's downtowns and small businesses, specifically highlighting support for Etna. The Main Street Matters program, initiated in 2024, has invested over $34 million across 137 projects statewide to promote local economic revitalization. This initiative underscores the administration's focus on community development and small business success.",
+      "publicationAddedAt": "2026-08-11T18:51:07.309Z"
+    },
+    {
+      "link": "https://www.federalreserve.gov/econres/notes/feds-notes/examining-the-sensitivity-of-regional-banks-to-macroeconomic-shocks-20260804.html",
+      "source": "Federal Reserve",
+      "title": "Examining the Sensitivity of Regional Banks to Macroeconomic Shocks",
+      "pubDate": "2026-08-04",
+      "summaryText": "A report from the Federal Reserve published on August 4, 2026, titled \"Examining the Sensitivity of Regional Banks to Macroeconomic Shocks,\" explores the performance and vulnerabilities of regional banks during macro-financial stress. The study highlights that while regulations tightened after the Global Financial Crisis mainly pertained to larger banks, recent events, such as the Silicon Valley Bank's default in 2023, illuminated the susceptibility of regional banks (defined as banks with assets between $10 billion and $100 billion) to financial instability.\n\nThe analysis contrasts regional banks with larger banks, revealing that regional banks generally exhibit lower sensitivity to broad macroeconomic stressors but are more vulnerable to shocks in specific areas, particularly commercial real estate and low-cost deposit funding. The authors employ a Forward-Looking Analysis of Risk Events (FLARE) stress testing model to investigate how various bank characteristics influence their performance under stressful economic conditions.\n\nThe report details significant distinctions in business models between regional and large banks. Regional banks are characterized by a more traditional commercial banking approach, relying heavily on deposits and loans, whereas large banks have more diversified portfolios that include income from investment banking and trading. Data from 2019 indicates that regional banks have a greater percentage of their assets tied up in commercial real estate loans compared to large banks. \n\nThe FLARE model operates with data sourced from public financial reports, aiming to project key banking metrics like pre-provision net revenue (PPNR), loan losses, and capital needs across distinct samples of banks. By applying both regional and all-inclusive models, the authors assess the fit and forecasting accuracy of their simulations. They find that the regional bank model often performs better than the all-banks model, especially during stress situations like the Global Financial Crisis.\n\nThe report concludes that using coefficients derived from large banks can lead to significant overestimations of potential losses for regional banks during stress testing. Consequently, it is essential to consider regional banks' unique business models for a more accurate assessment of their resilience to macroeconomic shocks.\n\nSource URL: https://www.federalreserve.gov/econres/notes/feds-notes/examining-the-sensitivity-of-regional-banks-to-macroeconomic-shocks-20260804.html",
+      "addedAt": "2026-08-11T18:51:02.434Z",
+      "headline": "Federal Reserve Report Analyzes Vulnerabilities of Regional Banks to Macroeconomic Shocks.",
+      "blurb": "The Federal Reserve's report, \"Examining the Sensitivity of Regional Banks to Macroeconomic Shocks,\" published on August 4, 2026, assesses the vulnerabilities of regional banks during macro-financial stress. It highlights key distinctions between regional and larger banks, noting that while regional banks are generally less sensitive to broad economic stress, they face greater risks from specific areas like commercial real estate. The study utilizes a Forward-Looking Analysis of Risk Events (FLARE) model to analyze performance under stress, emphasizing the need for tailored assessments that reflect the unique characteristics of regional banking operations.",
+      "publicationAddedAt": "2026-08-11T18:51:08.381Z"
+    },
+    {
+      "link": "https://dced.pa.gov/newsroom/shapiro-administration-makes-funding-available-to-help-train-skilled-manufacturing-workers-across-pennsylvania/",
+      "source": "DCED Newsroom",
+      "title": "Shapiro Administration Makes Funding Available to Help Train Skilled Manufacturing Workers Across Pennsylvania",
+      "pubDate": "2026-08-04",
+      "summaryText": "A DCED Newsroom article published on August 4, 2026, announces that the 2026-27 budget signed by Governor Josh Shapiro allocates $4.7 million for the Manufacturing PA Training-to-Career (MTTC) program. The funding aims to enhance workforce training in the manufacturing sector across Pennsylvania. Since Governor Shapiro's administration began in 2023, over $17 million has been invested in similar workforce initiatives. The MTTC program is designed to support training programs that prepare individuals for careers in manufacturing, addressing the need for skilled workers in the industry. \n\nSource URL: https://dced.pa.gov/newsroom/shapiro-administration-makes-funding-available-to-help-train-skilled-manufacturing-workers-across-pennsylvania/",
+      "addedAt": "2026-08-11T18:50:58.861Z",
+      "headline": "Pennsylvania Allocates $4.7 Million for Manufacturing Workforce Training in 2026-27 Budget",
+      "blurb": "The DCED Newsroom reported on August 4, 2026, that Pennsylvania's 2026-27 budget includes $4.7 million for the Manufacturing PA Training-to-Career (MTTC) program. This funding aims to enhance workforce training in the manufacturing sector to prepare individuals for careers in the industry. Since 2023, over $17 million has been invested in similar workforce initiatives under Governor Josh Shapiro's administration.",
+      "publicationAddedAt": "2026-08-11T18:51:10.089Z"
+    },
+    {
+      "link": "https://dced.pa.gov/newsroom/shapiro-administration-announces-main-street-matters-funding-opportunities-to-help-revitalize-downtowns-support-small-businesses-and-strengthen-local-economies-across-pennsylvania/",
+      "source": "DCED Newsroom",
+      "title": "Shapiro Administration Announces Main Street Matters Funding Opportunities to Help Revitalize Downtowns, Support Small Businesses, and Strengthen Local Economies Across Pennsylvania",
+      "pubDate": "2026-08-03",
+      "summaryText": "A report from the DCED Newsroom dated August 3, 2026, discusses the announcement of the Main Street Matters funding opportunities by the Shapiro Administration. The 2026-27 budget, signed by Governor Josh Shapiro, allocates $20 million to this program aimed at revitalizing downtown areas, supporting small businesses, and strengthening local economies across Pennsylvania. The initiative provides essential tools for the growth and development of communities, allowing them to thrive and adapt to changing economic landscapes. It emphasizes the importance of collaboration and community involvement in driving local economic progress.\n\nSource URL: https://dced.pa.gov/newsroom/shapiro-administration-announces-main-street-matters-funding-opportunities-to-help-revitalize-downtowns-support-small-businesses-and-strengthen-local-economies-across-pennsylvania/",
+      "addedAt": "2026-08-11T18:51:01.758Z",
+      "headline": "Shapiro Administration Announces $20 Million Funding for Pennsylvania's Main Street Matters Program to Support Small Businesses and Local Economies.",
+      "blurb": "The Shapiro Administration has announced $20 million in funding for the Main Street Matters program as part of the 2026-27 budget. This initiative aims to revitalize downtown areas, support small businesses, and strengthen local economies throughout Pennsylvania. The program highlights the importance of collaboration and community involvement in fostering local economic development.",
+      "publicationAddedAt": "2026-08-11T18:51:10.617Z"
     }
   ]
 }
