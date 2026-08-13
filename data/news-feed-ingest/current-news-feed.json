@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-08-11T18:51:10.617Z",
+  "updatedAt": "2026-08-13T14:38:18.203Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -1673,6 +1673,28 @@
       "headline": "Shapiro Administration Announces $20 Million Funding for Pennsylvania's Main Street Matters Program to Support Small Businesses and Local Economies.",
       "blurb": "The Shapiro Administration has announced $20 million in funding for the Main Street Matters program as part of the 2026-27 budget. This initiative aims to revitalize downtown areas, support small businesses, and strengthen local economies throughout Pennsylvania. The program highlights the importance of collaboration and community involvement in fostering local economic development.",
       "publicationAddedAt": "2026-08-11T18:51:10.617Z"
+    },
+    {
+      "link": "https://dced.pa.gov/newsroom/creating-jobs-in-armstrong-county-governor-shapiro-secures-31-7-million-investment-from-brunk-industries-to-expand-manufacturing-operations-creating-64-new-jobs/",
+      "source": "DCED Newsroom",
+      "title": "Creating Jobs in Armstrong County: Governor Shapiro Secures $31.7 Million Investment from Brunk Industries to Expand Manufacturing Operations, Creating 64 New Jobs",
+      "pubDate": "2026-08-12",
+      "summaryText": "A report from the DCED Newsroom published on August 12, 2026, details the $31.7 million investment secured by Governor Shapiro from Brunk Industries, aimed at expanding manufacturing operations in Armstrong County. The investment includes over $4.1 million from the Commonwealth to facilitate growth in South Buffalo Township. This initiative is expected to create 64 new jobs and contributes to the Shapiro Administration's efforts, which have successfully secured significant investments since taking office. \n\nSource URL: https://dced.pa.gov/newsroom/creating-jobs-in-armstrong-county-governor-shapiro-secures-31-7-million-investment-from-brunk-industries-to-expand-manufacturing-operations-creating-64-new-jobs/",
+      "addedAt": "2026-08-13T14:38:14.876Z",
+      "headline": "Governor Shapiro Announces $31.7 Million Investment from Brunk Industries to Create 64 Jobs in Armstrong County",
+      "blurb": "Governor Shapiro has announced a $31.7 million investment from Brunk Industries to expand manufacturing operations in Armstrong County. This initiative, which includes over $4.1 million from the Commonwealth, is expected to create 64 new jobs in South Buffalo Township. The investment supports the Shapiro Administration's ongoing efforts to attract significant economic growth in the region.",
+      "publicationAddedAt": "2026-08-13T14:38:18.203Z"
+    },
+    {
+      "link": "https://dced.pa.gov/newsroom/icymi-nfl-draft-delivered-177-million-in-economic-impact-for-the-pittsburgh-region/",
+      "source": "DCED Newsroom",
+      "title": "ICYMI: NFL Draft Delivered $177 Million in Economic Impact for the Pittsburgh Region",
+      "pubDate": "2026-08-12",
+      "summaryText": "A August report from DCED Newsroom details the economic impact of the NFL Draft on the Pittsburgh region. Independent analyses indicate that the draft produced $177 million in economic impact and contributed over $1.5 billion in overall economic value for the city. The document emphasizes that the Commonwealth is central to major events in America. \n\nSource URL: https://dced.pa.gov/newsroom/icymi-nfl-draft-delivered-177-million-in-economic-impact-for-the-pittsburgh-region/",
+      "addedAt": "2026-08-13T14:38:14.670Z",
+      "headline": "NFL Draft Generates $177 Million Economic Impact for Pittsburgh Region, Reports DCED Newsroom",
+      "blurb": "A report from the DCED Newsroom highlights the NFL Draft's significant economic impact on the Pittsburgh region, totaling $177 million. The analysis further notes that the event contributed over $1.5 billion in overall economic value for the city, underscoring the Commonwealth's role in hosting major American events.",
+      "publicationAddedAt": "2026-08-13T14:38:17.925Z"
     }
   ]
 }
