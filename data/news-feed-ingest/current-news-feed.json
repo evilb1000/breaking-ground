@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-08-13T14:38:18.203Z",
+  "updatedAt": "2026-08-13T15:39:25.121Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -1695,6 +1695,17 @@
       "headline": "NFL Draft Generates $177 Million Economic Impact for Pittsburgh Region, Reports DCED Newsroom",
       "blurb": "A report from the DCED Newsroom highlights the NFL Draft's significant economic impact on the Pittsburgh region, totaling $177 million. The analysis further notes that the event contributed over $1.5 billion in overall economic value for the city, underscoring the Commonwealth's role in hosting major American events.",
       "publicationAddedAt": "2026-08-13T14:38:17.925Z"
+    },
+    {
+      "link": "https://www.abc.org/News-Media/News-Releases/abc-construction-materials-prices-flat-in-july-up-74-from-a-year-ago",
+      "source": "ABC",
+      "title": "ABC: Construction Materials Prices Flat in July, Up 7.4% From a Year Ago",
+      "pubDate": "2026-08-13",
+      "summaryText": "A report from the Associated Builders and Contractors (ABC) dated August 13, 2026, reveals that overall construction and nonresidential input prices both increased by 0.1% in July compared to the previous month. The analysis is based on the U.S. Bureau of Labor Statistics’ Producer Price Index data.\n\nIn terms of year-on-year changes, overall construction input prices have risen by 7.4%, while nonresidential construction input prices have grown by 7.2%. Notably, there were decreases in 2 of the 3 energy subcategories during July. Crude petroleum prices saw a significant drop of 11.9%, and unprocessed energy materials decreased by 7.4%. However, natural gas prices increased by 10.4% during the same period.\n\nABC Chief Economist Anirban Basu commented, “Construction input prices were virtually unchanged in July, but that relatively tame behavior can be traced to the dip in fuel prices that occurred at the start of the month.” He further noted that diesel fuel prices had surged by more than $0.50 per gallon from the week of measurement for the index through the end of July. Basu indicated that, given the rebound in oil prices and ongoing increases in specific materials like lumber and iron and steel, materials prices are likely to keep climbing in the coming months.\n\nAdditionally, Basu mentioned, “Materials prices remained up more than 7% on a year-over-year basis in July.” Despite the notable annual increase and the ongoing inflationary pressures, contractors on net anticipate an expansion in their profit margins over the next six months, according to ABC’s Construction Confidence Index.\n\nSource URL: https://www.abc.org/News-Media/News-Releases/abc-construction-materials-prices-flat-in-july-up-74-from-a-year-ago",
+      "addedAt": "2026-08-13T15:39:22.676Z",
+      "headline": "Construction Input Prices Increased 0.1% in July, Up 7.4% Year-on-Year, According to ABC Report",
+      "blurb": "A report from the Associated Builders and Contractors (ABC) indicates that construction input prices rose by 0.1% in July, with a year-on-year increase of 7.4%. Nonresidential construction input prices similarly increased by 7.2%. The report highlights fluctuations in energy prices, including a significant drop in crude petroleum but an uptick in natural gas prices, with ongoing inflationary pressures contributing to a projected rise in materials prices in the coming months.",
+      "publicationAddedAt": "2026-08-13T15:39:25.121Z"
     }
   ]
 }
