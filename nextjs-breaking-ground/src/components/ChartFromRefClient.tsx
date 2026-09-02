@@ -5,6 +5,7 @@ import AnimatedPieClient from '@/components/AnimatedPieClient'
 import AnimatedLineClient from '@/components/AnimatedLineClient'
 import AnimatedDonutClient from '@/components/AnimatedDonutClient'
 import AnimatedComboClient from '@/components/AnimatedComboClient'
+import AnimatedHeatmapRangeClient from '@/components/AnimatedHeatmapRangeClient'
 import type {ComboSeriesConfig} from '@/components/ComboChartAnimated'
 
 type Doc = any
@@ -136,6 +137,17 @@ export default function ChartFromRefClient({
           showAxis={doc.showAxis ?? true}
           showTicks={doc.showTicks ?? true}
           tickCount={doc.tickCount ?? 5}
+        />
+      ) : doc.chartType === 'heatmapRange' ? (
+        <AnimatedHeatmapRangeClient
+          data={rows}
+          xField={doc.xField}
+          yFields={yFields}
+          duration={doc.animationDuration ?? 1200}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          yLabel={doc.yLabel}
+          theme={doc.posterTheme}
         />
       ) : (
         <p className="text-gray-600 text-sm">Chart type "{doc.chartType}" not implemented.</p>

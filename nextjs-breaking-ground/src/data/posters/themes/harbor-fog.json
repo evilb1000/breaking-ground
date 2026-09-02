@@ -1,0 +1,39 @@
+{
+  "slug": "harbor-fog",
+  "name": "Harbor Fog",
+  "type": "heatmap-range",
+  "tokens": {
+    "bg": "#1c242c",
+    "ink": "#e6eef2",
+    "muted": "#8fa0ab",
+    "accent": "#7ec8c3",
+    "title": "#f4f8fa",
+    "label": "#d5dee4",
+    "y1": "#4d7ea8",
+    "y2": "#7ec8c3",
+    "y3": "#e2c36b",
+    "emptyCell": "#252f38",
+    "emptyText": "#6d7c86",
+    "cellTextLight": "#f4f8fa",
+    "cellTextDark": "#142026",
+    "track": "rgba(230, 238, 242, 0.16)",
+    "border": "rgba(126, 200, 195, 0.2)",
+    "ring": "rgba(77, 126, 168, 0.22)",
+    "glowA": "rgba(126, 200, 195, 0.16)",
+    "glowB": "rgba(77, 126, 168, 0.12)",
+    "washA": "rgba(126, 200, 195, 0.1)",
+    "washB": "rgba(77, 126, 168, 0.12)",
+    "titleGlow": "rgba(230, 238, 242, 0.16)",
+    "kpiGlowA": "rgba(126, 200, 195, 0.45)",
+    "kpiGlowB": "rgba(226, 195, 107, 0.2)",
+    "heatRgb": "126, 200, 195",
+    "scale": "linear-gradient(90deg, #1c242c, #4d7ea8, #7ec8c3, #e2c36b, #f4e6b2)"
+  },
+  "scale": [
+    [0, [28, 36, 44]],
+    [0.22, [45, 78, 108]],
+    [0.48, [77, 126, 168]],
+    [0.72, [126, 200, 195]],
+    [1, [226, 195, 107]]
+  ]
+}

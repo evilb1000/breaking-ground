@@ -41,6 +41,7 @@ export default defineType({
           {title: 'Pie', value: 'pie'},
           {title: 'Donut', value: 'donut'},
           {title: 'Combo Bar + Line', value: 'combo'},
+          {title: 'Heatmap + Range', value: 'heatmapRange'},
           {title: 'Area', value: 'area'},
           {title: 'Scatter', value: 'scatter'},
           {title: 'Stacked Bar', value: 'stacked'},
@@ -49,11 +50,28 @@ export default defineType({
       },
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'posterTheme',
+      title: 'Poster Theme',
+      type: 'string',
+      hidden: ({parent}) => parent?.chartType !== 'heatmapRange',
+      options: {
+        list: [
+          {title: 'Cool Midnight', value: 'cool-midnight'},
+          {title: 'Cozy Cottage', value: 'cozy-cottage'},
+          {title: 'Harbor Fog', value: 'harbor-fog'},
+          {title: 'Signal Cyan', value: 'signal-cyan'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'cool-midnight',
+      description: 'Named visual variation from data_posters/types/<type>/themes.',
+    }),
     defineField({ 
       name: 'xField', 
       title: 'X Field', 
       type: 'string', 
-      description: 'Column name for X axis (or category/labels).', 
+      description: 'Column name for X axis (or category/labels). For heatmap posters, this is the row label column (e.g. submarket).', 
       validation: (r) => r.required() 
     }),
     defineField({
@@ -61,14 +79,21 @@ export default defineType({
       title: 'Y Field(s)',
       type: 'array',
       of: [{type: 'string'}],
-      description: 'One or more value columns (for grouped/stacked line/bar). For pie, pick one.',
-      validation: (r) => r.min(1),
+      description: 'One or more value columns (for grouped/stacked line/bar). For pie, pick one. For heatmap posters, list the quarter columns in display order; year1/year2/year3/avg_3yr/sales are read automatically.',
+      validation: (r) =>
+        r.custom((fields, context) => {
+          const chartType = (context.parent as {chartType?: string} | undefined)?.chartType
+          if (chartType === 'heatmapRange') return true
+          if (!fields?.length) return 'Add at least one Y field'
+          return true
+        }),
     }),
     defineField({
       name: 'seriesConfig',
       title: 'Series Configuration',
       type: 'array',
       description: 'For combo charts, configure each CSV value column as a bar or line and assign it to the left or right axis.',
+      hidden: ({parent}) => parent?.chartType !== 'combo',
       of: [
         {
           type: 'object',

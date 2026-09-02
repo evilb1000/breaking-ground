@@ -1,0 +1,41 @@
+{
+  "slug": "signal-cyan",
+  "name": "Signal Cyan",
+  "type": "heatmap-range",
+  "tokens": {
+    "bg": "#0b0f18",
+    "ink": "#e8eef4",
+    "muted": "#8b97a8",
+    "accent": "#3ad4e8",
+    "title": "#f4f8fc",
+    "label": "#d7e0ea",
+    "y1": "#5c6d82",
+    "y2": "#2f7fb5",
+    "y3": "#3ad4e8",
+    "emptyCell": "#121821",
+    "emptyText": "#5c6a78",
+    "cellTextLight": "#f3f8fc",
+    "cellTextDark": "#0b1218",
+    "track": "rgba(232, 238, 244, 0.12)",
+    "border": "rgba(58, 212, 232, 0.16)",
+    "ring": "rgba(47, 127, 181, 0.2)",
+    "glowA": "rgba(58, 212, 232, 0.16)",
+    "glowB": "rgba(47, 127, 181, 0.12)",
+    "washA": "rgba(58, 212, 232, 0.08)",
+    "washB": "rgba(47, 127, 181, 0.1)",
+    "titleGlow": "rgba(244, 248, 252, 0.16)",
+    "kpiGlowA": "rgba(58, 212, 232, 0.55)",
+    "kpiGlowB": "rgba(47, 127, 181, 0.28)",
+    "heatRgb": "58, 212, 232",
+    "scale": "linear-gradient(90deg, #0f1620, #16324a, #1f5a82, #2496b4, #3ad4e8, #9aeff6)"
+  },
+  "scale": [
+    [0, [15, 22, 32]],
+    [0.14, [18, 36, 54]],
+    [0.3, [22, 58, 88]],
+    [0.48, [31, 90, 130]],
+    [0.68, [36, 150, 180]],
+    [0.86, [58, 212, 232]],
+    [1, [154, 239, 246]]
+  ]
+}

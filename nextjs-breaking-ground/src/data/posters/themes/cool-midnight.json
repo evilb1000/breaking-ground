@@ -1,0 +1,41 @@
+{
+  "slug": "cool-midnight",
+  "name": "Cool Midnight",
+  "type": "heatmap-range",
+  "tokens": {
+    "bg": "#0b0b0e",
+    "ink": "#f4f0ea",
+    "muted": "#9a9590",
+    "accent": "#ffb347",
+    "title": "#ffffff",
+    "label": "#ece8e1",
+    "y1": "#6d28d9",
+    "y2": "#d13184",
+    "y3": "#ffb347",
+    "emptyCell": "#16151c",
+    "emptyText": "#6f6b66",
+    "cellTextLight": "#fff7ee",
+    "cellTextDark": "#1a1210",
+    "track": "rgba(255,255,255,0.16)",
+    "border": "rgba(255, 179, 71, 0.14)",
+    "ring": "rgba(209, 49, 132, 0.16)",
+    "glowA": "rgba(209, 49, 132, 0.18)",
+    "glowB": "rgba(255, 122, 46, 0.08)",
+    "washA": "rgba(255, 179, 71, 0.1)",
+    "washB": "rgba(209, 49, 132, 0.12)",
+    "titleGlow": "rgba(255, 255, 255, 0.18)",
+    "kpiGlowA": "rgba(255, 179, 71, 0.55)",
+    "kpiGlowB": "rgba(255, 122, 46, 0.28)",
+    "heatRgb": "255, 179, 71",
+    "scale": "linear-gradient(90deg, #140516, #6d28d9, #d13184, #ff7a2e, #ffe08a)"
+  },
+  "scale": [
+    [0, [12, 5, 22]],
+    [0.12, [58, 16, 90]],
+    [0.28, [122, 28, 112]],
+    [0.48, [209, 49, 132]],
+    [0.68, [248, 122, 62]],
+    [0.86, [255, 179, 71]],
+    [1, [255, 236, 170]]
+  ]
+}

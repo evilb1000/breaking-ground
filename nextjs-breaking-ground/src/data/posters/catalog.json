@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "types": [
+    {
+      "id": "heatmap-range",
+      "name": "Heatmap + Range",
+      "chartType": "heatmapRange",
+      "defaultTheme": "cool-midnight",
+      "themes": ["cool-midnight", "cozy-cottage", "harbor-fog", "signal-cyan"]
+    }
+  ]
+}

@@ -17,6 +17,7 @@ Frontend rendering:
 - `nextjs-breaking-ground/src/components/AnimatedPieClient.tsx`
 - `nextjs-breaking-ground/src/components/AnimatedDonutClient.tsx`
 - `nextjs-breaking-ground/src/components/AnimatedComboClient.tsx`
+- `nextjs-breaking-ground/src/components/AnimatedHeatmapRangeClient.tsx`
 - `nextjs-breaking-ground/src/app/api/chart/[id]/route.ts`
 
 Article placement:
@@ -34,6 +35,7 @@ The Sanity schema currently lists these chart type options:
 - `pie`
 - `donut`
 - `combo`
+- `heatmapRange`
 - `area`
 - `scatter`
 - `stacked`
@@ -45,6 +47,7 @@ Only these are currently implemented on the frontend:
 - `pie`
 - `donut`
 - `combo`
+- `heatmapRange`
 
 If an editor selects `area`, `scatter`, or `stacked`, the site will not render a real chart yet. It will show a fallback message like:
 
@@ -326,6 +329,31 @@ Best practices:
 - Keep labels short because the SVG has fixed dimensions.
 - Use plain numbers only. For large dollar values, omit `$` and commas from the CSV values.
 
+## Heatmap + Range
+
+Dark two-panel article module: submarket × quarter heatmap on the left, annual-window dots + 3-year avg on the right. Sits in the 686px article column. Full notes: `BGWebbuild/Heatmap + Range Chart - Article Poster Module.md`.
+
+Sanity setup:
+
+- `Chart Type`: Heatmap + Range
+- `X Field`: `submarket`
+- `Y Field(s)`: optional. Two or more quarter columns sets display order; otherwise `Q3 23`-style headers are auto-detected.
+
+CSV structure (wide; empty cells = no sale):
+
+```csv
+submarket,Q3 23,Q4 23,Q1 24,Q2 24,Q3 24,Q4 24,Q1 25,Q2 25,Q3 25,Q4 25,Q1 26,Q2 26,year1,year2,year3,avg_3yr,sales
+Downtown Pittsburgh,152000,,176400,178600,201800,206000,222200,231400,249600,266800,268000,285200,169000,215350,267400,221636,22
+```
+
+Reserved extra columns: `year1`, `year2`, `year3`, `avg_3yr`, `sales`. Values are raw dollars (no `$` or commas). Test file: `charts_for_build/pittsburgh_submarket_price_per_unit_3yr.csv`.
+
+How it renders:
+
+- Magma color scale, capped at the 95th percentile.
+- KPIs are computed from `avg_3yr`, last four quarters, and `sales`.
+- Animation is scroll-triggered (`is-in`): KPI count-up, cells stagger by column then row, dots slide after ~550ms.
+
 ## Unsupported Chart Types
 
 These options exist in Sanity but are not implemented on the frontend yet:
@@ -406,7 +434,7 @@ Fields:
 
 Before publishing:
 
-- Chart type is `Line`, `Bar`, `Pie`, `Donut`, or `Combo Bar + Line`.
+- Chart type is `Line`, `Bar`, `Pie`, `Donut`, `Combo Bar + Line`, or `Heatmap + Range`.
 - CSV first row contains headers.
 - `X Field` exactly matches one CSV header.
 - `Y Field(s)` values exactly match numeric CSV headers.

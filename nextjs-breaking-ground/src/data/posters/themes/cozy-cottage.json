@@ -1,0 +1,39 @@
+{
+  "slug": "cozy-cottage",
+  "name": "Cozy Cottage",
+  "type": "heatmap-range",
+  "tokens": {
+    "bg": "#f3ead8",
+    "ink": "#3d2b1f",
+    "muted": "#8a6f58",
+    "accent": "#c45c26",
+    "title": "#3d2b1f",
+    "label": "#4a3224",
+    "y1": "#5c7a4a",
+    "y2": "#c45c26",
+    "y3": "#d4a017",
+    "emptyCell": "#e7dcc8",
+    "emptyText": "#a89078",
+    "cellTextLight": "#fff8ee",
+    "cellTextDark": "#3d2b1f",
+    "track": "rgba(61, 43, 31, 0.18)",
+    "border": "rgba(196, 92, 38, 0.22)",
+    "ring": "rgba(92, 122, 74, 0.18)",
+    "glowA": "rgba(196, 92, 38, 0.14)",
+    "glowB": "rgba(212, 160, 23, 0.1)",
+    "washA": "rgba(212, 160, 23, 0.14)",
+    "washB": "rgba(196, 92, 38, 0.08)",
+    "titleGlow": "rgba(196, 92, 38, 0.12)",
+    "kpiGlowA": "rgba(196, 92, 38, 0.28)",
+    "kpiGlowB": "rgba(212, 160, 23, 0.16)",
+    "heatRgb": "196, 92, 38",
+    "scale": "linear-gradient(90deg, #efe4cf, #c4a574, #c45c26, #8b3d1b, #4a2c1a)"
+  },
+  "scale": [
+    [0, [239, 228, 207]],
+    [0.18, [196, 165, 116]],
+    [0.4, [196, 92, 38]],
+    [0.68, [139, 61, 27]],
+    [1, [74, 44, 26]]
+  ]
+}
