@@ -4,6 +4,7 @@ import coolMidnight from "@/data/posters/themes/cool-midnight.json"
 import cozyCottage from "@/data/posters/themes/cozy-cottage.json"
 import harborFog from "@/data/posters/themes/harbor-fog.json"
 import signalCyan from "@/data/posters/themes/signal-cyan.json"
+import nightCircuit from "@/data/posters/themes/night-circuit.json"
 
 export type PosterScaleStop = [number, [number, number, number]]
 
@@ -41,6 +42,7 @@ export type PosterTheme = {
   type: string
   tokens: PosterThemeTokens
   scale: PosterScaleStop[]
+  series?: Record<string, string>
 }
 
 export type PosterTypeMeta = {
@@ -51,7 +53,7 @@ export type PosterTypeMeta = {
   themes: string[]
 }
 
-const THEMES: PosterTheme[] = [coolMidnight, cozyCottage, harborFog, signalCyan] as PosterTheme[]
+const THEMES: PosterTheme[] = [coolMidnight, cozyCottage, harborFog, signalCyan, nightCircuit] as PosterTheme[]
 
 export const POSTER_CATALOG = catalog as {version: number; types: PosterTypeMeta[]}
 
@@ -126,7 +128,9 @@ export function interpolatePosterScale(scale: PosterScaleStop[], t: number): str
   return `rgb(${mix(c0[0], c1[0])},${mix(c0[1], c1[1])},${mix(c0[2], c1[2])})`
 }
 
-export const SANITY_POSTER_THEME_OPTIONS = listPosterThemes("heatmap-range").map((theme) => ({
-  title: theme.name,
-  value: theme.slug,
-}))
+export const SANITY_POSTER_THEME_OPTIONS = POSTER_CATALOG.types.flatMap((type) =>
+  listPosterThemes(type.id).map((theme) => ({
+    title: theme.name,
+    value: theme.slug,
+  })),
+)

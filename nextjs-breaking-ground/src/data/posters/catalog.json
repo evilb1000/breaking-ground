@@ -7,6 +7,13 @@
       "chartType": "heatmapRange",
       "defaultTheme": "cool-midnight",
       "themes": ["cool-midnight", "cozy-cottage", "harbor-fog", "signal-cyan"]
+    },
+    {
+      "id": "indexed-lines",
+      "name": "Indexed Lines",
+      "chartType": "indexedLines",
+      "defaultTheme": "night-circuit",
+      "themes": ["night-circuit"]
     }
   ]
 }

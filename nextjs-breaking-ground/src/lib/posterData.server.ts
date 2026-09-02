@@ -27,13 +27,11 @@ export function resolveActivePosterCsv(typeId: string): {
   dataset: ActivePosterDataset | null
 } {
   const dataset = getActivePosterDataset(typeId)
-  const fallback = path.join(
-    postersRoot(),
-    "types",
-    typeId,
-    "samples",
-    "pittsburgh_submarket_price_per_unit_3yr.csv",
-  )
+  const sampleDir = path.join(postersRoot(), "types", typeId, "samples")
+  const sampleName = fs.existsSync(sampleDir)
+    ? fs.readdirSync(sampleDir).find((name) => name.toLowerCase().endsWith(".csv"))
+    : null
+  const fallback = sampleName ? path.join(sampleDir, sampleName) : ""
   const rel = dataset?.path
   const absPath = rel ? path.join(postersRoot(), rel) : fallback
   return {

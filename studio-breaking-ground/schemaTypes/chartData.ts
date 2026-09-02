@@ -42,6 +42,7 @@ export default defineType({
           {title: 'Donut', value: 'donut'},
           {title: 'Combo Bar + Line', value: 'combo'},
           {title: 'Heatmap + Range', value: 'heatmapRange'},
+          {title: 'Indexed Lines', value: 'indexedLines'},
           {title: 'Area', value: 'area'},
           {title: 'Scatter', value: 'scatter'},
           {title: 'Stacked Bar', value: 'stacked'},
@@ -54,13 +55,14 @@ export default defineType({
       name: 'posterTheme',
       title: 'Poster Theme',
       type: 'string',
-      hidden: ({parent}) => parent?.chartType !== 'heatmapRange',
+      hidden: ({parent}) => parent?.chartType !== 'heatmapRange' && parent?.chartType !== 'indexedLines',
       options: {
         list: [
           {title: 'Cool Midnight', value: 'cool-midnight'},
           {title: 'Cozy Cottage', value: 'cozy-cottage'},
           {title: 'Harbor Fog', value: 'harbor-fog'},
           {title: 'Signal Cyan', value: 'signal-cyan'},
+          {title: 'Night Circuit', value: 'night-circuit'},
         ],
         layout: 'radio',
       },
@@ -83,7 +85,7 @@ export default defineType({
       validation: (r) =>
         r.custom((fields, context) => {
           const chartType = (context.parent as {chartType?: string} | undefined)?.chartType
-          if (chartType === 'heatmapRange') return true
+          if (chartType === 'heatmapRange' || chartType === 'indexedLines') return true
           if (!fields?.length) return 'Add at least one Y field'
           return true
         }),

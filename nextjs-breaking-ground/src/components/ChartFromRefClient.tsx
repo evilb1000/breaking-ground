@@ -6,6 +6,7 @@ import AnimatedLineClient from '@/components/AnimatedLineClient'
 import AnimatedDonutClient from '@/components/AnimatedDonutClient'
 import AnimatedComboClient from '@/components/AnimatedComboClient'
 import AnimatedHeatmapRangeClient from '@/components/AnimatedHeatmapRangeClient'
+import AnimatedIndexedLinesClient from '@/components/AnimatedIndexedLinesClient'
 import type {ComboSeriesConfig} from '@/components/ComboChartAnimated'
 
 type Doc = any
@@ -147,6 +148,16 @@ export default function ChartFromRefClient({
           chartTitle={doc.chartTitle}
           xLabel={doc.xLabel}
           yLabel={doc.yLabel}
+          theme={doc.posterTheme}
+        />
+      ) : doc.chartType === 'indexedLines' ? (
+        <AnimatedIndexedLinesClient
+          data={rows}
+          xField={doc.xField}
+          yFields={yFields}
+          duration={doc.animationDuration ?? 2200}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
           theme={doc.posterTheme}
         />
       ) : (

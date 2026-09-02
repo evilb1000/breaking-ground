@@ -1,0 +1,47 @@
+{
+  "slug": "night-circuit",
+  "name": "Night Circuit",
+  "type": "indexed-lines",
+  "tokens": {
+    "bg": "#0c1016",
+    "ink": "#e8eef4",
+    "muted": "#8b95a3",
+    "accent": "#5ad4ff",
+    "title": "#f4f8fc",
+    "label": "#d7e0ea",
+    "y1": "#5ad4ff",
+    "y2": "#ff4ec8",
+    "y3": "#3ee0c5",
+    "emptyCell": "#141a22",
+    "emptyText": "#5c6a78",
+    "cellTextLight": "#f3f8fc",
+    "cellTextDark": "#0c1016",
+    "track": "rgba(232, 238, 244, 0.1)",
+    "border": "rgba(90, 212, 255, 0.16)",
+    "ring": "rgba(77, 124, 255, 0.18)",
+    "glowA": "rgba(90, 212, 255, 0.14)",
+    "glowB": "rgba(255, 78, 200, 0.1)",
+    "washA": "rgba(90, 212, 255, 0.07)",
+    "washB": "rgba(181, 107, 255, 0.08)",
+    "titleGlow": "rgba(244, 248, 252, 0.14)",
+    "kpiGlowA": "rgba(90, 212, 255, 0.45)",
+    "kpiGlowB": "rgba(255, 78, 200, 0.22)",
+    "heatRgb": "90, 212, 255",
+    "scale": "linear-gradient(90deg, #4d7cff, #5ad4ff, #3ee0c5, #f0c44c, #ff4ec8)"
+  },
+  "series": {
+    "Monroeville": "#ff4ec8",
+    "Parkway East": "#3ee0c5",
+    "Greater Downtown": "#5ad4ff",
+    "South Pittsburgh": "#ff8a3d",
+    "Oakland": "#b56bff",
+    "North Pittsburgh": "#f0c44c",
+    "West Pittsburgh": "#4d7cff",
+    "Northeast Pittsburgh": "#c5cdd6",
+    "Parkway West": "#8b949e"
+  },
+  "scale": [
+    [0, [12, 16, 22]],
+    [1, [90, 212, 255]]
+  ]
+}
