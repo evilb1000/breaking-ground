@@ -40,10 +40,10 @@ function percentile(values: number[], p: number) {
 
 function prettyQuarter(header: string) {
   const short = header.trim().match(/^Q([1-4])\s+'?(\d{2})$/i)
-  if (short) return `Q${short[1]} '${short[2]}`
+  if (short) return {q: `Q${short[1]}`, year: `'${short[2]}`}
   const long = header.trim().match(/^(\d{4})\s+Q([1-4])$/i)
-  if (long) return `Q${long[2]} '${long[1].slice(2)}`
-  return header
+  if (long) return {q: `Q${long[2]}`, year: `'${long[1].slice(2)}`}
+  return {q: header, year: ""}
 }
 
 function isQuarterHeader(header: string) {
@@ -243,18 +243,23 @@ export default function HeatmapRangeChartAnimated({
             <div
               className="hr-heat"
               style={{
-                gridTemplateColumns: `96px repeat(${parsed.quarterFields.length}, minmax(0, 1fr))`,
+                ["--q" as string]: String(parsed.quarterFields.length),
+                gridTemplateColumns: `var(--hr-label-w) repeat(${parsed.quarterFields.length}, minmax(var(--hr-cell-min), 1fr))`,
               }}
             >
               <div className="hr-heat-head" />
-              {parsed.quarterFields.map((field, colIndex) => (
+              {parsed.quarterFields.map((field, colIndex) => {
+                const parts = prettyQuarter(field)
+                return (
                 <div
                   key={field}
                   className={`hr-q ${colIndex > 0 && colIndex % 4 === 0 ? "hr-year-start" : ""}`}
                 >
-                  {prettyQuarter(field)}
+                  <span>{parts.q}</span>
+                  {parts.year ? <span className="hr-q-yr">{parts.year}</span> : null}
                 </div>
-              ))}
+                )
+              })}
               {parsed.rows.map((row, rowIndex) => (
                 <React.Fragment key={row.label}>
                   <div
@@ -296,6 +301,7 @@ export default function HeatmapRangeChartAnimated({
 
         <div className={isCount ? "hr-stack-rail" : undefined}>
           <div className="hr-range-head">
+            <p className="hr-range-label hr-section-label" aria-hidden="true" />
             <p className="hr-section-label">{yLabel || (isCount ? "Three-year total · by window" : "Annual windows")}</p>
             <p className="hr-section-label">{isCount ? "Total" : "3-year avg"}</p>
           </div>
@@ -307,6 +313,7 @@ export default function HeatmapRangeChartAnimated({
               onMouseEnter={() => setHoverRow(rowIndex)}
               onMouseLeave={() => setHoverRow(null)}
             >
+              <div className="hr-range-label">{row.label}</div>
               {isCount ? (
                 <div className="hr-stack-track">
                   {row.years.map((value, yearIndex) => {
