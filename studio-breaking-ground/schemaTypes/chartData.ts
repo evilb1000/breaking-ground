@@ -43,6 +43,7 @@ export default defineType({
           {title: 'Combo Bar + Line', value: 'combo'},
           {title: 'Heatmap + Range', value: 'heatmapRange'},
           {title: 'Indexed Lines', value: 'indexedLines'},
+          {title: 'Region + Nation Bars', value: 'regionNationBars'},
           {title: 'Area', value: 'area'},
           {title: 'Scatter', value: 'scatter'},
           {title: 'Stacked Bar', value: 'stacked'},
@@ -55,7 +56,10 @@ export default defineType({
       name: 'posterTheme',
       title: 'Poster Theme',
       type: 'string',
-      hidden: ({parent}) => parent?.chartType !== 'heatmapRange' && parent?.chartType !== 'indexedLines',
+      hidden: ({parent}) =>
+        parent?.chartType !== 'heatmapRange' &&
+        parent?.chartType !== 'indexedLines' &&
+        parent?.chartType !== 'regionNationBars',
       options: {
         list: [
           {title: 'Cool Midnight', value: 'cool-midnight'},
@@ -85,7 +89,7 @@ export default defineType({
       validation: (r) =>
         r.custom((fields, context) => {
           const chartType = (context.parent as {chartType?: string} | undefined)?.chartType
-          if (chartType === 'heatmapRange' || chartType === 'indexedLines') return true
+          if (chartType === 'heatmapRange' || chartType === 'indexedLines' || chartType === 'regionNationBars') return true
           if (!fields?.length) return 'Add at least one Y field'
           return true
         }),

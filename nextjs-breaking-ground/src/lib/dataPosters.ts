@@ -5,6 +5,7 @@ import cozyCottage from "@/data/posters/themes/cozy-cottage.json"
 import harborFog from "@/data/posters/themes/harbor-fog.json"
 import signalCyan from "@/data/posters/themes/signal-cyan.json"
 import nightCircuit from "@/data/posters/themes/night-circuit.json"
+import coolMidnightBars from "@/data/posters/themes/cool-midnight-bars.json"
 
 export type PosterScaleStop = [number, [number, number, number]]
 
@@ -53,7 +54,7 @@ export type PosterTypeMeta = {
   themes: string[]
 }
 
-const THEMES: PosterTheme[] = [coolMidnight, cozyCottage, harborFog, signalCyan, nightCircuit] as PosterTheme[]
+const THEMES: PosterTheme[] = [coolMidnight, cozyCottage, harborFog, signalCyan, nightCircuit, coolMidnightBars] as PosterTheme[]
 
 export const POSTER_CATALOG = catalog as {version: number; types: PosterTypeMeta[]}
 

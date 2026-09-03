@@ -7,6 +7,7 @@ import AnimatedDonutClient from '@/components/AnimatedDonutClient'
 import AnimatedComboClient from '@/components/AnimatedComboClient'
 import AnimatedHeatmapRangeClient from '@/components/AnimatedHeatmapRangeClient'
 import AnimatedIndexedLinesClient from '@/components/AnimatedIndexedLinesClient'
+import AnimatedRegionNationBarsClient from '@/components/AnimatedRegionNationBarsClient'
 import type {ComboSeriesConfig} from '@/components/ComboChartAnimated'
 
 type Doc = any
@@ -156,6 +157,14 @@ export default function ChartFromRefClient({
           xField={doc.xField}
           yFields={yFields}
           duration={doc.animationDuration ?? 2200}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          theme={doc.posterTheme}
+        />
+      ) : doc.chartType === 'regionNationBars' ? (
+        <AnimatedRegionNationBarsClient
+          data={rows}
+          duration={doc.animationDuration ?? 1800}
           chartTitle={doc.chartTitle}
           xLabel={doc.xLabel}
           theme={doc.posterTheme}
