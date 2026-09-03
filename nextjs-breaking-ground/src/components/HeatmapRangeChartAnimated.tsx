@@ -1,7 +1,8 @@
 "use client"
 
-import React, {useEffect, useMemo, useRef, useState} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import {getPosterTheme, interpolatePosterScale, posterThemeStyle} from "@/lib/dataPosters"
+import {usePosterInView} from "@/components/usePosterInView"
 
 type Row = Record<string, string>
 
@@ -76,6 +77,7 @@ export default function HeatmapRangeChartAnimated({
   chartTitle,
   xLabel,
   yLabel,
+  caption,
   theme: themeSlug,
 }: {
   data: Row[]
@@ -85,11 +87,11 @@ export default function HeatmapRangeChartAnimated({
   chartTitle?: string
   xLabel?: string
   yLabel?: string
+  caption?: string
   theme?: string
 }) {
   const theme = getPosterTheme("heatmap-range", themeSlug)
-  const rootRef = useRef<HTMLElement | null>(null)
-  const [inView, setInView] = useState(false)
+  const {ref: rootRef, inView} = usePosterInView()
   const [hoverRow, setHoverRow] = useState<number | null>(null)
   const [kpiT, setKpiT] = useState(0)
 
@@ -159,36 +161,7 @@ export default function HeatmapRangeChartAnimated({
   }, [data, xField, yFields])
 
   useEffect(() => {
-    const el = rootRef.current
-    if (!el) return
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (reduced) {
-      setInView(true)
-      setKpiT(1)
-      return
-    }
-
-    let fallback = 0
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.some((entry) => entry.isIntersecting)
-        setInView(visible)
-      },
-      {threshold: 0.25, rootMargin: "0px"},
-    )
-    observer.observe(el)
-    fallback = window.setTimeout(() => setInView(true), 700)
-    return () => {
-      observer.disconnect()
-      window.clearTimeout(fallback)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!inView) {
-      setKpiT(0)
-      return
-    }
+    if (!inView) return
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     if (reduced || duration <= 0) {
       setKpiT(1)
@@ -398,8 +371,10 @@ export default function HeatmapRangeChartAnimated({
           </span>
         ))}
       </figcaption>
-      {isCount ? (
-        <p className="hr-source">Source: CoStar Multi-Family · 2023 Q3–2026 Q2 · Complete quarters only</p>
+      {caption?.trim() || isCount ? (
+        <p className="hr-source">
+          {caption?.trim() || "Source: CoStar Multi-Family · 2023 Q3–2026 Q2 · Complete quarters only"}
+        </p>
       ) : null}
     </figure>
   )

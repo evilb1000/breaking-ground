@@ -13,6 +13,7 @@ export default function AnimatedHeatmapRangeClient({
   chartTitle,
   xLabel,
   yLabel,
+  caption,
   theme,
 }: {
   data: Row[]
@@ -22,6 +23,7 @@ export default function AnimatedHeatmapRangeClient({
   chartTitle?: string
   xLabel?: string
   yLabel?: string
+  caption?: string
   theme?: string
 }) {
   return (
@@ -33,6 +35,7 @@ export default function AnimatedHeatmapRangeClient({
       chartTitle={chartTitle}
       xLabel={xLabel}
       yLabel={yLabel}
+      caption={caption}
       theme={theme}
     />
   )

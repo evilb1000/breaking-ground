@@ -187,6 +187,14 @@ export default defineType({
       title: 'Chart Title', 
       type: 'string' 
     }),
+    defineField({
+      name: 'caption',
+      title: 'Caption',
+      type: 'text',
+      rows: 3,
+      description:
+        'Shown at the bottom of the chart. Use for source, notes, or methodology. A Chart Figure can override this per article.',
+    }),
     defineField({ 
       name: 'xLabel', 
       title: 'X Axis Title', 

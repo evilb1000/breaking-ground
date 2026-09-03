@@ -10,12 +10,14 @@ export default function AnimatedRegionNationBarsClient({
   duration,
   chartTitle,
   xLabel,
+  caption,
   theme,
 }: {
   data: Row[]
   duration?: number
   chartTitle?: string
   xLabel?: string
+  caption?: string
   theme?: string
 }) {
   return (
@@ -24,6 +26,7 @@ export default function AnimatedRegionNationBarsClient({
       duration={duration}
       chartTitle={chartTitle}
       xLabel={xLabel}
+      caption={caption}
       theme={theme}
     />
   )

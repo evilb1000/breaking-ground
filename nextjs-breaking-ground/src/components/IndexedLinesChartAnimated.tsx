@@ -1,7 +1,8 @@
 "use client"
 
-import React, {useEffect, useMemo, useRef, useState} from "react"
+import React, {useMemo} from "react"
 import {getPosterTheme, posterThemeStyle} from "@/lib/dataPosters"
+import {usePosterInView} from "@/components/usePosterInView"
 
 type Row = Record<string, string>
 type Point = {x: number; y: number}
@@ -49,6 +50,7 @@ export default function IndexedLinesChartAnimated({
   duration = 1800,
   chartTitle,
   xLabel,
+  caption,
   theme: themeSlug,
 }: {
   data: Row[]
@@ -57,11 +59,11 @@ export default function IndexedLinesChartAnimated({
   duration?: number
   chartTitle?: string
   xLabel?: string
+  caption?: string
   theme?: string
 }) {
   const theme = getPosterTheme("indexed-lines", themeSlug)
-  const rootRef = useRef<HTMLElement | null>(null)
-  const [inView, setInView] = useState(false)
+  const {ref: rootRef, inView} = usePosterInView()
 
   const parsed = useMemo(() => {
     const keys = Object.keys(data[0] || {})
@@ -100,26 +102,6 @@ export default function IndexedLinesChartAnimated({
 
     return {names, rows, yMin, yMax, xMax, lastRealDay, finishes}
   }, [data, theme.series, xField, yFields])
-
-  useEffect(() => {
-    const el = rootRef.current
-    if (!el) return
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (reduced) {
-      setInView(true)
-      return
-    }
-    const observer = new IntersectionObserver(
-      (entries) => setInView(entries.some((entry) => entry.isIntersecting)),
-      {threshold: 0.22},
-    )
-    observer.observe(el)
-    const fallback = window.setTimeout(() => setInView(true), 600)
-    return () => {
-      observer.disconnect()
-      window.clearTimeout(fallback)
-    }
-  }, [])
 
   const width = 500
   const height = 268
@@ -240,7 +222,8 @@ export default function IndexedLinesChartAnimated({
       </div>
 
       <p className="il-source">
-        Source: CoStar daily asking rent per SF · July 1, 2025–July 20, 2026 · Dashed tail is the July 20 estimate
+        {caption?.trim() ||
+          "Source: CoStar daily asking rent per SF · July 1, 2025–July 20, 2026 · Dashed tail is the July 20 estimate"}
       </p>
     </figure>
   )

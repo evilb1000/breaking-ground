@@ -321,14 +321,12 @@ export const articleComponents = {
       const align = value?.alignment || "center";
       const size = value?.size || "full";
       return (
-        <figure className="my-8">
-          <ChartFromRefClient id={refId} align={align} size={size} />
-          {value?.caption ? (
-            <figcaption className="bg-type-caption mt-2 text-[color:var(--bg-disabled)]">
-              {value.caption}
-            </figcaption>
-          ) : null}
-        </figure>
+        <ChartFromRefClient
+          id={refId}
+          align={align}
+          size={size}
+          caption={value?.caption}
+        />
       );
     },
     inlineImage: ({ value }: { value?: SanityImage & { alignment?: keyof typeof alignClassMap; align?: keyof typeof alignClassMap; size?: keyof typeof sizeClassMap } }) => {

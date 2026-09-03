@@ -13,7 +13,7 @@ export async function GET(
   try {
     const doc = await client.fetch(`*[_id == $id && _type == "chartData"][0]{
       chartType, xField, yFields, seriesConfig, colors, posterTheme,
-      animationDuration, chartTitle, xLabel, yLabel,
+      animationDuration, chartTitle, caption, xLabel, yLabel,
       showAxis, showTicks, tickCount, numberFormat, showLegend,
       dataFile{asset->{url}}
     }`, {id})

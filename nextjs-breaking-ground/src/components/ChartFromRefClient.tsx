@@ -16,10 +16,12 @@ export default function ChartFromRefClient({
   id,
   align,
   size,
+  caption,
 }: {
   id: string
   align?: 'left' | 'right' | 'center'
   size?: 'small' | 'medium' | 'large' | 'full'
+  caption?: string
 }) {
   const [doc, setDoc] = useState<Doc | null>(null)
   const [rows, setRows] = useState<Array<Record<string, string>>>([])
@@ -74,6 +76,12 @@ export default function ChartFromRefClient({
       : align === 'right'
         ? 'mx-auto my-8 block md:float-right md:ml-8 md:mb-6 md:my-0'
         : 'mx-auto my-8 block'
+
+  const resolvedCaption = (caption?.trim() || String(doc.caption || '').trim())
+  const isPoster =
+    doc.chartType === 'heatmapRange' ||
+    doc.chartType === 'indexedLines' ||
+    doc.chartType === 'regionNationBars'
 
   return (
     <div className={`${widthClass} ${alignClass}`}>
@@ -149,6 +157,7 @@ export default function ChartFromRefClient({
           chartTitle={doc.chartTitle}
           xLabel={doc.xLabel}
           yLabel={doc.yLabel}
+          caption={resolvedCaption}
           theme={doc.posterTheme}
         />
       ) : doc.chartType === 'indexedLines' ? (
@@ -159,6 +168,7 @@ export default function ChartFromRefClient({
           duration={doc.animationDuration ?? 2200}
           chartTitle={doc.chartTitle}
           xLabel={doc.xLabel}
+          caption={resolvedCaption}
           theme={doc.posterTheme}
         />
       ) : doc.chartType === 'regionNationBars' ? (
@@ -167,11 +177,17 @@ export default function ChartFromRefClient({
           duration={doc.animationDuration ?? 1800}
           chartTitle={doc.chartTitle}
           xLabel={doc.xLabel}
+          caption={resolvedCaption}
           theme={doc.posterTheme}
         />
       ) : (
         <p className="text-gray-600 text-sm">Chart type "{doc.chartType}" not implemented.</p>
       )}
+      {!isPoster && resolvedCaption ? (
+        <p className="bg-type-caption mt-2 whitespace-pre-wrap text-[color:var(--bg-disabled)]">
+          {resolvedCaption}
+        </p>
+      ) : null}
     </div>
   )
 }

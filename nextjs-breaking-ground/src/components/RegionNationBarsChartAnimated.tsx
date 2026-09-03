@@ -1,7 +1,8 @@
 "use client"
 
-import React, {useEffect, useMemo, useRef, useState} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import {getPosterTheme, posterThemeStyle} from "@/lib/dataPosters"
+import {usePosterInView} from "@/components/usePosterInView"
 
 type Row = Record<string, string>
 
@@ -31,17 +32,18 @@ export default function RegionNationBarsChartAnimated({
   duration = 1800,
   chartTitle,
   xLabel,
+  caption,
   theme: themeSlug,
 }: {
   data: Row[]
   duration?: number
   chartTitle?: string
   xLabel?: string
+  caption?: string
   theme?: string
 }) {
   const theme = getPosterTheme("region-nation-bars", themeSlug)
-  const rootRef = useRef<HTMLElement | null>(null)
-  const [inView, setInView] = useState(false)
+  const {ref: rootRef, inView} = usePosterInView()
   const [kpiT, setKpiT] = useState(0)
 
   const parsed = useMemo(() => {
@@ -90,31 +92,7 @@ export default function RegionNationBarsChartAnimated({
   }, [data])
 
   useEffect(() => {
-    const el = rootRef.current
-    if (!el) return
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (reduced) {
-      setInView(true)
-      setKpiT(1)
-      return
-    }
-    const observer = new IntersectionObserver(
-      (entries) => setInView(entries.some((entry) => entry.isIntersecting)),
-      {threshold: 0.22},
-    )
-    observer.observe(el)
-    const fallback = window.setTimeout(() => setInView(true), 600)
-    return () => {
-      observer.disconnect()
-      window.clearTimeout(fallback)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!inView) {
-      setKpiT(0)
-      return
-    }
+    if (!inView) return
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     if (reduced || duration <= 0) {
       setKpiT(1)
@@ -229,6 +207,7 @@ export default function RegionNationBarsChartAnimated({
           United States
         </span>
       </figcaption>
+      {caption?.trim() ? <p className="hr-source">{caption.trim()}</p> : null}
     </figure>
   )
 }

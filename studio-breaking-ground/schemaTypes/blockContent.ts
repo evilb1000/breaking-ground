@@ -128,7 +128,14 @@ export const blockContent = defineType({
       type: 'object',
       fields: [
         defineField({ name: 'chart', title: 'Chart', type: 'reference', to: [{type: 'chartData'}], validation: (r) => r.required() }),
-        defineField({ name: 'caption', title: 'Caption', type: 'string' }),
+        defineField({
+          name: 'caption',
+          title: 'Caption',
+          type: 'text',
+          rows: 3,
+          description:
+            'Optional. Overrides the caption on the Chart Data document for this article only.',
+        }),
         defineField({
           name: 'alignment', title: 'Alignment', type: 'string', options: { layout: 'radio', list: [
             {title: 'Left', value: 'left'},
@@ -146,8 +153,11 @@ export const blockContent = defineType({
         })
       ],
       preview: {
-        select: {title: 'caption'},
-        prepare: ({title}: {title?: string}) => ({title: title || 'Chart Figure'})
+        select: {title: 'chart.title', caption: 'caption'},
+        prepare: ({title, caption}: {title?: string; caption?: string}) => ({
+          title: title || caption || 'Chart Figure',
+          subtitle: title && caption ? caption : undefined,
+        })
       }
     }),
     // Map Embed

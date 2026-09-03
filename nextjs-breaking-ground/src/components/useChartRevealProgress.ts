@@ -41,7 +41,7 @@ export function useChartRevealProgress<T extends Element>(duration = 800) {
           observer.disconnect()
         }
       },
-      {rootMargin: '0px 0px -15% 0px', threshold: 0.2}
+      {rootMargin: '0px 0px 0px 0px', threshold: 0.01}
     )
 
     observer.observe(el)

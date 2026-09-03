@@ -12,6 +12,7 @@ export default function AnimatedIndexedLinesClient({
   duration,
   chartTitle,
   xLabel,
+  caption,
   theme,
 }: {
   data: Row[]
@@ -20,6 +21,7 @@ export default function AnimatedIndexedLinesClient({
   duration?: number
   chartTitle?: string
   xLabel?: string
+  caption?: string
   theme?: string
 }) {
   return (
@@ -30,6 +32,7 @@ export default function AnimatedIndexedLinesClient({
       duration={duration}
       chartTitle={chartTitle}
       xLabel={xLabel}
+      caption={caption}
       theme={theme}
     />
   )
