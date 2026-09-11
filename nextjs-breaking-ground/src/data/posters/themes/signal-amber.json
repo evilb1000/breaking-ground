@@ -1,0 +1,36 @@
+{
+  "slug": "signal-amber",
+  "name": "Signal Amber",
+  "type": "rolling-average-line",
+  "tokens": {
+    "bg": "#08090d",
+    "ink": "#f4f6fa",
+    "muted": "#8b93a3",
+    "accent": "#ff8f1a",
+    "title": "#ffffff",
+    "label": "#d7dde8",
+    "y1": "#ff8f1a",
+    "y2": "#ffb347",
+    "y3": "#c45a0a",
+    "emptyCell": "#10131a",
+    "emptyText": "#6b7280",
+    "cellTextLight": "#f4f6fa",
+    "cellTextDark": "#08090d",
+    "track": "rgba(255,255,255,0.06)",
+    "border": "rgba(255, 143, 26, 0.16)",
+    "ring": "rgba(255, 143, 26, 0.12)",
+    "glowA": "rgba(255, 143, 26, 0.16)",
+    "glowB": "rgba(196, 90, 10, 0.14)",
+    "washA": "rgba(255, 143, 26, 0.14)",
+    "washB": "rgba(42, 22, 8, 0.92)",
+    "titleGlow": "rgba(255, 255, 255, 0.10)",
+    "kpiGlowA": "rgba(255, 143, 26, 0.45)",
+    "kpiGlowB": "rgba(255, 143, 26, 0.20)",
+    "heatRgb": "255, 143, 26",
+    "scale": "linear-gradient(90deg, #1a0e04, #c45a0a, #ff8f1a)"
+  },
+  "scale": [
+    [0, [8, 9, 13]],
+    [1, [255, 143, 26]]
+  ]
+}

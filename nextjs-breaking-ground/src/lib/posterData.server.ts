@@ -4,6 +4,7 @@ import path from "node:path"
 export type ActivePosterDataset = {
   id: string
   label: string
+  rootName?: string
   path: string
   source: string
   ingestedAt: string | null

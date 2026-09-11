@@ -1,5 +1,7 @@
 import {defineField, defineType} from 'sanity'
 
+const POSTER_CHART_TYPES = ['heatmapRange', 'indexedLines', 'regionNationBars', 'nationalVolumeBars', 'rollingAverageLine', 'regionalVolumeGroups']
+
 export default defineType({
   name: 'chartData',
   title: 'Chart Data',
@@ -23,6 +25,26 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'rootName',
+      title: 'Root Name',
+      type: 'string',
+      description:
+        'Stable tag from the source CSV stem (e.g. national_industrial_five_year_history). Word docs insert the chart with {{chart:root_name}}.',
+      validation: (rule) =>
+        rule.custom(async (value, context) => {
+          if (!value) return true
+          if (!/^[a-z0-9_]+$/.test(value)) {
+            return 'Use lowercase letters, numbers, and underscores only — the CSV file stem.'
+          }
+          const id = context.document?._id?.replace(/^drafts\./, '') || ''
+          const existing = await context.getClient({apiVersion: '2024-01-01'}).fetch(
+            `count(*[_type == "chartData" && rootName == $value && !(_id in [$id, "drafts." + $id])])`,
+            {value, id},
+          )
+          return existing === 0 || 'Another chart already uses this root name.'
+        }),
+    }),
+    defineField({
       name: 'dataFile',
       title: 'CSV Data',
       type: 'file',
@@ -44,6 +66,9 @@ export default defineType({
           {title: 'Heatmap + Range', value: 'heatmapRange'},
           {title: 'Indexed Lines', value: 'indexedLines'},
           {title: 'Region + Nation Bars', value: 'regionNationBars'},
+          {title: 'National Volume Bars', value: 'nationalVolumeBars'},
+          {title: 'Rolling Average Line', value: 'rollingAverageLine'},
+          {title: 'Regional Volume Groups', value: 'regionalVolumeGroups'},
           {title: 'Area', value: 'area'},
           {title: 'Scatter', value: 'scatter'},
           {title: 'Stacked Bar', value: 'stacked'},
@@ -56,10 +81,7 @@ export default defineType({
       name: 'posterTheme',
       title: 'Poster Theme',
       type: 'string',
-      hidden: ({parent}) =>
-        parent?.chartType !== 'heatmapRange' &&
-        parent?.chartType !== 'indexedLines' &&
-        parent?.chartType !== 'regionNationBars',
+      hidden: ({parent}) => !POSTER_CHART_TYPES.includes(parent?.chartType),
       options: {
         list: [
           {title: 'Cool Midnight', value: 'cool-midnight'},
@@ -67,6 +89,8 @@ export default defineType({
           {title: 'Harbor Fog', value: 'harbor-fog'},
           {title: 'Signal Cyan', value: 'signal-cyan'},
           {title: 'Night Circuit', value: 'night-circuit'},
+          {title: 'Industrial Night', value: 'industrial-night'},
+          {title: 'Signal Amber', value: 'signal-amber'},
         ],
         layout: 'radio',
       },
@@ -89,7 +113,7 @@ export default defineType({
       validation: (r) =>
         r.custom((fields, context) => {
           const chartType = (context.parent as {chartType?: string} | undefined)?.chartType
-          if (chartType === 'heatmapRange' || chartType === 'indexedLines' || chartType === 'regionNationBars') return true
+          if (chartType && POSTER_CHART_TYPES.includes(chartType)) return true
           if (!fields?.length) return 'Add at least one Y field'
           return true
         }),
@@ -266,12 +290,13 @@ export default defineType({
     select: {
       title: 'title',
       chartType: 'chartType',
+      rootName: 'rootName',
       media: 'dataFile'
     },
-    prepare({title, chartType}) {
+    prepare({title, chartType, rootName}: {title?: string; chartType?: string; rootName?: string}) {
       return {
         title: title || 'Untitled Chart',
-        subtitle: chartType ? `${chartType.charAt(0).toUpperCase() + chartType.slice(1)} Chart` : 'Chart'
+        subtitle: [rootName, chartType].filter(Boolean).join(' · ') || 'Chart',
       }
     }
   }

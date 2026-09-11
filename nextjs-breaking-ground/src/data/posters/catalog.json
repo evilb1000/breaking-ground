@@ -21,6 +21,27 @@
       "chartType": "regionNationBars",
       "defaultTheme": "cool-midnight",
       "themes": ["cool-midnight"]
+    },
+    {
+      "id": "national-volume-bars",
+      "name": "National Volume Bars",
+      "chartType": "nationalVolumeBars",
+      "defaultTheme": "industrial-night",
+      "themes": ["industrial-night"]
+    },
+    {
+      "id": "rolling-average-line",
+      "name": "Rolling Average Line",
+      "chartType": "rollingAverageLine",
+      "defaultTheme": "signal-amber",
+      "themes": ["signal-amber"]
+    },
+    {
+      "id": "regional-volume-groups",
+      "name": "Regional Volume Groups",
+      "chartType": "regionalVolumeGroups",
+      "defaultTheme": "industrial-night",
+      "themes": ["industrial-night"]
     }
   ]
 }

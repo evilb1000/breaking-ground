@@ -8,6 +8,9 @@ import AnimatedComboClient from '@/components/AnimatedComboClient'
 import AnimatedHeatmapRangeClient from '@/components/AnimatedHeatmapRangeClient'
 import AnimatedIndexedLinesClient from '@/components/AnimatedIndexedLinesClient'
 import AnimatedRegionNationBarsClient from '@/components/AnimatedRegionNationBarsClient'
+import AnimatedNationalVolumeBarsClient from '@/components/AnimatedNationalVolumeBarsClient'
+import AnimatedRollingAverageLineClient from '@/components/AnimatedRollingAverageLineClient'
+import AnimatedRegionalVolumeGroupsClient from '@/components/AnimatedRegionalVolumeGroupsClient'
 import type {ComboSeriesConfig} from '@/components/ComboChartAnimated'
 
 type Doc = any
@@ -81,7 +84,10 @@ export default function ChartFromRefClient({
   const isPoster =
     doc.chartType === 'heatmapRange' ||
     doc.chartType === 'indexedLines' ||
-    doc.chartType === 'regionNationBars'
+    doc.chartType === 'regionNationBars' ||
+    doc.chartType === 'nationalVolumeBars' ||
+    doc.chartType === 'rollingAverageLine' ||
+    doc.chartType === 'regionalVolumeGroups'
 
   return (
     <div className={`${widthClass} ${alignClass}`}>
@@ -177,6 +183,36 @@ export default function ChartFromRefClient({
           duration={doc.animationDuration ?? 1800}
           chartTitle={doc.chartTitle}
           xLabel={doc.xLabel}
+          caption={resolvedCaption}
+          theme={doc.posterTheme}
+        />
+      ) : doc.chartType === 'nationalVolumeBars' ? (
+        <AnimatedNationalVolumeBarsClient
+          data={rows}
+          duration={doc.animationDuration ?? 1800}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          yLabel={doc.yLabel}
+          caption={resolvedCaption}
+          theme={doc.posterTheme}
+        />
+      ) : doc.chartType === 'rollingAverageLine' ? (
+        <AnimatedRollingAverageLineClient
+          data={rows}
+          duration={doc.animationDuration ?? 1800}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          yLabel={doc.yLabel}
+          caption={resolvedCaption}
+          theme={doc.posterTheme}
+        />
+      ) : doc.chartType === 'regionalVolumeGroups' ? (
+        <AnimatedRegionalVolumeGroupsClient
+          data={rows}
+          duration={doc.animationDuration ?? 1800}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          yLabel={doc.yLabel}
           caption={resolvedCaption}
           theme={doc.posterTheme}
         />

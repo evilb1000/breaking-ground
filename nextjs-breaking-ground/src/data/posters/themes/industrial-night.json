@@ -1,0 +1,36 @@
+{
+  "slug": "industrial-night",
+  "name": "Industrial Night",
+  "type": "national-volume-bars",
+  "tokens": {
+    "bg": "#08090d",
+    "ink": "#f4f6fa",
+    "muted": "#8b93a3",
+    "accent": "#4d8fff",
+    "title": "#ffffff",
+    "label": "#d7dde8",
+    "y1": "#1b3d8a",
+    "y2": "#4d8fff",
+    "y3": "#2a4fa0",
+    "emptyCell": "#10131a",
+    "emptyText": "#6b7280",
+    "cellTextLight": "#f4f6fa",
+    "cellTextDark": "#08090d",
+    "track": "rgba(255,255,255,0.06)",
+    "border": "rgba(77, 143, 255, 0.12)",
+    "ring": "rgba(77, 143, 255, 0.10)",
+    "glowA": "rgba(77, 143, 255, 0.12)",
+    "glowB": "rgba(27, 61, 138, 0.16)",
+    "washA": "rgba(77, 143, 255, 0.06)",
+    "washB": "rgba(27, 61, 138, 0.10)",
+    "titleGlow": "rgba(255, 255, 255, 0.10)",
+    "kpiGlowA": "rgba(77, 143, 255, 0.40)",
+    "kpiGlowB": "rgba(77, 143, 255, 0.18)",
+    "heatRgb": "77, 143, 255",
+    "scale": "linear-gradient(90deg, #0b1220, #1b3d8a, #4d8fff)"
+  },
+  "scale": [
+    [0, [8, 9, 13]],
+    [1, [77, 143, 255]]
+  ]
+}
