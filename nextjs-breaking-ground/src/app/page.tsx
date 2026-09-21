@@ -378,7 +378,7 @@ function HeroFeature({
       <div className="absolute right-[23px] bottom-[28px] flex w-[848px] flex-col items-start gap-[55px]">
         <div className="flex w-full flex-col items-start gap-[16px]">
           <div
-            className="flex h-[169px] w-full flex-col items-start justify-center pr-[24px] py-[12px]"
+            className="flex min-h-[169px] w-full flex-col items-start justify-center pr-[24px] py-[12px]"
             style={{ filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.25))" }}
           >
             <h1
@@ -391,6 +391,11 @@ function HeroFeature({
             >
               {heroTitle}
             </h1>
+            {entry?.dek?.trim() ? (
+              <p className="mt-[12px] w-[760px] bg-font-crimson text-[16px] leading-[22px] text-white/80">
+                {entry.dek.trim()}
+              </p>
+            ) : null}
           </div>
 
           <div className="flex w-[523px] flex-col items-start gap-[20px] px-[82px]">
@@ -581,6 +586,11 @@ function MobileHeroFeature({
           >
             {heroTitle}
           </h1>
+          {entry?.dek?.trim() ? (
+            <p className="mt-[12px] bg-font-crimson text-[16px] leading-[22px] text-white/80">
+              {entry.dek.trim()}
+            </p>
+          ) : null}
           <div className="mt-[16px] flex flex-wrap items-center gap-x-[12px] gap-y-[4px]">
             <p className="bg-font-roboto text-[10px] leading-[20px]">
               {displayDate(entry?.publishedAt)}
