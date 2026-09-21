@@ -736,11 +736,6 @@ export default async function FigmaArticlePage({ article }: { article: FigmaArti
                 >
                   {headline}
                 </h1>
-                {article.dek ? (
-                  <p className="bg-font-crimson text-[16px] leading-[22px] text-[color:var(--bg-on-surface)] opacity-80">
-                    {article.dek}
-                  </p>
-                ) : null}
               </header>
 
               {Array.isArray(article.body) ? (() => {
