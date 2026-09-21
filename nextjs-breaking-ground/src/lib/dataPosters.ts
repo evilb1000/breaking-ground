@@ -9,6 +9,9 @@ import coolMidnightBars from "@/data/posters/themes/cool-midnight-bars.json"
 import industrialNight from "@/data/posters/themes/industrial-night.json"
 import signalAmber from "@/data/posters/themes/signal-amber.json"
 import industrialNightGroups from "@/data/posters/themes/industrial-night-groups.json"
+import autumnEditorialLines from "@/data/posters/themes/autumn-editorial-lines.json"
+import autumnEditorialBars from "@/data/posters/themes/autumn-editorial-bars.json"
+import autumnEditorialHeat from "@/data/posters/themes/autumn-editorial-heat.json"
 
 export type PosterScaleStop = [number, [number, number, number]]
 
@@ -57,7 +60,7 @@ export type PosterTypeMeta = {
   themes: string[]
 }
 
-const THEMES: PosterTheme[] = [coolMidnight, cozyCottage, harborFog, signalCyan, nightCircuit, coolMidnightBars, industrialNight, signalAmber, industrialNightGroups] as PosterTheme[]
+const THEMES: PosterTheme[] = [coolMidnight, cozyCottage, harborFog, signalCyan, nightCircuit, coolMidnightBars, industrialNight, signalAmber, industrialNightGroups, autumnEditorialLines, autumnEditorialBars, autumnEditorialHeat] as PosterTheme[]
 
 export const POSTER_CATALOG = catalog as {version: number; types: PosterTypeMeta[]}
 
@@ -117,6 +120,8 @@ export function posterThemeStyle(theme: PosterTheme): CSSProperties {
     ["--hr-kpi-glow-b" as string]: t.kpiGlowB,
     ["--hr-heat-rgb" as string]: t.heatRgb,
     ["--hr-scale" as string]: t.scale,
+    ["--hr-cell-text-light" as string]: t.cellTextLight,
+    ["--hr-cell-text-dark" as string]: t.cellTextDark,
   } as CSSProperties
 }
 

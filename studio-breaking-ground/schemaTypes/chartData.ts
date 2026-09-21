@@ -1,6 +1,6 @@
 import {defineField, defineType} from 'sanity'
 
-const POSTER_CHART_TYPES = ['heatmapRange', 'indexedLines', 'regionNationBars', 'nationalVolumeBars', 'rollingAverageLine', 'regionalVolumeGroups']
+const POSTER_CHART_TYPES = ['heatmapRange', 'indexedLines', 'regionNationBars', 'nationalVolumeBars', 'rollingAverageLine', 'regionalVolumeGroups', 'decadeLines', 'rankedBars', 'decadeHeatmap']
 
 export default defineType({
   name: 'chartData',
@@ -69,6 +69,9 @@ export default defineType({
           {title: 'National Volume Bars', value: 'nationalVolumeBars'},
           {title: 'Rolling Average Line', value: 'rollingAverageLine'},
           {title: 'Regional Volume Groups', value: 'regionalVolumeGroups'},
+          {title: 'Decade Lines', value: 'decadeLines'},
+          {title: 'Ranked Bars', value: 'rankedBars'},
+          {title: 'Decade Heatmap', value: 'decadeHeatmap'},
           {title: 'Area', value: 'area'},
           {title: 'Scatter', value: 'scatter'},
           {title: 'Stacked Bar', value: 'stacked'},
@@ -91,6 +94,7 @@ export default defineType({
           {title: 'Night Circuit', value: 'night-circuit'},
           {title: 'Industrial Night', value: 'industrial-night'},
           {title: 'Signal Amber', value: 'signal-amber'},
+          {title: 'Autumn Editorial', value: 'autumn-editorial'},
         ],
         layout: 'radio',
       },

@@ -11,6 +11,9 @@ import AnimatedRegionNationBarsClient from '@/components/AnimatedRegionNationBar
 import AnimatedNationalVolumeBarsClient from '@/components/AnimatedNationalVolumeBarsClient'
 import AnimatedRollingAverageLineClient from '@/components/AnimatedRollingAverageLineClient'
 import AnimatedRegionalVolumeGroupsClient from '@/components/AnimatedRegionalVolumeGroupsClient'
+import AnimatedDecadeLinesClient from '@/components/AnimatedDecadeLinesClient'
+import AnimatedRankedBarsClient from '@/components/AnimatedRankedBarsClient'
+import AnimatedDecadeHeatmapClient from '@/components/AnimatedDecadeHeatmapClient'
 import type {ComboSeriesConfig} from '@/components/ComboChartAnimated'
 
 type Doc = any
@@ -87,7 +90,10 @@ export default function ChartFromRefClient({
     doc.chartType === 'regionNationBars' ||
     doc.chartType === 'nationalVolumeBars' ||
     doc.chartType === 'rollingAverageLine' ||
-    doc.chartType === 'regionalVolumeGroups'
+    doc.chartType === 'regionalVolumeGroups' ||
+    doc.chartType === 'decadeLines' ||
+    doc.chartType === 'rankedBars' ||
+    doc.chartType === 'decadeHeatmap'
 
   return (
     <div className={`${widthClass} ${alignClass}`}>
@@ -210,6 +216,36 @@ export default function ChartFromRefClient({
         <AnimatedRegionalVolumeGroupsClient
           data={rows}
           duration={doc.animationDuration ?? 1800}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          yLabel={doc.yLabel}
+          caption={resolvedCaption}
+          theme={doc.posterTheme}
+        />
+      ) : doc.chartType === 'decadeLines' ? (
+        <AnimatedDecadeLinesClient
+          data={rows}
+          duration={doc.animationDuration ?? 1600}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          yLabel={doc.yLabel}
+          caption={resolvedCaption}
+          theme={doc.posterTheme}
+        />
+      ) : doc.chartType === 'rankedBars' ? (
+        <AnimatedRankedBarsClient
+          data={rows}
+          duration={doc.animationDuration ?? 1200}
+          chartTitle={doc.chartTitle}
+          xLabel={doc.xLabel}
+          yLabel={doc.yLabel}
+          caption={resolvedCaption}
+          theme={doc.posterTheme}
+        />
+      ) : doc.chartType === 'decadeHeatmap' ? (
+        <AnimatedDecadeHeatmapClient
+          data={rows}
+          duration={doc.animationDuration ?? 1200}
           chartTitle={doc.chartTitle}
           xLabel={doc.xLabel}
           yLabel={doc.yLabel}

@@ -54,8 +54,45 @@ export function parsePosterCsv(text: string): Array<Record<string, string>> {
   })
 }
 
-export function loadActivePosterRows(typeId: string) {
-  const {absPath, dataset} = resolveActivePosterCsv(typeId)
+function findIngestedByRoot(typeId: string, rootName: string): ActivePosterDataset | null {
+  const ingested = path.join(postersRoot(), "ingested", typeId)
+  if (!fs.existsSync(ingested)) return null
+  const dirs = fs.readdirSync(ingested).sort().reverse()
+  for (const name of dirs) {
+    const metaPath = path.join(ingested, name, "meta.json")
+    if (!fs.existsSync(metaPath)) continue
+    const meta = JSON.parse(fs.readFileSync(metaPath, "utf8")) as {rootName?: string; paths?: {mapped?: string}; label?: string; ingestedAt?: string; warnings?: string[]}
+    if (meta.rootName !== rootName) continue
+    return {
+      id: name,
+      label: meta.label || rootName,
+      rootName,
+      path: meta.paths?.mapped || path.join("ingested", typeId, name, "mapped.csv"),
+      source: "ingest",
+      ingestedAt: meta.ingestedAt || null,
+      typeId,
+      warnings: meta.warnings || [],
+    }
+  }
+  const sample = path.join(postersRoot(), "types", typeId, "samples", `${rootName}.csv`)
+  if (!fs.existsSync(sample)) return null
+  return {
+    id: rootName,
+    label: `${rootName}.csv`,
+    rootName,
+    path: path.relative(postersRoot(), sample),
+    source: "sample",
+    ingestedAt: null,
+    typeId,
+    warnings: [],
+  }
+}
+
+export function loadActivePosterRows(typeId: string, rootName?: string) {
+  const override = rootName ? findIngestedByRoot(typeId, rootName) : null
+  const resolved = resolveActivePosterCsv(typeId)
+  const dataset = override || resolved.dataset
+  const absPath = override ? path.join(postersRoot(), override.path) : resolved.absPath
   const rows = parsePosterCsv(fs.readFileSync(absPath, "utf8"))
   return {rows, dataset, absPath}
 }

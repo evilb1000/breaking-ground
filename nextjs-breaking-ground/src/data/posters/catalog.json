@@ -42,6 +42,27 @@
       "chartType": "regionalVolumeGroups",
       "defaultTheme": "industrial-night",
       "themes": ["industrial-night"]
+    },
+    {
+      "id": "decade-lines",
+      "name": "Decade Lines",
+      "chartType": "decadeLines",
+      "defaultTheme": "autumn-editorial",
+      "themes": ["autumn-editorial"]
+    },
+    {
+      "id": "ranked-bars",
+      "name": "Ranked Bars",
+      "chartType": "rankedBars",
+      "defaultTheme": "autumn-editorial",
+      "themes": ["autumn-editorial"]
+    },
+    {
+      "id": "decade-heatmap",
+      "name": "Decade Heatmap",
+      "chartType": "decadeHeatmap",
+      "defaultTheme": "autumn-editorial",
+      "themes": ["autumn-editorial"]
     }
   ]
 }
