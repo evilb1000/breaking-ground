@@ -337,7 +337,7 @@ function HeroFeature({
   // 1390×475 at (25, 153). Image left (568×475) + dark textured panel right (822×475).
   // Content overlay is right-aligned on the dark side: headline (white, 56/48 Roboto Flex),
   // meta row, "Read full profile" CTA (white bg, dark-blue text), and "View all profiles →" link.
-  const heroImage = entryImageUrl(entry, 1800, 950) || imgScreenshot20260319At103148Am2;
+  const heroImage = entryImageUrl(entry, 1136, 950) || imgScreenshot20260319At103148Am2;
   // Prefer the article's optional homepage-only headline; fall back to the
   // standard article headline (which the GROQ projection already coalesces
   // into `title`) so older articles render exactly as they do today.
