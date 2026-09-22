@@ -1,5 +1,8 @@
 "use client"
 import {useEffect, useRef, useState} from 'react'
+import {posterDominatesViewport} from '@/components/usePosterInView'
+
+const IO_THRESHOLDS = Array.from({length: 21}, (_, i) => i / 20)
 
 export function useChartRevealProgress<T extends Element>(duration = 800) {
   const ref = useRef<T | null>(null)
@@ -34,19 +37,29 @@ export function useChartRevealProgress<T extends Element>(duration = 800) {
       return () => cancelAnimationFrame(raf)
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          startAnimation()
-          observer.disconnect()
-        }
-      },
-      {rootMargin: '0px 0px 0px 0px', threshold: 0.01}
-    )
+    const tryStart = () => {
+      if (!posterDominatesViewport(el)) return
+      startAnimation()
+      cleanup()
+    }
 
+    const observer = new IntersectionObserver(tryStart, {
+      threshold: IO_THRESHOLDS,
+      rootMargin: '0px',
+    })
     observer.observe(el)
-    return () => {
+    window.addEventListener('scroll', tryStart, {passive: true})
+    window.addEventListener('resize', tryStart)
+    tryStart()
+
+    function cleanup() {
       observer.disconnect()
+      window.removeEventListener('scroll', tryStart)
+      window.removeEventListener('resize', tryStart)
+    }
+
+    return () => {
+      cleanup()
       cancelAnimationFrame(raf)
     }
   }, [duration])
