@@ -391,11 +391,6 @@ function HeroFeature({
             >
               {heroTitle}
             </h1>
-            {entry?.dek?.trim() ? (
-              <p className="mt-[12px] w-[760px] bg-font-crimson text-[16px] leading-[22px] text-white/80">
-                {entry.dek.trim()}
-              </p>
-            ) : null}
           </div>
 
           <div className="flex w-[523px] flex-col items-start gap-[20px] px-[82px]">
@@ -586,11 +581,6 @@ function MobileHeroFeature({
           >
             {heroTitle}
           </h1>
-          {entry?.dek?.trim() ? (
-            <p className="mt-[12px] bg-font-crimson text-[16px] leading-[22px] text-white/80">
-              {entry.dek.trim()}
-            </p>
-          ) : null}
           <div className="mt-[16px] flex flex-wrap items-center gap-x-[12px] gap-y-[4px]">
             <p className="bg-font-roboto text-[10px] leading-[20px]">
               {displayDate(entry?.publishedAt)}
