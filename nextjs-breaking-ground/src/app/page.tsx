@@ -375,10 +375,10 @@ function HeroFeature({
         </div>
       ) : null}
 
-      <div className="absolute right-[23px] bottom-[28px] flex w-[780px] flex-col items-start gap-[55px]">
+      <div className="absolute bottom-[28px] left-[600px] right-[23px] flex flex-col items-start gap-[55px]">
         <div className="flex w-full flex-col items-start gap-[16px]">
           <div
-            className="flex min-h-[169px] w-full flex-col items-start justify-center pr-[24px] py-[12px]"
+            className="flex min-h-[169px] w-full flex-col items-start justify-center py-[12px]"
             style={{ filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.25))" }}
           >
             <h1
