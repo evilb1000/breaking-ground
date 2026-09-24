@@ -1,6 +1,6 @@
 {
   "createdAt": "2026-03-14T23:39:44.868Z",
-  "updatedAt": "2026-09-22T01:19:53.053Z",
+  "updatedAt": "2026-09-24T12:44:29.251Z",
   "summaries": [
     {
       "link": "https://adp-ri-nrip-static.adp.com/artifacts/us_ner/20260304/ADP_NATIONAL_EMPLOYMENT_REPORT_Press_Release_2026_02%20FINAL.pdf",
@@ -2135,6 +2135,17 @@
       "headline": "Construction Input Costs Rise 8.9% Due to Middle East Conflicts and Tariffs, AGC Report Finds",
       "blurb": "A September report from AGC Construction Data reveals that construction input costs for new nonresidential projects rose by 8.9% from August 2025 to August 2026. This increase is attributed to ongoing conflicts in the Middle East and substantial tariffs on key materials, resulting in project delays and challenges to feasibility. The findings highlight that rising materials and labor costs are significant factors contributing to project cancellations and postponements.",
       "publicationAddedAt": "2026-09-22T01:19:52.379Z"
+    },
+    {
+      "link": "https://www.goldmansachs.com/insights/articles/can-ai-investment-drive-s-and-p-500-earnings-even-higher",
+      "source": "Goldman Sachs",
+      "title": "Can AI Investment Drive S&P 500 Earnings Even Higher?",
+      "pubDate": "2026-09-23",
+      "summaryText": "A September report from Goldman Sachs discusses the recent performance and future outlook for S&P 500 earnings, highlighting concerns that the market may be experiencing an \"earnings bubble.\" According to Goldman Sachs Research, S&P 500 earnings per share (EPS) grew by 51% in the second quarter year-over-year, contrasting sharply with the historical average growth rate of 7% over the past 30 years.\n\nGoldman strategists project that while earnings growth will decelerate, it will not collapse. They note that current equity valuations, with a forward price-to-earnings (P/E) ratio of 19, are aligned with the 10-year average, suggesting no bubble despite concerns about sustainability. The cyclically adjusted P/E ratio is high, though it remains below the peak levels seen in 1999-2000.\n\nThe forecast for the S&P 500 indicates a potential rise to 8,700 within the next 12 months, driven by earnings growth expectations of approximately 11% in both 2027 and 2028, fueled by GDP growth and contributions from AI productivity. However, uncertainties surrounding AI's long-term profitability are expected to temper valuation increases.\n\nGoldman Sachs also notes that nearly half of the anticipated EPS growth for 2026 is attributed to AI investment, with hyperscaler companies expected to increase capital expenditures significantly. This investment supports various sectors but is projected to grow at a slower rate in the coming years while depreciation costs will increase, which may dampen earnings growth.\n\nAdditionally, the report emphasizes the mixed effects of AI investment on the broader economy and capital markets, with recent surges in semiconductor prices benefiting chipmakers but predicted to stabilize. It also points out that large tech firms have gained substantial unrealized investment profits, impacting S&P 500 earnings, although contributions from these gains are expected to diminish in 2027.\n\nThis article serves educational purposes only and does not constitute investment advice or recommendations.\n\nSource URL: https://www.goldmansachs.com/insights/articles/can-ai-investment-drive-s-and-p-500-earnings-even-higher",
+      "addedAt": "2026-09-24T12:44:23.789Z",
+      "headline": "Goldman Sachs Report Highlights Concerns Over S&P 500 Earnings Bubble Amid Surge in AI Investment",
+      "blurb": "A September report from Goldman Sachs raises concerns about a potential \"earnings bubble\" in the S&P 500, noting a remarkable 51% year-over-year growth in earnings per share (EPS) for the second quarter, compared to a historical average of 7%. Despite the projected deceleration in earnings growth, Goldman strategists expect a rise in the S&P 500 to 8,700 within the next year, driven significantly by AI investment, with nearly half of the anticipated EPS growth for 2026 linked to this sector. The report implies that while equity valuations appear justified, uncertainties regarding AI profitability may temper future growth.",
+      "publicationAddedAt": "2026-09-24T12:44:29.251Z"
     }
   ]
 }
