@@ -5,9 +5,9 @@ import HomepageEventBanner from "@/components/homepage/HomepageEventBanner"
 import PodcastArchive from "@/components/podcast/PodcastArchive"
 import { getAdsForSurface } from "@/lib/ads"
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent"
-import { loadPodcastEpisodes, PODCAST_REVALIDATE_SECONDS } from "@/lib/youtubePodcast"
+import { loadPodcastEpisodes } from "@/lib/youtubePodcast"
 
-export const revalidate = PODCAST_REVALIDATE_SECONDS
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: "Blueprints&BS",
