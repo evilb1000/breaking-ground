@@ -23,6 +23,7 @@ const NAV_ITEMS: NavItem[] = [
   },
   { label: "News", href: "/news", chevron: false },
   { label: "Perspectives", href: "/sections/perspectives", chevron: false },
+  { label: "Blueprints&BS", href: "/sections/blueprints-bs", chevron: false },
   {
     label: "Trends",
     chevron: true,
@@ -43,7 +44,7 @@ const NAV_ITEMS: NavItem[] = [
 export default function HomepageTopRibbon() {
   return (
     <header className="w-full border-b border-[#d8d8d8] bg-[#f5f3f0] lg:bg-[#f6f6f6]">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-[20px] pb-[28px] pt-[42px] lg:hidden">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-[20px] pb-[28px] pt-[42px] min-[1120px]:hidden">
         <Link href="/" className="inline-flex h-[43px] w-[176px] items-center">
           <img
             src={FIGMA_HEADER_LOGO}
@@ -96,7 +97,7 @@ export default function HomepageTopRibbon() {
         </div>
       </div>
 
-      <div className="mx-auto hidden max-w-[1440px] items-center justify-between px-4 pb-[28px] pt-[24px] md:px-[26px] md:pt-[32px] lg:flex">
+      <div className="mx-auto hidden max-w-[1440px] items-center justify-between px-4 pb-[28px] pt-[24px] md:px-[26px] md:pt-[32px] min-[1120px]:flex">
         <Link href="/" className="inline-flex h-[65px] w-[266px] items-center">
           <img
             src={FIGMA_HEADER_LOGO}
@@ -105,7 +106,7 @@ export default function HomepageTopRibbon() {
           />
         </Link>
 
-        <nav className="flex cursor-pointer items-center gap-6 text-[#312e28]">
+        <nav className="flex cursor-pointer items-center gap-x-2 text-[#312e28] min-[1440px]:gap-x-4">
           {NAV_ITEMS.map((item) => {
             if (item.children && item.children.length > 0) {
               return (

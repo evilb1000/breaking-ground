@@ -60,6 +60,7 @@ export const figmaArticle = defineType({
           {title: 'Member Profiles', value: 'member-profiles'},
           {title: 'News', value: 'news'},
           {title: 'Perspectives', value: 'perspectives'},
+          {title: 'Blueprints&BS', value: 'blueprints-bs'},
           {title: 'Opinion', value: 'opinion'},
         ],
       },

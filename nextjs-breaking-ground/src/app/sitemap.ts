@@ -16,6 +16,7 @@ const SECTION_SLUGS = [
   "project-profiles",
   "member-profiles",
   "perspectives",
+  "blueprints-bs",
   "local",
   "national",
   "data-insights",

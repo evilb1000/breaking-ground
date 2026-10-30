@@ -108,6 +108,7 @@ export function sectionLabel(section?: string): string {
     "member-profiles": "Member Profiles",
     news: "News",
     perspectives: "Perspectives",
+    "blueprints-bs": "Blueprints&BS",
     opinion: "Opinion",
   };
   return map[section] || section;
