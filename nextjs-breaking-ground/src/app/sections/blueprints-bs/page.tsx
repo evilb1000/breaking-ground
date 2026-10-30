@@ -3,6 +3,7 @@ import Link from "next/link"
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon"
 import HomepageEventBanner from "@/components/homepage/HomepageEventBanner"
 import PodcastArchive from "@/components/podcast/PodcastArchive"
+import { getAdsForSurface } from "@/lib/ads"
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent"
 import { loadPodcastEpisodes, PODCAST_REVALIDATE_SECONDS } from "@/lib/youtubePodcast"
 
@@ -14,12 +15,13 @@ export const metadata: Metadata = {
 }
 
 export default async function BlueprintsPodcastPage() {
-  const [episodes, eventBanner] = await Promise.all([
+  const [episodes, eventBanner, ads] = await Promise.all([
     loadPodcastEpisodes().catch((error) => {
       console.error("Could not load the Blueprints&BS playlist.", error)
       return []
     }),
     getHomepageEventBannerProps(),
+    getAdsForSurface("news"),
   ])
 
   return (
@@ -41,7 +43,7 @@ export default async function BlueprintsPodcastPage() {
       </section>
 
       <section className="mx-auto w-full max-w-[922px] px-[20px] pb-[56px] pt-[32px] lg:px-0 lg:pb-[72px] lg:pt-[40px]">
-        <PodcastArchive episodes={episodes} />
+        <PodcastArchive episodes={episodes} ads={ads} />
       </section>
 
       <div className="mx-auto w-full max-w-[1440px] px-4 md:px-[26px]">

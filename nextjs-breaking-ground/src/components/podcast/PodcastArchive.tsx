@@ -1,6 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { Fragment, useMemo, useState } from "react"
+import InsightsAdUnit from "@/components/insights/InsightsAdUnit"
+import { selectAdForPlacement, type AdCreative } from "@/lib/ads"
 import type { PodcastEpisode } from "@/lib/youtubePodcast"
 
 const PAGE_SIZE = 8
@@ -73,7 +75,13 @@ function EpisodeMedia({
   )
 }
 
-export default function PodcastArchive({ episodes }: { episodes: PodcastEpisode[] }) {
+export default function PodcastArchive({
+  episodes,
+  ads,
+}: {
+  episodes: PodcastEpisode[]
+  ads: AdCreative[]
+}) {
   const [query, setQuery] = useState("")
   const [page, setPage] = useState(1)
   const [playingId, setPlayingId] = useState<string | null>(null)
@@ -178,27 +186,36 @@ export default function PodcastArchive({ episodes }: { episodes: PodcastEpisode[
         {visible.length === 0 ? (
           <p className="mt-[24px] bg-type-body text-[#312e28]">No episodes match that search.</p>
         ) : (
-          <div className="mt-[24px] grid grid-cols-1 gap-y-[32px] lg:mt-[31px] lg:grid-cols-2 lg:gap-x-[23px] lg:gap-y-[32px]">
-            {visible.map((episode) => (
-              <article key={episode.id} className="min-w-0">
-                <EpisodeMedia
-                  episode={episode}
-                  playing={playingId === episode.id}
-                  onPlay={() => play(episode.id)}
-                />
-                <div className="mt-[16px] flex flex-col gap-[5px]">
-                  {episode.publishedAt ? (
-                    <p className="bg-type-meta text-[#312e28]">{formatEpisodeDate(episode.publishedAt)}</p>
-                  ) : null}
-                  <button
-                    type="button"
-                    onClick={() => play(episode.id)}
-                    className="bg-font-roboto-condensed text-left text-[16px] font-medium leading-[22px] text-[#312e28] hover:underline lg:text-[20px] lg:leading-[26px]"
-                  >
-                    {episode.title}
-                  </button>
-                </div>
-              </article>
+          <div className="mt-[24px] flex flex-col divide-y divide-[#312e28]/25 border-y-2 border-[#312e28]/25">
+            {visible.map((episode, i) => (
+              <Fragment key={episode.id}>
+                <article className="py-[26px] lg:py-[34px]">
+                  <EpisodeMedia
+                    episode={episode}
+                    playing={playingId === episode.id}
+                    onPlay={() => play(episode.id)}
+                  />
+                  <div className="mt-[16px] flex flex-col gap-[5px]">
+                    {episode.publishedAt ? (
+                      <p className="bg-type-meta text-[#312e28]">{formatEpisodeDate(episode.publishedAt)}</p>
+                    ) : null}
+                    <button
+                      type="button"
+                      onClick={() => play(episode.id)}
+                      className="bg-font-roboto-condensed text-left text-[16px] font-medium leading-[22px] text-[#312e28] hover:underline lg:text-[20px] lg:leading-[26px]"
+                    >
+                      {episode.title}
+                    </button>
+                  </div>
+                </article>
+                {i % 2 === 0 ? (
+                  <div className="py-[8px] lg:py-0">
+                    <InsightsAdUnit
+                      ad={selectAdForPlacement(ads, "newsFeed", Math.floor(i / 2), `podcast-page:${currentPage}`)}
+                    />
+                  </div>
+                ) : null}
+              </Fragment>
             ))}
           </div>
         )}
