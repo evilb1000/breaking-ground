@@ -10,6 +10,7 @@ import HomepageTabbedPanel, {
 import HomepageTopRibbon from "@/components/homepage/HomepageTopRibbon";
 import { articleHref } from "@/lib/urls";
 import { getAdsForSurface, selectAdForPlacement, type AdCreative } from "@/lib/ads";
+import { getHomepageEventBannerProps } from "@/lib/homepageEvent";
 
 // Figma-sourced assets. Downloaded from the Figma MCP asset CDN (which expires
 // after 7 days) and committed locally at public/figma-assets/ for permanence.
@@ -439,23 +440,32 @@ function HeroFeature({
 
 function EventBanner({
   entry,
+  title,
+  subtitle,
   ctaHref,
   ctaLabel,
+  eyebrow,
   body,
 }: {
   entry?: HomepageEntry | null;
+  title?: string | null;
+  subtitle?: string | null;
   ctaHref?: string;
   ctaLabel?: string;
-  body?: string;
+  eyebrow?: string | null;
+  body?: string | null;
 }) {
-  const title = entry?.title;
-  const subtitle = entry?.publishedAt
-    ? `Event date ${new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".")}`
-    : null;
+  const resolvedTitle = title?.trim() || entry?.title;
+  const resolvedSubtitle =
+    subtitle?.trim() ||
+    (entry?.publishedAt
+      ? `Event date ${new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".")}`
+      : null);
   const resolvedCtaHref = ctaHref?.trim();
   const resolvedCtaLabel = ctaLabel?.trim();
+  const chipLabel = eyebrow?.trim() || resolvedCtaLabel;
 
-  if (!title && !subtitle && !body && !resolvedCtaLabel && !resolvedCtaHref) return null;
+  if (!resolvedTitle && !resolvedSubtitle && !body && !chipLabel && !resolvedCtaHref) return null;
 
   return (
     <div className="absolute left-0 top-[1286px] h-[336px] w-[1440px] overflow-hidden">
@@ -463,16 +473,16 @@ function EventBanner({
       <div className="absolute inset-0 bg-[#113251]/70" />
       <div className="absolute left-0 top-0 h-[336px] w-[1440px] text-center text-white">
         <div className="mt-[80px]">
-          {resolvedCtaLabel ? (
+          {chipLabel ? (
             <div className="mx-auto inline-flex h-[32px] items-center gap-[4px] bg-[#ff611d] p-[8px]">
               <img src={imgEventRegistration} alt="" className="h-[14px] w-[14px]" />
               <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px]">
-                {resolvedCtaLabel.toUpperCase()}
+                {chipLabel.toUpperCase()}
               </p>
             </div>
           ) : null}
-          {title ? <h2 className="bg-type-h1 mt-[16px] text-white">{title}</h2> : null}
-          {subtitle ? <h3 className="bg-type-h2 mt-[12px] text-white">{subtitle}</h3> : null}
+          {resolvedTitle ? <h2 className="bg-type-h1 mt-[16px] text-white">{resolvedTitle}</h2> : null}
+          {resolvedSubtitle ? <h3 className="bg-type-h2 mt-[12px] text-white">{resolvedSubtitle}</h3> : null}
           {body ? (
             <p className="mt-[14px] bg-font-crimson text-[34px] leading-[40px] text-white">
               {body}
@@ -710,39 +720,48 @@ function MobileArticleSection({
 
 function MobileEventBanner({
   entry,
+  title,
+  subtitle,
   ctaHref,
   ctaLabel,
+  eyebrow,
   body,
 }: {
   entry?: HomepageEntry | null;
+  title?: string | null;
+  subtitle?: string | null;
   ctaHref?: string;
   ctaLabel?: string;
-  body?: string;
+  eyebrow?: string | null;
+  body?: string | null;
 }) {
-  const title = entry?.title;
-  const subtitle = entry?.publishedAt
-    ? `Event date ${new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".")}`
-    : null;
+  const resolvedTitle = title?.trim() || entry?.title;
+  const resolvedSubtitle =
+    subtitle?.trim() ||
+    (entry?.publishedAt
+      ? `Event date ${new Date(entry.publishedAt).toLocaleDateString("en-US").replaceAll("/", ".")}`
+      : null);
   const resolvedCtaHref = ctaHref?.trim();
   const resolvedCtaLabel = ctaLabel?.trim();
+  const chipLabel = eyebrow?.trim() || resolvedCtaLabel;
 
-  if (!title && !subtitle && !body && !resolvedCtaLabel && !resolvedCtaHref) return null;
+  if (!resolvedTitle && !resolvedSubtitle && !body && !chipLabel && !resolvedCtaHref) return null;
 
   return (
     <section className="relative overflow-hidden px-[20px] py-[42px] text-center text-white">
       <img src={entryImageUrl(entry, 900, 500) || imgRectangle15} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-[#113251]/75" />
       <div className="relative">
-        {resolvedCtaLabel ? (
+        {chipLabel ? (
           <div className="mx-auto inline-flex h-[32px] items-center gap-[4px] bg-[#ff611d] px-[8px]">
             <img src={imgEventRegistration} alt="" className="h-[14px] w-[14px]" />
             <p className="bg-font-roboto text-[12px] font-bold tracking-[0.24px]">
-              {resolvedCtaLabel.toUpperCase()}
+              {chipLabel.toUpperCase()}
             </p>
           </div>
         ) : null}
-        {title ? <h2 className="mt-[16px] bg-font-roboto-flex text-[32px] leading-[36px]">{title}</h2> : null}
-        {subtitle ? <p className="mt-[10px] bg-font-roboto-condensed text-[18px] leading-[24px]">{subtitle}</p> : null}
+        {resolvedTitle ? <h2 className="mt-[16px] bg-font-roboto-flex text-[32px] leading-[36px]">{resolvedTitle}</h2> : null}
+        {resolvedSubtitle ? <p className="mt-[10px] bg-font-roboto-condensed text-[18px] leading-[24px]">{resolvedSubtitle}</p> : null}
         {body ? <p className="mt-[12px] bg-font-crimson text-[20px] leading-[27px]">{body}</p> : null}
         {resolvedCtaHref ? (
           <Link
@@ -799,12 +818,13 @@ function MobileSponsorsAndAd({ ad }: { ad?: AdCreative | null }) {
 }
 
 export default async function IndexPage() {
-  const [homepage, profilesRaw, perspectivesRaw, latest, homepageAds] = await Promise.all([
+  const [homepage, profilesRaw, perspectivesRaw, latest, homepageAds, eventBanner] = await Promise.all([
     client.fetch<HomepageDoc>(HOMEPAGE_QUERY, {}, options),
     client.fetch<HomepageEntry[]>(PROFILES_TAB_QUERY, {}, options),
     client.fetch<HomepageEntry[]>(PERSPECTIVES_TAB_QUERY, {}, options),
     loadLatestNewsItems(),
     getAdsForSurface("homepage"),
+    getHomepageEventBannerProps(),
   ]);
   const homepageAd = selectAdForPlacement(homepageAds, "homepageSponsor", 0, "homepage");
   const visibleEntry = (entry?: HomepageEntry | null) => entry && !entry.hideFromSite ? entry : null;
@@ -856,9 +876,12 @@ export default async function IndexPage() {
         />
         <MobileEventBanner
           entry={event}
-          ctaHref={homepage?.announcementLinkUrl}
-          ctaLabel={homepage?.announcementLinkLabel}
-          body={homepage?.announcementMessage}
+          title={eventBanner.title}
+          subtitle={eventBanner.subtitle}
+          body={eventBanner.body}
+          ctaHref={eventBanner.ctaHref || undefined}
+          ctaLabel={eventBanner.ctaLabel || undefined}
+          eyebrow={eventBanner.ctaHref ? "Event registration" : undefined}
         />
         <MobileSponsorsAndAd ad={homepageAd} />
       </div>
@@ -877,9 +900,12 @@ export default async function IndexPage() {
         <HomepageTabbedPanel profiles={profiles} perspectives={perspectives} />
         <EventBanner
           entry={event}
-          ctaHref={homepage?.announcementLinkUrl}
-          ctaLabel={homepage?.announcementLinkLabel}
-          body={homepage?.announcementMessage}
+          title={eventBanner.title}
+          subtitle={eventBanner.subtitle}
+          body={eventBanner.body}
+          ctaHref={eventBanner.ctaHref || undefined}
+          ctaLabel={eventBanner.ctaLabel || undefined}
+          eyebrow={eventBanner.ctaHref ? "Event registration" : undefined}
         />
         <SponsorsAndAd ad={homepageAd} />
       </div>

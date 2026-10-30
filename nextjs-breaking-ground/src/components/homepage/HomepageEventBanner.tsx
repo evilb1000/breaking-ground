@@ -43,9 +43,11 @@ export default function HomepageEventBanner({
       <div className="absolute inset-0 bg-[#113251]/70" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.16),transparent_52%)]" />
       <div className="relative">
-        <p className="bg-font-roboto mb-5 inline-flex rounded bg-[#ff611d] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] lg:mx-auto">
-          Event registration
-        </p>
+        {resolvedCtaHref && resolvedCtaLabel ? (
+          <p className="bg-font-roboto mb-5 inline-flex rounded bg-[#ff611d] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] lg:mx-auto">
+            Event registration
+          </p>
+        ) : null}
         {resolvedTitle ? (
           <h3
             className="bg-font-roboto-flex text-[32px] leading-[36px] lg:bg-type-h1"

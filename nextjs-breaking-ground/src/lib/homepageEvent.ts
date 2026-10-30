@@ -1,4 +1,5 @@
 import type {HomepageEventBannerProps} from "@/components/homepage/HomepageEventBanner";
+import {loadFeaturedIndustryEvent} from "@/lib/industryCalendar";
 import {client} from "@/sanity/client";
 
 type HomepageEventSource = {
@@ -38,7 +39,24 @@ function formatEventSubtitle(raw?: string | null) {
 }
 
 export async function getHomepageEventBannerProps(): Promise<HomepageEventBannerProps> {
-  const homepageEvent = await client.fetch<HomepageEventSource>(HOMEPAGE_EVENT_QUERY, {}, options);
+  const [homepageEvent, industryEvent] = await Promise.all([
+    client.fetch<HomepageEventSource>(HOMEPAGE_EVENT_QUERY, {}, options),
+    loadFeaturedIndustryEvent().catch((error) => {
+      console.error("Could not load the industry calendar for the event banner.", error);
+      return null;
+    }),
+  ]);
+
+  if (industryEvent) {
+    return {
+      title: industryEvent.title,
+      subtitle: industryEvent.when,
+      body: industryEvent.venue,
+      ctaLabel: industryEvent.href ? "Register Now" : null,
+      ctaHref: industryEvent.href,
+      backgroundImageSrc: homepageEvent?.backgroundImageSrc,
+    };
+  }
 
   return {
     title: homepageEvent?.title,
