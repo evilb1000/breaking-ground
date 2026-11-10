@@ -13,7 +13,6 @@ export type PodcastEpisode = {
 }
 
 export const PODCAST_PLAYLIST_ID = "PLQQFGLSYIMfc"
-export const PODCAST_REVALIDATE_SECONDS = 60 * 60
 const EPISODE_CAP = 15
 
 const RSS_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PODCAST_PLAYLIST_ID}`
@@ -62,7 +61,7 @@ function parseRss(xml: string): PodcastEpisode[] {
 }
 
 export async function loadPodcastEpisodes(): Promise<PodcastEpisode[]> {
-  const response = await fetch(RSS_URL, { next: { revalidate: PODCAST_REVALIDATE_SECONDS } })
+  const response = await fetch(RSS_URL, { cache: "no-store" })
   if (!response.ok) {
     throw new Error(`YouTube RSS request failed (${response.status})`)
   }

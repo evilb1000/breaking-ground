@@ -7,7 +7,7 @@ import { getAdsForSurface } from "@/lib/ads"
 import { getHomepageEventBannerProps } from "@/lib/homepageEvent"
 import { loadPodcastEpisodes } from "@/lib/youtubePodcast"
 
-export const revalidate = 3600
+export const revalidate = 0
 
 export const metadata: Metadata = {
   title: "Blueprints&BS",
